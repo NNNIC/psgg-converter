@@ -9,7 +9,11 @@ namespace psggConverterLib
 {
     public class Convert
     {
-        public void TEST() { Console.WriteLine("psggConvertLib TEST");}
+        public void   TEST() { Console.WriteLine("psggConvertLib TEST");}
+        public string VERSION() { return ver.version;    }
+        public string GITHASH() { return githash.hash;   }
+        public string BUILDTIME() { return ver.datetime; }
+        public string COPYRIGHT() { return "2018 NNNIC / MIT Licence"; }
 
         public int NAME_COL  =2;
         public int STATE_ROW =2;
