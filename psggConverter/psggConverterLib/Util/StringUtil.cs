@@ -170,7 +170,11 @@ public class StringUtil
         if (target.Trim()!=target)        throw new SystemException("Unexpected! {BC4E8F0B-5DAA-4ED5-9E75-98134929CF0B}");
         if (!line.Contains(target))       throw new SystemException("Unexpected! {D5C8183F-D166-4C6E-AB6B-2E7FD7155696}");
         
-        var replace2 = replace.Trim();
+        var replace2 = string.Empty;
+        if (!string.IsNullOrEmpty(replace))
+        {
+            replace2= replace.Trim();
+        }
         var newline  = StringUtil.FindNewLineChar(replace2);
         if (newline==null) //1行
         {

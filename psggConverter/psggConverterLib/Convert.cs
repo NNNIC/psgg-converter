@@ -164,6 +164,8 @@ namespace psggConverterLib
                 }
             }
 
+            lines = StringUtil.CutEmptyLines(lines);
+
             return StringUtil.LineToBuf(lines,NEWLINECHAR);
         }
         private bool createFunc_prepare(string state, ref List<string> lines)
@@ -188,7 +190,7 @@ namespace psggConverterLib
                 targetlines.RemoveAt(targetlines.Count-1);
 
                 //変換したものに入れ替え
-                StringUtil.ReplaceLines(lines,findindex,size,targetlines);
+                lines = StringUtil.ReplaceLines(lines,findindex,size,targetlines);
             }
             else
             {
