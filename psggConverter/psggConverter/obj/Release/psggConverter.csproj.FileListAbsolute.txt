@@ -1,0 +1,5 @@
+C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\bin\Release\psggConverter.exe.config
+C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\bin\Release\psggConverter.exe
+C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\bin\Release\psggConverter.pdb
+C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\obj\Release\psggConverter.exe
+C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\obj\Release\psggConverter.pdb

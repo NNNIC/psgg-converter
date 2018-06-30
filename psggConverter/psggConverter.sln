@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psggConverter", "psggConverter\psggConverter.csproj", "{3C47E8C4-12E1-4C8D-A7FC-BDCFDAABCEC3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F676398C-8891-4B8B-85DD-F5D98E35FE7E} = {F676398C-8891-4B8B-85DD-F5D98E35FE7E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psggConverterLib", "psggConverterLib\psggConverterLib.csproj", "{F676398C-8891-4B8B-85DD-F5D98E35FE7E}"
 EndProject
