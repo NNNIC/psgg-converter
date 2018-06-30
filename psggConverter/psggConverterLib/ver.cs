@@ -1,1 +1,1 @@
-namespace psggConverterLib { public class ver { public static readonly string version="0.6.0";    public static readonly string datetime="2018/06/30-22:16:41.28"; } } 
+namespace psggConverterLib { public class ver { public const string version="0.6.0"; public const string datetime="2018/06/30-23:12:24.10";  public const string depot="git@github.com:NNNIC/psgg-converter.git";  } } 
