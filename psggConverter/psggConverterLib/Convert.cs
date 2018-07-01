@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace psggConverterLib
 {
@@ -16,11 +17,14 @@ namespace psggConverterLib
         public string COPYRIGHT() { return "2018 NNNIC / MIT Licence"; }
         public string DEPOT()     { return ver.depot;      }
 
-        public int NAME_COL  =2;
-        public int STATE_ROW =2;
+        public int    NAME_COL     =2;
+        public int    STATE_ROW    =2;
         public string NEWLINECHAR  = "\x0d\x0a";
         public string COMMMENTLINE = "//";
-        public string LANG = "";
+        public string LANG         = "";
+        public string OUTPUT       = "";
+        public string ENC          = "utf-8";
+        public string GENDIR       = "";
 
         public readonly string CONTENTS1="$contents1$";
         public readonly string CONTENTS2="$contents2$";
@@ -81,6 +85,43 @@ namespace psggConverterLib
             }
         }
 
+        public void   GenerateSource(string excel, string gendir)
+        {
+            //System.Diagnostics.Debugger.Break();
+
+            SetupSource();
+
+            var s = COMMMENTLINE + " psggConverterLib.dll converted from " + excel + ". "+NEWLINECHAR;
+
+            s += CreateSource();
+            s += NEWLINECHAR;
+
+            var path = Path.Combine(gendir,OUTPUT);
+            File.WriteAllText(path,s,Encoding.GetEncoding(ENC));
+        }
+
+        public void   SetupSource() // Get output and other information.
+        {
+            var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
+            foreach(var i in lines)
+            {
+                //                012345678
+                if (i.StartsWith(":output="))
+                {
+                    OUTPUT = i.Substring(8).Trim();
+                }
+                //                012345
+                if (i.StartsWith(":enc="))
+                {
+                    ENC = i.Substring(5).Trim();
+                }
+                //                0123456
+                if (i.StartsWith(":lang="))
+                {
+                    LANG= i.Substring(6).Trim();
+                }
+            }
+        }
         public string CreateSource()
         {
             // contents
@@ -127,7 +168,7 @@ namespace psggConverterLib
                 resultlist.Add(line);
             }
 
-            return StringUtil.LineToBuf(lines,NEWLINECHAR);
+            return StringUtil.LineToBuf(resultlist,NEWLINECHAR);
 
         }
 

@@ -163,7 +163,7 @@ public class StringUtil
     /// 文字列中の対象文字を代替文字に入れ替える
     /// ※代替文字に改行が含まれていた場合、見栄えを調整する。この場合に複数行になる
     /// </summary>
-    public static List<string> ReplaceWordsInLine(string line, string target, string replace)
+    public static List<string> ReplaceWordsInLine(string line, string target, string replace, bool bTrimEnd=true)
     {
         if (string.IsNullOrEmpty(line))   throw new SystemException("Unexpected! {8F041B67-5F7C-4159-83BC-A0A20858C242}");
         if (string.IsNullOrEmpty(target)) throw new SystemException("Unexpected! {475F3A7E-03A0-4AE0-94AD-8668BDA5B217}");
@@ -194,7 +194,7 @@ public class StringUtil
 
 
         */
-        var replines = StringUtil.SplitTrim(replace2,'\x0a');
+        List<string> replines = bTrimEnd ?   StringUtil.SplitTrimEnd(replace2,'\x0a') : StringUtil.SplitTrim(replace2,'\x0a');
         var firstspace  = RegexUtil.Get1stMatch(@"^\s",line);
         var targetindex = line.IndexOf(target);
 
