@@ -8,7 +8,7 @@ using System.IO;
 
 namespace psggConverterLib
 {
-    public class Convert
+    public partial class Convert
     {
         public void   TEST()      { Console.WriteLine("psggConvertLib TEST");}
         public string VERSION()   { return ver.version;    }
@@ -174,6 +174,8 @@ namespace psggConverterLib
 
         public string CreateFunc(string state)
         {
+            //System.Diagnostics.Debugger.Break();
+
             var buf = template_func;
             var newlinechar = StringUtil.FindNewLineChar(buf);
             if (newlinechar == null) {
@@ -255,8 +257,10 @@ namespace psggConverterLib
                 var targetvalue = RegexUtil.Get1stMatch(@"\[\[.*?\]\]",line);
                 if (!string.IsNullOrEmpty(targetvalue)) {
                     var name = targetvalue.Trim('[',']');
-                    var replacevalue = getString(state,name);
-                    var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue);
+                    var replacevalue   = getString(state,name);
+                    var replacevalue2  = lang_work(LANG,name,replacevalue);
+
+                    var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue2);
 
                     lines.RemoveAt(i);
                     lines.InsertRange(i,tmplines);

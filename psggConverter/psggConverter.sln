@@ -10,6 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psggConverter", "psggConver
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psggConverterLib", "psggConverterLib\psggConverterLib.csproj", "{F676398C-8891-4B8B-85DD-F5D98E35FE7E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "batch", "batch", "{32E3B91A-CB28-4973-84CA-BDE892EF381A}"
+	ProjectSection(SolutionItems) = preProject
+		copydlltoInstallpath.bat = copydlltoInstallpath.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

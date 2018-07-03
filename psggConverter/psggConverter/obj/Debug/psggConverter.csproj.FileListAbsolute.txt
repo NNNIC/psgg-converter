@@ -3,3 +3,8 @@ C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\bin\Debug\ps
 C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\bin\Debug\psggConverter.pdb
 C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\obj\Debug\psggConverter.exe
 C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverter\obj\Debug\psggConverter.pdb
+C:\Project\psgg\psgg-converter\psggConverter\psggConverter\bin\Debug\psggConverter.exe.config
+C:\Project\psgg\psgg-converter\psggConverter\psggConverter\obj\Debug\psggConverter.exe
+C:\Project\psgg\psgg-converter\psggConverter\psggConverter\obj\Debug\psggConverter.pdb
+C:\Project\psgg\psgg-converter\psggConverter\psggConverter\bin\Debug\psggConverter.exe
+C:\Project\psgg\psgg-converter\psggConverter\psggConverter\bin\Debug\psggConverter.pdb

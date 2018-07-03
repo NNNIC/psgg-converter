@@ -3,3 +3,8 @@ C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverterLib\bin\Debug
 C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.dll
 C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.pdb
 C:\Users\gea01\Documents\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.csprojResolveAssemblyReference.cache
+C:\Project\psgg\psgg-converter\psggConverter\psggConverterLib\bin\Debug\psggConverterLib.dll
+C:\Project\psgg\psgg-converter\psggConverter\psggConverterLib\bin\Debug\psggConverterLib.pdb
+C:\Project\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.csprojResolveAssemblyReference.cache
+C:\Project\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.dll
+C:\Project\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.pdb
