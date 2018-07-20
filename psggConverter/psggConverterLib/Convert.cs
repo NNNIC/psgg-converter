@@ -25,10 +25,12 @@ namespace psggConverterLib
         public string OUTPUT       = "";
         public string ENC          = "utf-8";
         public string GENDIR       = "";
+        public string INCDIR       = "";
 
         public readonly string CONTENTS1="$contents1$";
         public readonly string CONTENTS2="$contents2$";
         public readonly string CONTENTS3="$contents3$";
+        public readonly string INCLUDEFILE=@"\$include:.+?\$"; //Regexp
 
         public string template_src;
         public string template_func;
@@ -40,6 +42,7 @@ namespace psggConverterLib
         public List<string> name_list;
         public List<int>    name_row_list;
 
+        #region init
         public void Init(
             string i_template_src, 
             string i_template_func,
@@ -84,12 +87,23 @@ namespace psggConverterLib
                 }
             }
         }
+        #endregion
 
+        #region generate
+        public void   GenerateSource(string excel, string gendir, string incdir)
+        {
+            INCDIR = incdir;
+            GenerateSource(excel,gendir);
+        }
         public void   GenerateSource(string excel, string gendir)
         {
             //System.Diagnostics.Debugger.Break();
 
+            if (string.IsNullOrEmpty(INCDIR)) INCDIR = gendir;
+
             SetupSource();
+
+            SetUpLang();
 
             var s = COMMMENTLINE + " psggConverterLib.dll converted from " + excel + ". "+NEWLINECHAR;
 
@@ -100,7 +114,7 @@ namespace psggConverterLib
             File.WriteAllText(path,s,Encoding.GetEncoding(ENC));
         }
 
-        public void   SetupSource() // Get output and other information.
+        private void   SetupSource() // Get output and other information.
         {
             var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
             foreach(var i in lines)
@@ -120,6 +134,13 @@ namespace psggConverterLib
                 {
                     LANG= i.Substring(6).Trim();
                 }
+            }
+        }
+        private void SetUpLang()
+        {
+            if (LANG=="vba")
+            {
+                COMMMENTLINE = "'";
             }
         }
         public string CreateSource()
@@ -165,6 +186,28 @@ namespace psggConverterLib
                     resultlist.AddRange(tmplines);
                     continue;
                 }
+                var include_file_str = RegexUtil.Get1stMatch(INCLUDEFILE,line);
+                if (!string.IsNullOrEmpty(include_file_str))
+                {
+                    var text = string.Empty;
+                                                         // 0123456789
+                    var file = include_file_str.Substring(/*$include:*/9).TrimEnd('$');
+                    try {
+                        text = File.ReadAllText(Path.Combine(INCDIR,file),Encoding.GetEncoding(ENC));
+                    } catch (SystemException e){
+                        throw new SystemException("Cannot read file (" + file +") because " + e.Message);
+                    }
+
+                    resultlist.Add(COMMMENTLINE + " #start include -" + file);
+
+                    var tmplines = StringUtil.ReplaceWordsInLine(line,include_file_str,text);
+                    resultlist.AddRange(tmplines);
+
+                    resultlist.Add(COMMMENTLINE + " #end include -" + file);
+
+                    continue;
+                }
+
                 resultlist.Add(line);
             }
 
@@ -269,7 +312,7 @@ namespace psggConverterLib
             }
             return false;
         }
-        
+        #endregion
 
         // --- tools
         public bool isExist(string state, string name)
