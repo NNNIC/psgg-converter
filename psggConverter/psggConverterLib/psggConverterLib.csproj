@@ -43,6 +43,7 @@
     <Compile Include="Convert.cs" />
     <Compile Include="githash.cs" />
     <Compile Include="Langwork\LangWork.cs" />
+    <Compile Include="Langwork\Lang\LangWork_vba.cs" />
     <Compile Include="Langwork\Lang\LangWork_typescript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\RegexUtil.cs" />
