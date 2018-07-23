@@ -168,11 +168,17 @@ namespace psggConverterLib
             //
             var resultlist = new List<string>();
             var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
+            bool bHeadColonIsCode = false; // ':' dos-bat needs ':' as code
             for(var i=0; i<lines.Count; i++)
             {
                 var line = lines[i];
 
-                if (line.Length >0 && line[0] == ':') continue;
+                if (line.StartsWith(":end")) { bHeadColonIsCode = true; continue; }
+                if(!bHeadColonIsCode)
+                {
+                    if(line.Length > 0 && line[0] == ':') 
+                        continue;
+                }
 
                 if (line.Contains(CONTENTS1))
                 {
