@@ -134,6 +134,10 @@ namespace psggConverterLib
                 {
                     LANG= i.Substring(6).Trim();
                 }
+                if (i.StartsWith(":end"))
+                {
+                    break;
+                }
             }
         }
         private void SetUpLang()
