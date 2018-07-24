@@ -30,7 +30,8 @@ namespace psggConverterLib
         public readonly string CONTENTS1="$contents1$";
         public readonly string CONTENTS2="$contents2$";
         public readonly string CONTENTS3="$contents3$";
-        public readonly string INCLUDEFILE=@"\$include:.+?\$"; //Regexp
+        public readonly string INCLUDEFILE= @"\$include:.+?\$"; //Regexp
+        public readonly string MACRO      = @"$MACRO:.+?\$";    //Regexp
 
         public string template_src;
         public string template_func;
@@ -101,52 +102,69 @@ namespace psggConverterLib
 
             if (string.IsNullOrEmpty(INCDIR)) INCDIR = gendir;
 
-            SetupSource();
-
-            SetUpLang();
-
-            var s = COMMMENTLINE + " psggConverterLib.dll converted from " + excel + ". "+NEWLINECHAR;
-
-            s += CreateSource();
-            s += NEWLINECHAR;
-
-            var path = Path.Combine(gendir,OUTPUT);
-            File.WriteAllText(path,s,Encoding.GetEncoding(ENC));
-        }
-
-        private void   SetupSource() // Get output and other information.
-        {
-            var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
-            foreach(var i in lines)
+            var sm = new SourceControl();
+            sm.G = this;
+            sm.m_excel  = excel;
+            sm.m_gendir = gendir;
+            sm.Start();
+            for(var loop = 0; loop <= 10000; loop++)
             {
-                //                012345678
-                if (i.StartsWith(":output="))
-                {
-                    OUTPUT = i.Substring(8).Trim();
-                }
-                //                012345
-                if (i.StartsWith(":enc="))
-                {
-                    ENC = i.Substring(5).Trim();
-                }
-                //                0123456
-                if (i.StartsWith(":lang="))
-                {
-                    LANG= i.Substring(6).Trim();
-                }
-                if (i.StartsWith(":end"))
-                {
-                    break;
-                }
+                if (loop == 10000) throw new SystemException("Unexpected! {96B6D10A-FFF4-4BD4-B9E0-C155CF2C16EB}");
+                
+                sm.update();
+                
+                if (sm.IsEnd()) break;
             }
+
+            return;
+
+
+            //SetupSource();
+
+            //SetUpLang();
+
+            //var s = COMMMENTLINE + " psggConverterLib.dll converted from " + excel + ". "+NEWLINECHAR;
+
+            //s += CreateSource();
+            //s += NEWLINECHAR;
+
+            //var path = Path.Combine(gendir,OUTPUT);
+            //File.WriteAllText(path,s,Encoding.GetEncoding(ENC));
         }
-        private void SetUpLang()
-        {
-            if (LANG=="vba")
-            {
-                COMMMENTLINE = "'";
-            }
-        }
+
+        //private void   SetupSource() // Get output and other information.
+        //{
+        //    var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
+        //    foreach(var i in lines)
+        //    {
+        //        //                012345678
+        //        if (i.StartsWith(":output="))
+        //        {
+        //            OUTPUT = i.Substring(8).Trim();
+        //        }
+        //        //                012345
+        //        if (i.StartsWith(":enc="))
+        //        {
+        //            ENC = i.Substring(5).Trim();
+        //        }
+        //        //                0123456
+        //        if (i.StartsWith(":lang="))
+        //        {
+        //            LANG= i.Substring(6).Trim();
+        //        }
+        //        if (i.StartsWith(":end"))
+        //        {
+        //            break;
+        //        }
+        //    }
+        //}
+        //private void SetUpLang()
+        //{
+        //    if (LANG=="vba")
+        //    {
+        //        COMMMENTLINE = "'";
+        //    }
+        //}
         public string CreateSource()
         {
             // contents

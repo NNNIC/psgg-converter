@@ -46,11 +46,15 @@
     <Compile Include="Langwork\Lang\LangWork_vba.cs" />
     <Compile Include="Langwork\Lang\LangWork_typescript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sm\base\StateManager.cs" />
+    <Compile Include="sm\FunctionControl.cs" />
+    <Compile Include="sm\FunctionControl_created.cs" />
+    <Compile Include="sm\SourceControl.cs" />
+    <Compile Include="sm\SourceControl_created.cs" />
     <Compile Include="Util\RegexUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="ver.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetPath) $(SolutionDir)psggConverter\bin\Debug\*.*</PostBuildEvent>
