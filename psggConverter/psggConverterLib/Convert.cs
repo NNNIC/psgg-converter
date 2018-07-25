@@ -98,7 +98,7 @@ namespace psggConverterLib
         }
         public void   GenerateSource(string excel, string gendir)
         {
-            //System.Diagnostics.Debugger.Break();
+            System.Diagnostics.Debugger.Break();
 
             if (string.IsNullOrEmpty(INCDIR)) INCDIR = gendir;
 
@@ -165,83 +165,83 @@ namespace psggConverterLib
         //        COMMMENTLINE = "'";
         //    }
         //}
-        public string CreateSource()
-        {
-            // contents
-            var contents1 = string.Empty;
-            {
-                var s = string.Empty;
-                foreach(var state in this.state_list)
-                {
-                    s += state + ",";
-                }
-                contents1 = s;
-            }
-            var contents2 = string.Empty;
-            {
-                var s = string.Empty;
-                foreach(var state in this.state_list)
-                {
-                    s += CreateFunc(state) + NEWLINECHAR;
-                }
-                contents2 = s;
-            }
+        //public string CreateSource()
+        //{
+        //    // contents
+        //    var contents1 = string.Empty;
+        //    {
+        //        var s = string.Empty;
+        //        foreach(var state in this.state_list)
+        //        {
+        //            s += state + ",";
+        //        }
+        //        contents1 = s;
+        //    }
+        //    var contents2 = string.Empty;
+        //    {
+        //        var s = string.Empty;
+        //        foreach(var state in this.state_list)
+        //        {
+        //            s += CreateFunc(state) + NEWLINECHAR;
+        //        }
+        //        contents2 = s;
+        //    }
             
-            //
-            var resultlist = new List<string>();
-            var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
-            bool bHeadColonIsCode = false; // ':' dos-bat needs ':' as code
-            for(var i=0; i<lines.Count; i++)
-            {
-                var line = lines[i];
+        //    //
+        //    var resultlist = new List<string>();
+        //    var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
+        //    bool bHeadColonIsCode = false; // ':' dos-bat needs ':' as code
+        //    for(var i=0; i<lines.Count; i++)
+        //    {
+        //        var line = lines[i];
 
-                if (line.StartsWith(":end")) { bHeadColonIsCode = true; continue; }
-                if(!bHeadColonIsCode)
-                {
-                    if(line.Length > 0 && line[0] == ':') 
-                        continue;
-                }
+        //        if (line.StartsWith(":end")) { bHeadColonIsCode = true; continue; }
+        //        if(!bHeadColonIsCode)
+        //        {
+        //            if(line.Length > 0 && line[0] == ':') 
+        //                continue;
+        //        }
 
-                if (line.Contains(CONTENTS1))
-                {
-                    var tmplines = StringUtil.ReplaceWordsInLine(line,CONTENTS1,contents1);
-                    resultlist.AddRange(tmplines);
-                    continue;
-                }
-                if (line.Contains(CONTENTS2))
-                {
-                    var tmplines = StringUtil.ReplaceWordsInLine(line,CONTENTS2,contents2);
-                    resultlist.AddRange(tmplines);
-                    continue;
-                }
-                var include_file_str = RegexUtil.Get1stMatch(INCLUDEFILE,line);
-                if (!string.IsNullOrEmpty(include_file_str))
-                {
-                    var text = string.Empty;
-                                                         // 0123456789
-                    var file = include_file_str.Substring(/*$include:*/9).TrimEnd('$');
-                    try {
-                        text = File.ReadAllText(Path.Combine(INCDIR,file),Encoding.GetEncoding(ENC));
-                    } catch (SystemException e){
-                        throw new SystemException("Cannot read file (" + file +") because " + e.Message);
-                    }
+        //        if (line.Contains(CONTENTS1))
+        //        {
+        //            var tmplines = StringUtil.ReplaceWordsInLine(line,CONTENTS1,contents1);
+        //            resultlist.AddRange(tmplines);
+        //            continue;
+        //        }
+        //        if (line.Contains(CONTENTS2))
+        //        {
+        //            var tmplines = StringUtil.ReplaceWordsInLine(line,CONTENTS2,contents2);
+        //            resultlist.AddRange(tmplines);
+        //            continue;
+        //        }
+        //        var include_file_str = RegexUtil.Get1stMatch(INCLUDEFILE,line);
+        //        if (!string.IsNullOrEmpty(include_file_str))
+        //        {
+        //            var text = string.Empty;
+        //                                                 // 0123456789
+        //            var file = include_file_str.Substring(/*$include:*/9).TrimEnd('$');
+        //            try {
+        //                text = File.ReadAllText(Path.Combine(INCDIR,file),Encoding.GetEncoding(ENC));
+        //            } catch (SystemException e){
+        //                throw new SystemException("Cannot read file (" + file +") because " + e.Message);
+        //            }
 
-                    resultlist.Add(COMMMENTLINE + " #start include -" + file);
+        //            resultlist.Add(COMMMENTLINE + " #start include -" + file);
 
-                    var tmplines = StringUtil.ReplaceWordsInLine(line,include_file_str,text);
-                    resultlist.AddRange(tmplines);
+        //            var tmplines = StringUtil.ReplaceWordsInLine(line,include_file_str,text);
+        //            resultlist.AddRange(tmplines);
 
-                    resultlist.Add(COMMMENTLINE + " #end include -" + file);
+        //            resultlist.Add(COMMMENTLINE + " #end include -" + file);
 
-                    continue;
-                }
+        //            continue;
+        //        }
 
-                resultlist.Add(line);
-            }
+        //        resultlist.Add(line);
+        //    }
 
-            return StringUtil.LineToBuf(resultlist,NEWLINECHAR);
+        //    return StringUtil.LineToBuf(resultlist,NEWLINECHAR);
 
-        }
+        //}
 
         public string CreateFunc(string state)
         {
