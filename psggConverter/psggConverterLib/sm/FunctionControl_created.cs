@@ -84,6 +84,7 @@ public partial class FunctionControl : StateManager {
         {
             preprocess();
         }
+        br_NeedAgain(S_LOOPNEXT);
         br_OK(S_SETVALUE);
         br_NG(S_END);
         if (HasNextState())
@@ -156,6 +157,7 @@ public partial class FunctionControl : StateManager {
     {
         if (bFirst)
         {
+            loop_init();
         }
         if (!HasNextState())
         {
@@ -174,6 +176,7 @@ public partial class FunctionControl : StateManager {
     {
         if (bFirst)
         {
+            loop_check();
         }
         br_OK(S_PREPROC);
         br_NG(S_END);

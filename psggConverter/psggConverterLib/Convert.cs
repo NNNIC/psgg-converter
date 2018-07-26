@@ -300,7 +300,7 @@ namespace psggConverterLib
 
             return StringUtil.LineToBuf(lines,NEWLINECHAR);
         }
-        private bool createFunc_prepare(string state, ref List<string> lines)
+        public bool createFunc_prepare(string state, ref List<string> lines)
         {
             if (lines == null) return false;              
 
@@ -331,7 +331,7 @@ namespace psggConverterLib
             
             return true;
         }
-        private bool createFunc_work(string state, ref List<string> lines)
+        public bool createFunc_work(string state, ref List<string> lines)
         {
             if (lines == null) return false;
 
