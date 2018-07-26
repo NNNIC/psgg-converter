@@ -243,7 +243,20 @@ namespace psggConverterLib
 
         //}
 
+        
         public string CreateFunc(string state)
+        {
+            var sm = new FunctionControl();
+            sm.Start();
+            for(var loop=0;loop<=10000;loop++)
+            {
+                if (loop == 10000) throw new SystemException("Unexpected! {D5DF7922-8A36-4458-A4F4-7B80A240EB08}");
+                sm.update();
+                if (sm.IsEnd()) break;
+            }
+            return sm.m_result_src;
+        }
+        public string CreateFunc_obs(string state)
         {
             //System.Diagnostics.Debugger.Break();
 
