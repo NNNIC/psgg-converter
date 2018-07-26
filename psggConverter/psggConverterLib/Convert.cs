@@ -98,7 +98,7 @@ namespace psggConverterLib
         }
         public void   GenerateSource(string excel, string gendir)
         {
-            System.Diagnostics.Debugger.Break();
+            //System.Diagnostics.Debugger.Break();
 
             if (string.IsNullOrEmpty(INCDIR)) INCDIR = gendir;
 

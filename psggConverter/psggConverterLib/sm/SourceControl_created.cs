@@ -271,7 +271,7 @@ public partial class SourceControl : StateManager {
         {
             is_include_lc();
         }
-        br_CONTINUE(S_NEXT_LC);
+        br_CONTINUE(S_SET_CHECKAGAIN);
         br_NOTABOVE(S_IS_MACRO_LC);
         if (HasNextState())
         {
@@ -288,7 +288,7 @@ public partial class SourceControl : StateManager {
         {
             is_macro_lc();
         }
-        br_CONTINUE(S_NEXT_LC);
+        br_CONTINUE(S_SET_CHECKAGAIN);
         br_NOTABOVE(S_ADDLINE_LC);
         if (HasNextState())
         {
@@ -439,6 +439,25 @@ public partial class SourceControl : StateManager {
         if (!HasNextState())
         {
             SetNextState(S_ESCAPE_TO_CHAR);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_SET_CHECKAGAIN
+        再変換要素がある可能性があるので、再チェック依頼
+    */
+    void S_SET_CHECKAGAIN(bool bFirst)
+    {
+        if (bFirst)
+        {
+            set_check_again();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_NEXT_LC);
         }
         if (HasNextState())
         {

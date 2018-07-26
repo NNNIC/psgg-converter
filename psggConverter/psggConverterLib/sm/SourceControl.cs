@@ -178,6 +178,10 @@ public partial class SourceControl  {
         m_src += m_targetsrc;
         m_src += G.NEWLINECHAR;
     }
+    void set_check_again()
+    {
+        m_needCheckAgain = true;
+    }
     void next_lc()
     {
         m_line_index++;
@@ -258,7 +262,6 @@ public partial class SourceControl  {
             m_resultlist.Add(G.COMMMENTLINE + " #end include -" + file);
 
             m_bContinue      = true;
-            m_needCheckAgain = true;
         }
     }
     void is_macro_lc()
@@ -267,8 +270,7 @@ public partial class SourceControl  {
         if (!string.IsNullOrEmpty(macro_str))
         {
             //TODO
-            m_bContinue      = true;
-            m_needCheckAgain = true;
+            m_bContinue      = false;
         }
     }
     void add_line_lc()
