@@ -93,15 +93,24 @@ public partial class FunctionControl  {
     #region branch
     void br_OK(Action<bool> st)
     {
-        if (m_OkNG) SetNextState(st);
+        if (!HasNextState())
+        { 
+            if (m_OkNG) SetNextState(st);
+        }
     }
     void br_NG(Action<bool> st)
     {
-        if (!m_OkNG) SetNextState(st);
+        if (!HasNextState())
+        {
+            if (!m_OkNG) SetNextState(st);
+        }
     }
     void br_NeedAgain(Action<bool> st)
     {
-        if (m_needAgain) SetNextState(st);
+        if (!HasNextState())
+        { 
+            if (m_needAgain) SetNextState(st);
+        }
     }
     #endregion
 

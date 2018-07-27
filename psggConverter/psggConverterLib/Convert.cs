@@ -249,6 +249,7 @@ namespace psggConverterLib
             //System.Diagnostics.Debugger.Break();
             var sm = new FunctionControl();
             sm.G = this;
+            sm.m_state = state;
             sm.Start();
             for(var loop=0;loop<=10000;loop++)
             {
