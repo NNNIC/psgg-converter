@@ -246,7 +246,9 @@ namespace psggConverterLib
         
         public string CreateFunc(string state)
         {
+            //System.Diagnostics.Debugger.Break();
             var sm = new FunctionControl();
+            sm.G = this;
             sm.Start();
             for(var loop=0;loop<=10000;loop++)
             {
@@ -256,6 +258,7 @@ namespace psggConverterLib
             }
             return sm.m_result_src;
         }
+#if obs
         public string CreateFunc_obs(string state)
         {
             //System.Diagnostics.Debugger.Break();
@@ -300,6 +303,7 @@ namespace psggConverterLib
 
             return StringUtil.LineToBuf(lines,NEWLINECHAR);
         }
+#endif
         public bool createFunc_prepare(string state, ref List<string> lines)
         {
             if (lines == null) return false;              
@@ -353,7 +357,7 @@ namespace psggConverterLib
             }
             return false;
         }
-        #endregion
+#endregion
 
         // --- tools
         public bool isExist(string state, string name)

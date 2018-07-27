@@ -79,6 +79,16 @@ public partial class FunctionControl  {
             m_OkNG = false;
         }
     }
+    void convert_macro()
+    {
+        m_OkNG = true;
+        //todo
+    }
+    void postprocess()
+    {
+        m_lines = StringUtil.CutEmptyLines(m_lines);
+        m_result_src = StringUtil.LineToBuf(m_lines,G.NEWLINECHAR);
+    }
 
     #region branch
     void br_OK(Action<bool> st)
