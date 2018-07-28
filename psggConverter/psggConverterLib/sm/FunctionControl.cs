@@ -82,7 +82,19 @@ public partial class FunctionControl  {
     void convert_macro()
     {
         m_OkNG = true;
-        //todo
+        var sm = new MacroControl();
+        sm.G = G;
+        sm.m_state = m_state;
+        sm.m_lines = m_lines;
+        sm.Start();
+        for(var loop = 0; loop<=10000; loop++)
+        {
+            if (loop==10000) throw new SystemException("Unexpected! {8C70F7D9-7E73-4E1C-BF94-320DA272DF02}");
+            sm.update();
+            if (sm.IsEnd()) break;
+        }
+        m_needAgain = sm.m_bNeedCheckAgain;
+        m_lines = sm.m_resultlines;
     }
     void postprocess()
     {

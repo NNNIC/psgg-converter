@@ -247,4 +247,82 @@ public class StringUtil
         }
         return s;
     }
+    public static List<string> SplitComma(string i) //カンマ区切りで分割 ダブルクォート対応 \"対応
+    {
+        if (string.IsNullOrEmpty(i)) return null;
+
+        var s = i.Trim();
+        if (string.IsNullOrEmpty(s)) return null;
+        
+        var dw = @"\x22((\x5c\x22)|([^\x22]))*?\x22"; // DQに囲まれた文字列　￥”対応
+
+        var p1 = @"[^\x22].+?\x2c"; // "以外が続き 最後が , (カンマ)
+        var p2 = @"[^\x22].+?$";    // "以外が続き 最後が 行末
+        var p3 = dw + @"\s*\x2c";        //  文字列で最後が,
+        var p4 = dw + @"\s*$";           //  文字列で最後が 行末
+        var regex = string.Format("^(({0})|({1})|({2})|({3}))",p1,p2,p3,p4);
+
+        var tb = s;
+        var list = new List<string>();
+        for(var loop = 0; loop<=100;loop++)
+        {
+            if (loop == 100) throw new SystemException("Unexpected! {11529044-AA98-47BC-9B8B-A7D2B5322265}");
+            var f = RegexUtil.Get1stMatch(regex,tb);
+            if (!string.IsNullOrEmpty(f))
+            {
+                var f2 = f.Trim(',').Trim();
+                list.Add(f2);
+                tb = tb.Substring(f.Length);
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        if (list.Count>0) return list;
+        return null;
+    }
+    /*
+        Split buffer to api(arg0,arg1..)
+        note :   api() or api retur api wo args;
+
+    */
+    public static bool SplitApiArges(string buf, out string api, out List<string> args, out string error)
+    {
+        api   = null;
+        args  = null;
+        error = null;
+        if (string.IsNullOrEmpty(buf))
+        {
+            error = "buf is null";
+            return false;
+        }
+        var sp = buf.IndexOf('(');
+        if (sp < 0)
+        {
+            api = buf;
+            return true;
+        }
+        var ep = buf.IndexOf(')');
+        if (ep < sp)
+        {
+            error = "arg string is invalid. #1";
+            return false;
+        }
+        api = buf.Substring(0,sp);
+        var argstr = buf.Substring(sp,(ep-sp)).TrimStart('(').TrimEnd(')').Trim();
+        if (string.IsNullOrEmpty(argstr))
+        {
+            return true;
+        }
+        var arglist = StringUtil.SplitComma(argstr);
+        if (arglist==null)
+        {
+            error = "unexpected! {87753187-4E54-4E2D-A445-239002F2E59A}";
+            return false;
+        }
+        args = arglist;
+        return true;
+    }
 }

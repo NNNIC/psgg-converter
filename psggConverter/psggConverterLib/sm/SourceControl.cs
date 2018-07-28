@@ -241,36 +241,93 @@ public partial class SourceControl  {
             m_bContinue = true;
         }
     }
+    psggConverterLib.MacroWork m_mw;
     void is_include_lc()
     {
-        var include_file_str = RegexUtil.Get1stMatch(G.INCLUDEFILE,m_line);
-        if (!string.IsNullOrEmpty(include_file_str))
+        if (m_mw == null)
         {
-            var text = string.Empty;
-            var file = include_file_str.Substring(/*$include:*/9).TrimEnd('$');
-            try {
+            m_mw = new psggConverterLib.MacroWork();
+        }
+        m_mw.Init();
+        m_mw.CheckMacro(m_line);
+        if (m_mw.IsValid() && m_mw.IsInclude())
+        {
+            var matchstr = m_mw.GetMatchStr();
+            var file     = m_mw.GetIncludFilename();
+            var text     = string.Empty;
+            try
+            {
                 text = File.ReadAllText(Path.Combine(G.INCDIR,file),Encoding.GetEncoding(G.ENC));
-            } catch (SystemException e){
-                throw new SystemException("Cannot read file (" + file +") because " + e.Message);
+            }
+            catch (SystemException e)
+            {
+                text = string.Format("(error: cannot read :{0})",e.Message);
             }
 
             m_resultlist.Add(G.COMMMENTLINE + " #start include -" + file);
 
-            var tmplines = StringUtil.ReplaceWordsInLine(m_line,include_file_str,text);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
             m_resultlist.AddRange(tmplines);
 
             m_resultlist.Add(G.COMMMENTLINE + " #end include -" + file);
 
-            m_bContinue      = true;
+            m_bContinue = true;
         }
+
+        //var include_file_str = RegexUtil.Get1stMatch(G.INCLUDEFILE,m_line);
+        //if (!string.IsNullOrEmpty(include_file_str))
+        //{
+        //    var text = string.Empty;
+        //    var file = include_file_str.Substring(/*$include:*/9).TrimEnd('$');
+        //    try {
+        //        text = File.ReadAllText(Path.Combine(G.INCDIR,file),Encoding.GetEncoding(G.ENC));
+        //    } catch (SystemException e){
+        //        throw new SystemException("Cannot read file (" + file +") because " + e.Message);
+        //    }
+
+        //    m_resultlist.Add(G.COMMMENTLINE + " #start include -" + file);
+
+        //    var tmplines = StringUtil.ReplaceWordsInLine(m_line,include_file_str,text);
+        //    m_resultlist.AddRange(tmplines);
+
+        //    m_resultlist.Add(G.COMMMENTLINE + " #end include -" + file);
+
+        //    m_bContinue      = true;
+        //}
     }
     void is_macro_lc()
     {
-        var macro_str = RegexUtil.Get1stMatch(G.MACRO,m_line);
-        if (!string.IsNullOrEmpty(macro_str))
+        if (m_mw.IsValid() && !m_mw.IsInclude() )
         {
-            //TODO
-            m_bContinue      = false;
+            var matchstr= m_mw.GetMatchStr();
+            var text = string.Empty;
+            var macroname = m_mw.GetMacroname();
+            if (string.IsNullOrEmpty(macroname))
+            {
+                text = "(error: macroname is null)";
+            }
+            else
+            { 
+                text = G.getMacroValueFunc(macroname);
+                for(var loop = 0; loop<=100; loop++)
+                {
+                    if (loop == 100) throw new SystemException("Unexpected! {CD8E7F70-945D-4BD1-A9F3-0C4EF6D03E27}");
+                    var matcharg = RegexUtil.Get1stMatch(psggConverterLib.MacroWork.m_argpattern, text);
+                    if (!string.IsNullOrEmpty(matcharg))
+                    {
+                        var argvalue = m_mw.GetArgValue(matcharg);
+                        text = text.Replace(matcharg,argvalue);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
+            m_resultlist.AddRange(tmplines);           
+
+            m_bContinue      = true;
         }
     }
     void add_line_lc()

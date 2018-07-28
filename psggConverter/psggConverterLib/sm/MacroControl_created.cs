@@ -8,262 +8,216 @@ public partial class MacroControl : StateManager {
 
 
     /*
-        [[state-cmt]]
+        S_START
     */
-    void [[state]](bool bFirst)
+    void S_START(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
         if (!HasNextState())
         {
-            SetNextState([[nextstate]]);
+            SetNextState(S_LINELOOP_INIT);
         }
-        >>>
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_END
     */
-    void [[state]](bool bFirst)
+    void S_END(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
-        if (!HasNextState())
-        {
-            SetNextState([[nextstate]]);
-        }
-        >>>
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_DO_INCLUDE
+        インクルードであれば、INCDIRよりファイル取得
     */
-    void [[state]](bool bFirst)
+    void S_DO_INCLUDE(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            do_if_include();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
-        if (!HasNextState())
-        {
-            SetNextState([[nextstate]]);
-        }
-        >>>
+        br_Done(S_ADDRESTLINES);
+        br_NotAbove(S_DO_MACRO);
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_LINELOOP_INIT
+        set index 0
     */
-    void [[state]](bool bFirst)
+    void S_LINELOOP_INIT(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            lineloop_init();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
         if (!HasNextState())
         {
-            SetNextState([[nextstate]]);
+            SetNextState(S_LINELOOP_CHECK);
         }
-        >>>
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_LINELOOP_CHECK
+        index < lines.count
     */
-    void [[state]](bool bFirst)
+    void S_LINELOOP_CHECK(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            lineloop_check();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
-        if (!HasNextState())
-        {
-            SetNextState([[nextstate]]);
-        }
-        >>>
+        br_OK(S_SET_LINE);
+        br_NG(S_END);
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_SET_LINE
+        line = lines[index]
     */
-    void [[state]](bool bFirst)
+    void S_SET_LINE(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            set_line();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
         if (!HasNextState())
         {
-            SetNextState([[nextstate]]);
+            SetNextState(S_CHECKMACRO);
         }
-        >>>
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_CHECKMACRO
+        ライン内にマクロがあるか？
     */
-    void [[state]](bool bFirst)
+    void S_CHECKMACRO(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            check_macro();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
-        if (!HasNextState())
-        {
-            SetNextState([[nextstate]]);
-        }
-        >>>
+        br_YES(S_SET_CHECKAGAIN);
+        br_NO(S_ADDLINE);
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_SET_CHECKAGAIN
+        再実行依頼
     */
-    void [[state]](bool bFirst)
+    void S_SET_CHECKAGAIN(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            set_checkagain();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
         if (!HasNextState())
         {
-            SetNextState([[nextstate]]);
+            SetNextState(S_DO_INCLUDE);
         }
-        >>>
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_DO_MACRO
+        マクロ処理
     */
-    void [[state]](bool bFirst)
+    void S_DO_MACRO(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            do_macro();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
         if (!HasNextState())
         {
-            SetNextState([[nextstate]]);
+            SetNextState(S_ADDRESTLINES);
         }
-        >>>
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
             GoNextState();
         }
     }
     /*
-        [[state-cmt]]
+        S_LINELOOP_NEXT
+        next処理
     */
-    void [[state]](bool bFirst)
+    void S_LINELOOP_NEXT(bool bFirst)
     {
         if (bFirst)
         {
-            [[init]]
+            lineloop_next();
         }
-        [[update]]
-        [[post_wait]]
-        [[branch]]
-        <<<?nextstate
         if (!HasNextState())
         {
-            SetNextState([[nextstate]]);
+            SetNextState(S_LINELOOP_CHECK);
         }
-        >>>
         if (HasNextState())
         {
-            <<<?nowait
-                NoWait();
-            >>>
+            GoNextState();
+        }
+    }
+    /*
+        S_ADDLINE
+        結果に現ラインを追加
+    */
+    void S_ADDLINE(bool bFirst)
+    {
+        if (bFirst)
+        {
+            add_line();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_LINELOOP_NEXT);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_ADDRESTLINES
+        残りのライン追加
+    */
+    void S_ADDRESTLINES(bool bFirst)
+    {
+        if (bFirst)
+        {
+            add_restlines();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_END);
+        }
+        if (HasNextState())
+        {
             GoNextState();
         }
     }

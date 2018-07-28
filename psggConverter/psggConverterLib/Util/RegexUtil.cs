@@ -37,6 +37,22 @@ public class RegexUtil
         return string.Empty;
     }
 
+    public static Match Get1stMatchAsMatch(string regexstr, string s)
+    {
+        if (string.IsNullOrEmpty(s)) return null;
+        if (string.IsNullOrEmpty(regexstr)) return null;
+        var regex   = new Regex(regexstr);
+        var matches =  regex.Matches(s);
+        if (matches == null || matches.Count==0) return null;
+
+        foreach(var i in matches)
+        {
+            var m = (Match)i;
+            return m;
+        }
+        return null;
+    }
+
     public static string[] GetAllMatches(string regexstr, string s)
     {
         if (string.IsNullOrEmpty(s)) return null;

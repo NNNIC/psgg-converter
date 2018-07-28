@@ -10,7 +10,11 @@ namespace psggConverterLib
 {
     public partial class Convert
     {
+        public bool   BRKGS     = false;  //  Breakpoint At Generate Source   
+        public bool   BRKGF     = false;  //  Breakpoint At Generate Function
+
         public void   TEST()      { Console.WriteLine("psggConvertLib TEST");}
+
         public string VERSION()   { return ver.version;    }
         public string GITHASH()   { return githash.hash;   }
         public string BUILDTIME() { return ver.datetime;   }
@@ -36,6 +40,7 @@ namespace psggConverterLib
         public string template_src;
         public string template_func;
         public Func<int,int,string> getChartFunc; // string = (row,col) Base 1,  as Excel Access
+        public Func<string,string>  getMacroValueFunc; // get macro value
 
         public List<string> state_list;
         public List<int>    state_col_list;
@@ -47,12 +52,14 @@ namespace psggConverterLib
         public void Init(
             string i_template_src, 
             string i_template_func,
-            Func<int,int,string> i_getChartFunc
+            Func<int,int,string> i_getChartFunc,
+            Func<string,string>  i_getMacroValueFunc = null
             )
         {
-            template_src = i_template_src;
-            template_func = i_template_func;
-            getChartFunc  = i_getChartFunc;
+            template_src      = i_template_src;
+            template_func     = i_template_func;
+            getChartFunc      = i_getChartFunc;
+            getMacroValueFunc = i_getMacroValueFunc;
 
             _init();
         }
@@ -98,7 +105,10 @@ namespace psggConverterLib
         }
         public void   GenerateSource(string excel, string gendir)
         {
-            //System.Diagnostics.Debugger.Break();
+            if (BRKGS)
+            { 
+                System.Diagnostics.Debugger.Break();
+            }
 
             if (string.IsNullOrEmpty(INCDIR)) INCDIR = gendir;
 
@@ -246,7 +256,10 @@ namespace psggConverterLib
         
         public string CreateFunc(string state)
         {
-            //System.Diagnostics.Debugger.Break();
+            if (BRKGF)
+            { 
+                System.Diagnostics.Debugger.Break();
+            }
             var sm = new FunctionControl();
             sm.G = this;
             sm.m_state = state;
@@ -348,8 +361,9 @@ namespace psggConverterLib
                     var name = targetvalue.Trim('[',']');
                     var replacevalue   = getString(state,name);
                     var replacevalue2  = lang_work(LANG,name,replacevalue);
-
-                    var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue2);
+                    var replacevalue3  = get_line_macro_value(name,replacevalue2); // @stateマクロがあれば、各行に適用する
+ 
+                    var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue3);
 
                     lines.RemoveAt(i);
                     lines.InsertRange(i,tmplines);
