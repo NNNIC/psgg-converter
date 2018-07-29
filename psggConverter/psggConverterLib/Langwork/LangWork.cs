@@ -11,7 +11,7 @@ namespace psggConverterLib
         string lang_work(string lang, string name, string value)
         {
             if (lang == "typescript") return lang_work_typescript(name, value);
-            if (lang == "vba")        return lang_work_vba(name, value);
+            //if (lang == "vba")        return lang_work_vba(name, value);
             return value;
         }
 
