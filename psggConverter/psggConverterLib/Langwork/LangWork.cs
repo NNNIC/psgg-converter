@@ -8,6 +8,7 @@ namespace psggConverterLib
 {
     public partial class Convert
     {
+        [Obsolete]
         string lang_work(string lang, string name, string value)
         {
             if (lang == "typescript") return lang_work_typescript(name, value);

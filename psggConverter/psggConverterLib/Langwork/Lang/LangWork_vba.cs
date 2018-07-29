@@ -8,6 +8,7 @@ namespace psggConverterLib
 {
     public partial class Convert
     {
+        [Obsolete]
         string lang_work_vba(string name, string value)
         {
             if (string.IsNullOrEmpty(value)) return value;

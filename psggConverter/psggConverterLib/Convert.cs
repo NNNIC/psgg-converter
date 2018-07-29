@@ -365,8 +365,8 @@ namespace psggConverterLib
                 if (!string.IsNullOrEmpty(targetvalue)) {
                     var name = targetvalue.Trim('[',']');
                     var replacevalue   = getString(state,name);
-                    var replacevalue2  = lang_work(LANG,name,replacevalue);
-                    var replacevalue3  = get_line_macro_value(name,replacevalue2); // @stateマクロがあれば、各行に適用する
+                    //var replacevalue2  = lang_work(LANG,name,replacevalue);
+                    var replacevalue3  = get_line_macro_value(name,replacevalue); // @stateマクロがあれば、各行に適用する
  
                     var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue3);
 
