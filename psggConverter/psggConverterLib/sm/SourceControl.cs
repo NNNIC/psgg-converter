@@ -41,11 +41,7 @@ public partial class SourceControl  {
     {
         if (G.LANG=="vba")
         {
-            G.COMMMENTLINE = "'";
-        }
-        else if (G.LANG=="bat")
-        {
-            G.COMMMENTLINE = "::";
+            G.COMMENTLINE_FORMAT = "' {%0}";
         }
     }
     #endregion
@@ -53,13 +49,8 @@ public partial class SourceControl  {
     string m_src = string.Empty;
     void write_header()
     {
-        m_src = G.COMMMENTLINE + " psggConverterLib.dll converted from " + m_excel + ". "+ G.NEWLINECHAR;
+        m_src = G.GetComment(" psggConverterLib.dll converted from " + m_excel + ". ") + G.NEWLINECHAR;
     }
-    //void create_source()
-    //{
-    //    m_src += G.CreateSource();
-    //    m_src += G.NEWLINECHAR;
-    //}
     void escape_to_char()
     {
         //バッファ内の\xXXを変換
@@ -264,36 +255,16 @@ public partial class SourceControl  {
                 text = string.Format("(error: cannot read :{0})",e.Message);
             }
 
-            m_resultlist.Add(G.COMMMENTLINE + " #start include -" + file);
+            m_resultlist.Add(G.GetComment(" #start include -" + file));
 
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
             m_resultlist.AddRange(tmplines);
 
-            m_resultlist.Add(G.COMMMENTLINE + " #end include -" + file);
+            m_resultlist.Add(G.GetComment(" #end include -" + file));
 
             m_bContinue = true;
         }
 
-        //var include_file_str = RegexUtil.Get1stMatch(G.INCLUDEFILE,m_line);
-        //if (!string.IsNullOrEmpty(include_file_str))
-        //{
-        //    var text = string.Empty;
-        //    var file = include_file_str.Substring(/*$include:*/9).TrimEnd('$');
-        //    try {
-        //        text = File.ReadAllText(Path.Combine(G.INCDIR,file),Encoding.GetEncoding(G.ENC));
-        //    } catch (SystemException e){
-        //        throw new SystemException("Cannot read file (" + file +") because " + e.Message);
-        //    }
-
-        //    m_resultlist.Add(G.COMMMENTLINE + " #start include -" + file);
-
-        //    var tmplines = StringUtil.ReplaceWordsInLine(m_line,include_file_str,text);
-        //    m_resultlist.AddRange(tmplines);
-
-        //    m_resultlist.Add(G.COMMMENTLINE + " #end include -" + file);
-
-        //    m_bContinue      = true;
-        //}
     }
     void is_macro_lc()
     {
@@ -309,19 +280,13 @@ public partial class SourceControl  {
             else
             { 
                 text = G.getMacroValueFunc(macroname);
-                for(var loop = 0; loop<=100; loop++)
+                if (string.IsNullOrEmpty(text))
                 {
-                    if (loop == 100) throw new SystemException("Unexpected! {CD8E7F70-945D-4BD1-A9F3-0C4EF6D03E27}");
-                    var matcharg = RegexUtil.Get1stMatch(psggConverterLib.MacroWork.m_argpattern, text);
-                    if (!string.IsNullOrEmpty(matcharg))
-                    {
-                        var argvalue = m_mw.GetArgValue(matcharg);
-                        text = text.Replace(matcharg,argvalue);
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    text = string.Format("(error: no value for {0} )", macroname);
+                }
+                else
+                {
+                    text = psggConverterLib.MacroWork.Convert(text,m_mw.GetArgValueList());
                 }
             }
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);

@@ -24,7 +24,12 @@ namespace psggConverterLib
         public int    NAME_COL     =2;
         public int    STATE_ROW    =2;
         public string NEWLINECHAR  = "\x0d\x0a";
-        public string COMMMENTLINE = "//";
+
+        //[Obsolete]
+        //public string COMMMENTLINE_OBS = "//";
+
+        public string COMMENTLINE_FORMAT  = "// {%0}";
+
         public string LANG         = "";
         public string OUTPUT       = "";
         public string ENC          = "utf-8";

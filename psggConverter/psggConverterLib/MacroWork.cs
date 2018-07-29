@@ -77,26 +77,6 @@ namespace psggConverterLib
             m_api = api;
             m_args = args;
             m_error = error;
-            //var sp = m_macrovalue.IndexOf('(');
-            //if (sp < 0 )
-            //{
-            //    m_api = m_macrovalue;
-            //    return;
-            //}
-            //m_api = m_macrovalue.Substring(0,sp);
-            //var argstr = m_macrovalue.Substring(sp).Trim();
-            //if (!RegexUtil.IsMatch(@"^\(.*\)\s*$",argstr))
-            //{
-            //    m_error  = "arg string is invalid.";
-            //    return;
-            //}
-            //var arglist = StringUtil.SplitComma(argstr);
-            //if (arglist==null)
-            //{
-            //    m_error = "unexpected! {87753187-4E54-4E2D-A445-239002F2E59A}";
-            //    return;
-            //}
-            //m_args = arglist;
         }
         public bool IsValid()
         {
@@ -118,27 +98,15 @@ namespace psggConverterLib
         {
             return m_api;
         }
+        public List<string> GetArgValueList()
+        {
+            return m_args;
+        }
 
         //埋込用文字列    引数はargpatternで取得した文字列
         public string GetArgValue(string argstr)
         {
             return GetArgValue(argstr, m_args);
-            //if (m_args==null) return "<!!" + argstr.Trim('<','>') +  "(error:no args in macro)!!>"; //変換できず。
-            //if (!RegexUtil.IsMatch(m_argpattern,argstr))
-            //{
-            //    throw new SystemException("Unexpected! {0A4A6F44-838E-44D4-8CCA-873C26573E6B}");
-            //}
-            //var numstr = RegexUtil.Get1stMatch(@"\d+",argstr);
-            //var num = int.Parse(numstr);
-            //var bDqOff = argstr.Contains("~");
-
-            //if (num>=m_args.Count) return "<!!" + argstr.Trim('<','>') + "(error: arg num is grater than args count)!!>"; //変換できず
-            //var v = m_args[num];
-            //if (bDqOff)
-            //{
-            //    v = v.Trim('\"');
-            //}
-            //return v;
         }
 
         // 別からも利用できるように static化
@@ -166,5 +134,37 @@ namespace psggConverterLib
             return v;
         }
 
+        // 汎用コンバータ
+        public static string Convert(string text, List<string> args)
+        {
+            var src = text;
+            for(var loop = 0; loop<=100; loop++)
+            {
+                if (loop==100) throw new SystemException("Unexpected! {69EA9451-D50D-492B-9BD8-A42EFCFC3758}");
+                var match = RegexUtil.Get1stMatch(m_argpattern,src);
+                if (!string.IsNullOrEmpty(match))
+                {
+                    var val = GetArgValue(match,args);
+                    src = src.Replace(match,val);
+                    continue;
+                }
+
+                break;
+            }
+            return src;
+        }
+        public static string Convert(string text, string arg0, string arg1=null, string arg2=null)
+        {
+            if (string.IsNullOrEmpty(arg0))
+            {
+                return "(error: arg0 is null {2145EA6E-3B45-47FC-B9FD-B82F56E47D89})";
+            }
+            var args = new List<string>();
+            args.Add(arg0);
+            if (arg1!=null) args.Add(arg1);
+            if (arg2!=null) args.Add(arg2);
+
+            return Convert(text,args);
+        }
     }
 }

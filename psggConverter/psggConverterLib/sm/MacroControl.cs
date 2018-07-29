@@ -67,13 +67,13 @@ public partial class MacroControl  {
                 text = string.Format("(error: can not read : {0})",e.Message);
             }
 
-            m_resultlines.Add(G.COMMMENTLINE + " #start include -" + file);
+            m_resultlines.Add(G.GetComment(" #start include -" + file));
 
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
 
             m_resultlines.AddRange(tmplines);
 
-            m_resultlines.Add(G.COMMMENTLINE + " #end include -" + file);
+            m_resultlines.Add(G.GetComment(" #end include -" + file));
 
             m_bDone = true;
         }
@@ -91,24 +91,29 @@ public partial class MacroControl  {
         else
         { 
             text = G.getMacroValueFunc(macroname);
+
             if (string.IsNullOrEmpty(text))
             {
                 text = string.Format("(error: no value for {0} )", macroname);
             }
-            for(var loop = 0; loop<=100; loop++)
+            else
             {
-                if (loop == 100) throw new SystemException("Unexpected! {2F5CF458-F745-4FA0-9707-9E753080E711}");
-                var matcharg = RegexUtil.Get1stMatch(psggConverterLib.MacroWork.m_argpattern, text);
-                if (!string.IsNullOrEmpty(matcharg))
-                {
-                    var argvalue = m_mw.GetArgValue(matcharg);
-                    text = text.Replace(matcharg,argvalue);
-                }
-                else
-                {
-                    break;
-                }
+                text = psggConverterLib.MacroWork.Convert(text,m_mw.GetArgValueList());
             }
+            //for(var loop = 0; loop<=100; loop++)
+            //{
+            //    if (loop == 100) throw new SystemException("Unexpected! {2F5CF458-F745-4FA0-9707-9E753080E711}");
+            //    var matcharg = RegexUtil.Get1stMatch(psggConverterLib.MacroWork.m_argpattern, text);
+            //    if (!string.IsNullOrEmpty(matcharg))
+            //    {
+            //        var argvalue = m_mw.GetArgValue(matcharg);
+            //        text = text.Replace(matcharg,argvalue);
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //}
         }
         var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
         m_resultlines.AddRange(tmplines);
