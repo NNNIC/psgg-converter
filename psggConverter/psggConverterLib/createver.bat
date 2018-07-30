@@ -6,4 +6,4 @@ for /f "tokens=2*" %%i in (~url.txt) do if "%RURL%"=="" set RURL=%%i
 echo RURL=%RURL%
 ::pause
 
-echo namespace psggConverterLib { public class ver { public const string version="0.6.0"; public const string datetime="%DATE%-%TIME%";  public const string depot="%RURL%";  } } > ver.cs
+echo namespace psggConverterLib { public class ver { public const string version="0.8.0"; public const string datetime="%DATE%-%TIME%";  public const string depot="%RURL%";  } } > ver.cs
