@@ -35,6 +35,12 @@ namespace psggConverterLib
         public string ENC          = "utf-8";
         public string GENDIR       = "";
         public string INCDIR       = "";
+        public string TEMSRC       = ""; //specify another template source.
+        public string TEMFUNC      = ""; //specify another template function.
+        public string PREFIX       = ""; //for another template souce and function.
+
+        public string TEMSRC_save  = "";  //save TEMSRC for clear
+        public string TEMFUNC_save = "" ; //save TEMFUNC for clear
 
         public readonly string CONTENTS1="$contents1$";
         public readonly string CONTENTS2="$contents2$";
@@ -42,8 +48,8 @@ namespace psggConverterLib
         public readonly string INCLUDEFILE= @"\$include:.+?\$"; //Regexp
         public readonly string MACRO      = @"$MACRO:.+?\$";    //Regexp
 
-        public string template_src;
-        public string template_func;
+        public string template_src; // buffer
+        public string template_func;// buffer
         public Func<int,int,string> getChartFunc; // string = (row,col) Base 1,  as Excel Access
         public Func<string,string>  getMacroValueFunc; // get macro value
 
@@ -133,131 +139,7 @@ namespace psggConverterLib
 
             return;
 
-
-            //SetupSource();
-
-            //SetUpLang();
-
-            //var s = COMMMENTLINE + " psggConverterLib.dll converted from " + excel + ". "+NEWLINECHAR;
-
-            //s += CreateSource();
-            //s += NEWLINECHAR;
-
-            //var path = Path.Combine(gendir,OUTPUT);
-            //File.WriteAllText(path,s,Encoding.GetEncoding(ENC));
         }
-
-        //private void   SetupSource() // Get output and other information.
-        //{
-        //    var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
-        //    foreach(var i in lines)
-        //    {
-        //        //                012345678
-        //        if (i.StartsWith(":output="))
-        //        {
-        //            OUTPUT = i.Substring(8).Trim();
-        //        }
-        //        //                012345
-        //        if (i.StartsWith(":enc="))
-        //        {
-        //            ENC = i.Substring(5).Trim();
-        //        }
-        //        //                0123456
-        //        if (i.StartsWith(":lang="))
-        //        {
-        //            LANG= i.Substring(6).Trim();
-        //        }
-        //        if (i.StartsWith(":end"))
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
-        //private void SetUpLang()
-        //{
-        //    if (LANG=="vba")
-        //    {
-        //        COMMMENTLINE = "'";
-        //    }
-        //}
-        //public string CreateSource()
-        //{
-        //    // contents
-        //    var contents1 = string.Empty;
-        //    {
-        //        var s = string.Empty;
-        //        foreach(var state in this.state_list)
-        //        {
-        //            s += state + ",";
-        //        }
-        //        contents1 = s;
-        //    }
-        //    var contents2 = string.Empty;
-        //    {
-        //        var s = string.Empty;
-        //        foreach(var state in this.state_list)
-        //        {
-        //            s += CreateFunc(state) + NEWLINECHAR;
-        //        }
-        //        contents2 = s;
-        //    }
-            
-        //    //
-        //    var resultlist = new List<string>();
-        //    var lines = StringUtil.SplitTrimEnd(template_src,'\x0a');
-        //    bool bHeadColonIsCode = false; // ':' dos-bat needs ':' as code
-        //    for(var i=0; i<lines.Count; i++)
-        //    {
-        //        var line = lines[i];
-
-        //        if (line.StartsWith(":end")) { bHeadColonIsCode = true; continue; }
-        //        if(!bHeadColonIsCode)
-        //        {
-        //            if(line.Length > 0 && line[0] == ':') 
-        //                continue;
-        //        }
-
-        //        if (line.Contains(CONTENTS1))
-        //        {
-        //            var tmplines = StringUtil.ReplaceWordsInLine(line,CONTENTS1,contents1);
-        //            resultlist.AddRange(tmplines);
-        //            continue;
-        //        }
-        //        if (line.Contains(CONTENTS2))
-        //        {
-        //            var tmplines = StringUtil.ReplaceWordsInLine(line,CONTENTS2,contents2);
-        //            resultlist.AddRange(tmplines);
-        //            continue;
-        //        }
-        //        var include_file_str = RegexUtil.Get1stMatch(INCLUDEFILE,line);
-        //        if (!string.IsNullOrEmpty(include_file_str))
-        //        {
-        //            var text = string.Empty;
-        //                                                 // 0123456789
-        //            var file = include_file_str.Substring(/*$include:*/9).TrimEnd('$');
-        //            try {
-        //                text = File.ReadAllText(Path.Combine(INCDIR,file),Encoding.GetEncoding(ENC));
-        //            } catch (SystemException e){
-        //                throw new SystemException("Cannot read file (" + file +") because " + e.Message);
-        //            }
-
-        //            resultlist.Add(COMMMENTLINE + " #start include -" + file);
-
-        //            var tmplines = StringUtil.ReplaceWordsInLine(line,include_file_str,text);
-        //            resultlist.AddRange(tmplines);
-
-        //            resultlist.Add(COMMMENTLINE + " #end include -" + file);
-
-        //            continue;
-        //        }
-
-        //        resultlist.Add(line);
-        //    }
-
-        //    return StringUtil.LineToBuf(resultlist,NEWLINECHAR);
-
-        //}
-
         
         public string CreateFunc(string state)
         {
@@ -277,52 +159,6 @@ namespace psggConverterLib
             }
             return sm.m_result_src;
         }
-#if obs
-        public string CreateFunc_obs(string state)
-        {
-            //System.Diagnostics.Debugger.Break();
-
-            var buf = template_func;
-            var newlinechar = StringUtil.FindNewLineChar(buf);
-            if (newlinechar == null) {
-                return null;
-            }
-            var lines = StringUtil.SplitTrimEnd(buf,'\x0a');
-
-            for(var loop = 0; loop<=10000; loop++)
-            {
-                if (loop == 10000) throw new SystemException("Unexpected! {C9B57B4C-8B37-4FC8-8761-CE9F2C9A2F8D}");
-
-                if (createFunc_prepare(state,ref lines))
-                {
-                    continue;
-                }            
-                else
-                {
-                    break;
-                }    
-            }
-
-            lines = StringUtil.CutEmptyLines(lines);
-
-            for(var loop = 0; loop<=10000; loop++)
-            {
-                if (loop == 10000) throw new SystemException("Unexpected! {5EE861CB-72C8-4F97-B753-493C73906964}");
-                if (createFunc_work(state, ref lines))
-                {
-                    continue;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            lines = StringUtil.CutEmptyLines(lines);
-
-            return StringUtil.LineToBuf(lines,NEWLINECHAR);
-        }
-#endif
         public bool createFunc_prepare(string state, ref List<string> lines)
         {
             if (lines == null) return false;              
@@ -377,7 +213,7 @@ namespace psggConverterLib
             }
             return false;
         }
-#endregion
+        #endregion
 
         // --- tools
         public bool isExist(string state, string name)

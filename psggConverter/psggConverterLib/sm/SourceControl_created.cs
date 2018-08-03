@@ -1,4 +1,4 @@
-﻿// psggConverterLib.dll converted from SourceControl.xlsx. 
+﻿//  psggConverterLib.dll converted from SourceControl.xlsx. 
 public partial class SourceControl : StateManager {
 
     public void Start()
@@ -47,10 +47,9 @@ public partial class SourceControl : StateManager {
         {
             load_setting();
         }
-        if (!HasNextState())
-        {
-            SetNextState(S_SETLANG);
-        }
+        need_check_again();
+        br_YES(S_LOADSETTING);
+        br_NO(S_SETLANG);
         if (HasNextState())
         {
             GoNextState();

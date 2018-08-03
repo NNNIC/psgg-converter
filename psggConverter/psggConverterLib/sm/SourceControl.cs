@@ -31,10 +31,72 @@ public partial class SourceControl  {
             {
                 G.LANG= i.Substring(6).Trim();
             }
+            G.TEMSRC = null;
+            //                0123456789
+            if (i.StartsWith(":tempsrc=")) //共通のテンプレートソースを使用 __PREFIX__があれば prefixの値に入れ替え
+            {
+                G.TEMSRC = i.Substring(9).Trim();
+            }
+            G.TEMFUNC = null;
+            //                01234567890
+            if (i.StartsWith(":tempfunc=")) //共通のテンプレート関数を使用
+            {
+                G.TEMFUNC = i.Substring(10).Trim();
+            }
+            //                012345678
+            if (i.StartsWith(":prefix="))
+            {
+                G.PREFIX = i.Substring(8).Trim();
+            }
+            //
             if (i.StartsWith(":end"))
             {
                 break;
             }
+        }
+
+        if (!string.IsNullOrEmpty(G.TEMSRC))
+        {
+            try
+            {
+                G.template_src = File.ReadAllText(Path.Combine(G.INCDIR,G.TEMSRC),Encoding.UTF8);
+                if (!string.IsNullOrEmpty(G.PREFIX))
+                {
+                    G.template_src = G.template_src.Replace("__PREFIX__",G.PREFIX);
+                }
+            } catch (SystemException e)
+            {
+                throw new SystemException("Error! Template Sourec File not found! " + e.Message);
+            }
+        }
+        if (!string.IsNullOrEmpty(G.TEMFUNC))
+        {
+            try
+            {
+                G.template_func = File.ReadAllText(Path.Combine(G.INCDIR,G.TEMFUNC),Encoding.UTF8);
+                if (!string.IsNullOrEmpty(G.PREFIX))
+                {
+                    G.template_func = G.template_func.Replace("__PREFIX__",G.PREFIX);
+                }
+            } catch (SystemException e)
+            {
+                throw new SystemException("Error! Template Function File not found! " + e.Message);
+            }
+        }
+    }
+    void need_check_again()
+    {
+        m_bYesNo =false;
+        if (!string.IsNullOrEmpty(G.TEMSRC))
+        { 
+            G.TEMSRC_save = G.TEMSRC;
+            G.TEMSRC = null;
+            m_bYesNo = true; // need to check again
+        }
+        if (!string.IsNullOrEmpty(G.TEMFUNC))
+        {
+            G.TEMFUNC_save = G.TEMFUNC;
+            G.TEMFUNC = null;
         }
     }
     void set_lang()
