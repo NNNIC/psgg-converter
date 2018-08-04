@@ -105,6 +105,8 @@ namespace psggConverterLib
                     name_row_list.Add(r);
                 }
             }
+
+
         }
         #endregion
 
@@ -120,13 +122,21 @@ namespace psggConverterLib
             { 
                 System.Diagnostics.Debugger.Break();
             }
+            
+            _generate_source(excel,gendir,false);
 
+            return;
+        }
+
+        private void _generate_source(string excel, string gendir, bool funconly)
+        {
             if (string.IsNullOrEmpty(INCDIR)) INCDIR = gendir;
 
             var sm = new SourceControl();
             sm.G = this;
             sm.m_excel  = excel;
             sm.m_gendir = gendir;
+            sm.m_funcOnly = funconly;
             sm.Start();
             for(var loop = 0; loop <= 10000; loop++)
             {
@@ -136,9 +146,6 @@ namespace psggConverterLib
                 
                 if (sm.IsEnd()) break;
             }
-
-            return;
-
         }
         
         public string CreateFunc(string state)
@@ -147,6 +154,9 @@ namespace psggConverterLib
             { 
                 System.Diagnostics.Debugger.Break();
             }
+
+            _generate_source(null,null,true); // read settings from source
+
             var sm = new FunctionControl();
             sm.G = this;
             sm.m_state = state;

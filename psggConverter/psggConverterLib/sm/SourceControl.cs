@@ -11,6 +11,7 @@ public partial class SourceControl  {
     #region generate
     public string m_excel;
     public string m_gendir;
+    public bool   m_funcOnly = false;
     void load_setting()
     {
         var lines = StringUtil.SplitTrimEnd(G.template_src,'\x0a');
@@ -104,6 +105,16 @@ public partial class SourceControl  {
         if (G.LANG=="vba")
         {
             G.COMMENTLINE_FORMAT = "' {%0}";
+        }
+    }
+    void br_isEndForFunc(Action<bool> st)
+    {
+        if (!HasNextState())
+        {
+            if (m_funcOnly)
+            {
+                SetNextState(st);
+            }
         }
     }
     #endregion

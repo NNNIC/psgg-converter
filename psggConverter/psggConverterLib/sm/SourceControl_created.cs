@@ -65,6 +65,7 @@ public partial class SourceControl : StateManager {
         {
             set_lang();
         }
+        br_isEndForFunc(S_END);
         if (!HasNextState())
         {
             SetNextState(S_WRITEHEDDER);
