@@ -5,6 +5,7 @@
 *.obj
 *.db
 *.cache
+*.Cache
 *.pdb
 .suo
 *.zip
