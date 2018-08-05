@@ -17,7 +17,7 @@ public partial class SourceControl : StateManager {
         }
         if (!HasNextState())
         {
-            SetNextState(S_LOADSETTING);
+            SetNextState(S_CHECKMODE);
         }
         if (HasNextState())
         {
@@ -67,7 +67,7 @@ public partial class SourceControl : StateManager {
         }
         if (!HasNextState())
         {
-            SetNextState(S_WRITEHEDDER);
+            SetNextState(S_END);
         }
         if (HasNextState())
         {
@@ -475,6 +475,24 @@ public partial class SourceControl : StateManager {
         }
         br_YES(S_SETUP2_LC);
         br_NO(S_BIND_SRC);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_CHECKMODE
+        選択
+        >初期化モード
+        >変換モード
+    */
+    void S_CHECKMODE(bool bFirst)
+    {
+        if (bFirst)
+        {
+        }
+        br_INIT(S_LOADSETTING);
+        br_CVT(S_WRITEHEDDER);
         if (HasNextState())
         {
             GoNextState();

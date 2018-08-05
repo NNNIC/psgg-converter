@@ -8,12 +8,44 @@ public partial class SourceControl  {
     public psggConverterLib.Convert G;
     public bool IsEnd() { return CheckState(S_END);}
 
-    #region generate
+    public enum MODE
+    {
+        UNKNOWN,
+        INIT,
+        CVT
+    }
+    public MODE mode;
+
+    #region check mode
+    void br_INIT(Action<bool> st)
+    {
+        if (!HasNextState())
+        {
+            if (mode == MODE.INIT) SetNextState(st);
+        }
+    }
+    void br_CVT(Action<bool> st)
+    {
+        if (!HasNextState())
+        {
+            if (mode == MODE.CVT) SetNextState(st);
+        }
+    }
+    #endregion
+
+    #region initialize
     public string m_excel;
     public string m_gendir;
     void load_setting()
     {
+        G.TEMSRC = null;
+        G.TEMFUNC = null;
+
         var lines = StringUtil.SplitTrimEnd(G.template_src,'\x0a');
+        if (lines == null)
+        {
+            throw new SystemException("Unexpected! {F794458F-407A-490F-9666-B96369567B4C}");
+        }
         foreach(var i in lines)
         {
             //                012345678
@@ -31,13 +63,11 @@ public partial class SourceControl  {
             {
                 G.LANG= i.Substring(6).Trim();
             }
-            G.TEMSRC = null;
             //                0123456789
             if (i.StartsWith(":tempsrc=")) //共通のテンプレートソースを使用 __PREFIX__があれば prefixの値に入れ替え
             {
                 G.TEMSRC = i.Substring(9).Trim();
             }
-            G.TEMFUNC = null;
             //                01234567890
             if (i.StartsWith(":tempfunc=")) //共通のテンプレート関数を使用
             {
@@ -59,7 +89,7 @@ public partial class SourceControl  {
         {
             try
             {
-                G.template_src = File.ReadAllText(Path.Combine(G.INCDIR,G.TEMSRC),Encoding.UTF8);
+                G.template_src = File.ReadAllText(Path.Combine(G.XLSDIR,G.TEMSRC),Encoding.UTF8);
                 if (!string.IsNullOrEmpty(G.PREFIX))
                 {
                     G.template_src = G.template_src.Replace("__PREFIX__",G.PREFIX);
@@ -73,7 +103,7 @@ public partial class SourceControl  {
         {
             try
             {
-                G.template_func = File.ReadAllText(Path.Combine(G.INCDIR,G.TEMFUNC),Encoding.UTF8);
+                G.template_func = File.ReadAllText(Path.Combine(G.XLSDIR,G.TEMFUNC),Encoding.UTF8);
                 if (!string.IsNullOrEmpty(G.PREFIX))
                 {
                     G.template_func = G.template_func.Replace("__PREFIX__",G.PREFIX);
@@ -310,7 +340,7 @@ public partial class SourceControl  {
             var text     = string.Empty;
             try
             {
-                text = File.ReadAllText(Path.Combine(G.INCDIR,file),Encoding.GetEncoding(G.ENC));
+                text = File.ReadAllText(Path.Combine(G.INCDIR,file),Encoding.UTF8);
             }
             catch (SystemException e)
             {

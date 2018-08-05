@@ -12,6 +12,7 @@ namespace psggConverterLib
     {
         public bool   BRKGS     = false;  //  Breakpoint At Generate Source   
         public bool   BRKGF     = false;  //  Breakpoint At Generate Function
+        public bool   BRKP      = false;  //  Breakpoint At Prepare
 
         public void   TEST()      { Console.WriteLine("psggConvertLib TEST");}
 
@@ -34,7 +35,8 @@ namespace psggConverterLib
         public string OUTPUT       = "";
         public string ENC          = "utf-8";
         public string GENDIR       = "";
-        public string INCDIR       = "";
+        public string XLSDIR       = ""; //エクセルファイル、マクロ等
+        public string INCDIR       = ""; //インクルードマクロ用
         public string TEMSRC       = ""; //specify another template source.
         public string TEMFUNC      = ""; //specify another template function.
         public string PREFIX       = ""; //for another template souce and function.
@@ -116,31 +118,57 @@ namespace psggConverterLib
         }
         public void   GenerateSource(string excel, string gendir)
         {
-            if (BRKGS)
-            { 
+            if(BRKGS)
+            {
                 System.Diagnostics.Debugger.Break();
             }
 
-            if (string.IsNullOrEmpty(INCDIR)) INCDIR = gendir;
+            //if(string.IsNullOrEmpty(INCDIR))
+            //    INCDIR = gendir;
 
             var sm = new SourceControl();
             sm.G = this;
-            sm.m_excel  = excel;
+            sm.m_excel = excel;
             sm.m_gendir = gendir;
-            sm.Start();
-            for(var loop = 0; loop <= 10000; loop++)
-            {
-                if (loop == 10000) throw new SystemException("Unexpected! {96B6D10A-FFF4-4BD4-B9E0-C155CF2C16EB}");
-                
-                sm.update();
-                
-                if (sm.IsEnd()) break;
-            }
+
+            _runSourceControl(sm,SourceControl.MODE.INIT);
+            _runSourceControl(sm,SourceControl.MODE.CVT);
 
             return;
-
         }
-        
+        public void Prepare()
+        {
+            if(BRKP)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
+            var sm = new SourceControl();
+            sm.G = this;
+            sm.m_excel = null;
+            sm.m_gendir = null;
+
+            _runSourceControl(sm,SourceControl.MODE.INIT);
+        }
+
+        private static void _runSourceControl(SourceControl sm, SourceControl.MODE mode)
+        {
+            sm.mode = mode;
+            
+            sm.Start();
+            for(var loop = 0;loop <= 10000;loop++)
+            {
+                if(loop == 10000)
+                    throw new SystemException("Unexpected! {96B6D10A-FFF4-4BD4-B9E0-C155CF2C16EB}");
+
+                sm.update();
+
+                if(sm.IsEnd())
+                    break;
+            }
+        }
+
+
         public string CreateFunc(string state)
         {
             if (BRKGF)

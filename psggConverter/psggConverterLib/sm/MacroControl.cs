@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 public partial class MacroControl  {
 		
@@ -61,7 +62,7 @@ public partial class MacroControl  {
             var file    = m_mw.GetIncludFilename();
             var text    = string.Empty;
             try { 
-                text = File.ReadAllText(Path.Combine(G.INCDIR,file));
+                text = File.ReadAllText(Path.Combine(G.INCDIR,file),Encoding.UTF8);
             } catch (SystemException e)
             {
                 text = string.Format("(error: can not read : {0})",e.Message);
