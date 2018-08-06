@@ -146,24 +146,51 @@ public partial class SourceControl  {
     void escape_to_char()
     {
         //バッファ内の\xXXを変換
-        for(var loop = 0; loop <= 1000000; loop++)
+        var res = string.Empty;
+        Func<int,string> getstr4 = (i) => {
+            if (i<m_src.Length-4)
+            {
+                return m_src.Substring(i,4);
+            }
+            return null;
+        };
+        for(var index = 0; index < m_src.Length; index++ )
         {
-            if (loop == 1000000) throw new SystemException("Unexpected! {08D607FC-C96E-4AF8-B216-9B1A58F10E7A}"); 
-            var find = RegexUtil.Get1stMatch(@"\\x[0-9a-fA-F]{2}",m_src);
-            if (string.IsNullOrEmpty(find))
+            var c = m_src[index];
+            if (c=='\\')
             {
-                break;
+                var sample = getstr4(index);
+                if (!string.IsNullOrEmpty(sample))
+                { 
+                    if (RegexUtil.IsMatch("\\x[0-9a-fA-F]{2}",sample))
+                    {
+                        var code = Convert.ToInt32(sample.Substring(2),16);
+                        c  = (char)code;
+                        index += 3;
+                    }
+                }
             }
-            try
-            {
-                var code = Convert.ToInt32(find.Substring(2),16);
-                var chr  = new string((char)code, 1);
-                m_src = m_src.Replace(find,chr);
-            } catch (SystemException e)
-            {
-                throw new SystemException("Unexpected! {AD63884A-1E3C-4EB8-BE49-984CFF655D03}:" + e.Message);
-            }
+            res += c.ToString();
         }
+        m_src = res;
+        //for(var loop = 0; loop <= 1000000; loop++)
+        //{
+        //    if (loop == 1000000) throw new SystemException("Unexpected! {08D607FC-C96E-4AF8-B216-9B1A58F10E7A}"); 
+        //    var find = RegexUtil.Get1stMatch(@"\\x[0-9a-fA-F]{2}",m_src);
+        //    if (string.IsNullOrEmpty(find))
+        //    {
+        //        break;
+        //    }
+        //    try
+        //    {
+        //        var code = Convert.ToInt32(find.Substring(2),16);
+        //        var chr  = new string((char)code, 1);
+        //        m_src = m_src.Replace(find,chr);
+        //    } catch (SystemException e)
+        //    {
+        //        throw new SystemException("Unexpected! {AD63884A-1E3C-4EB8-BE49-984CFF655D03}:" + e.Message);
+        //    }
+        //}
     }
     void write_file()
     {
