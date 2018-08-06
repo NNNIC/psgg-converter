@@ -168,6 +168,13 @@ public partial class SourceControl  {
     void write_file()
     {
         var path = Path.Combine(m_gendir,G.OUTPUT);
+
+        var dir  = Path.GetDirectoryName(path);
+        if (!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+
         File.WriteAllText(path,m_src,Encoding.GetEncoding(G.ENC));
     }
     #endregion
