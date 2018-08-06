@@ -162,7 +162,7 @@ public partial class SourceControl  {
                 var sample = getstr4(index);
                 if (!string.IsNullOrEmpty(sample))
                 { 
-                    if (RegexUtil.IsMatch("\\x[0-9a-fA-F]{2}",sample))
+                    if (RegexUtil.IsMatch(@"\\x[0-9a-fA-F]{2}",sample))
                     {
                         var code = Convert.ToInt32(sample.Substring(2),16);
                         c  = (char)code;
