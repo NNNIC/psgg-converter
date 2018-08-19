@@ -19,6 +19,7 @@ namespace psggConverterLib
         bool         m_bInclude;
         string       m_matchstr;   //
         string       m_filename;   // for include
+        string       m_fileenc;    // file encoding
         string       m_macrovalue; // ie hoge(a,b);
         string       m_api;        // ie hoge
         List<string> m_args; // {a,b}
@@ -31,6 +32,7 @@ namespace psggConverterLib
             m_bInclude   = false;
             m_matchstr   = null;
             m_filename   = null;
+            m_fileenc    = null;
             m_macrovalue = null;
             m_api        = null;
             m_args       = null;
@@ -65,7 +67,25 @@ namespace psggConverterLib
         void analyze_include()
         {
                                              // 0123456789
-            m_filename = m_matchstr.Substring(/*$include:*/9).TrimEnd('$');
+            //m_filename = m_matchstr.Substring(/*$include:*/9).TrimEnd('$');
+            var str = m_matchstr.Substring(/*$include:*/9).TrimEnd('$');
+            if (str.Contains(','))
+            {
+                var tokens = str.Split(',');
+                if (tokens!=null && tokens.Length >=2)
+                {
+                    m_filename = tokens[0];
+                    m_fileenc  = tokens[1];
+                }
+                else
+                {
+                    throw new SystemException("Unexpected! {A496CE7C-9F74-4D7A-A105-B9B469A349D0}");
+                }
+            }
+            else
+            {
+                m_filename = str;
+            }
         }
         void analyze_macro()
         {                                       //01234567
@@ -89,6 +109,10 @@ namespace psggConverterLib
         public string GetIncludFilename()
         {
             return m_filename;
+        }
+        public string GetIncludeFileEnc()
+        {
+            return m_fileenc;
         }
         public string GetMatchStr()
         {
