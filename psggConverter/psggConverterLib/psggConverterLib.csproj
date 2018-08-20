@@ -49,6 +49,7 @@
     <Compile Include="sm\base\StateManager.cs" />
     <Compile Include="sm\FunctionControl.cs" />
     <Compile Include="sm\FunctionControl_created.cs" />
+    <Compile Include="sm\IncludeFile.cs" />
     <Compile Include="sm\MacroControl.cs" />
     <Compile Include="sm\MacroControl_created.cs" />
     <Compile Include="sm\SourceControl.cs" />

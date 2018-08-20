@@ -122,7 +122,6 @@ namespace psggConverterLib
             {
                 System.Diagnostics.Debugger.Break();
             }
-
             //if(string.IsNullOrEmpty(INCDIR))
             //    INCDIR = gendir;
 

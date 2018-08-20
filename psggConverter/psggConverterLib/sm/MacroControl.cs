@@ -57,36 +57,12 @@ public partial class MacroControl  {
     {
         m_bDone = false;
         if (m_mw.IsInclude())
-        {   
-            var matchstr= m_mw.GetMatchStr();
-            var file    = m_mw.GetIncludFilename();
-            var enc     = m_mw.GetIncludeFileEnc();
-            if (string.IsNullOrEmpty(enc)) enc = "utf-8";
+        {
+            var matchstr = m_mw.GetMatchStr();
+            var file     = m_mw.GetIncludFilename();
+            var enc      = m_mw.GetIncludeFileEnc();
+            var text     = IncludeFile.readfile(G, matchstr, file, enc);
 
-            var filepath = Path.Combine(G.INCDIR,file);
-            if (!File.Exists(filepath))
-            {
-                filepath = Path.Combine(G.XLSDIR,file);
-                if (!File.Exists(filepath))
-                {
-                    filepath = Path.Combine(G.GENDIR,file);
-                }
-            }
-            var text    = string.Empty;
-
-            if (File.Exists(filepath))
-            {
-                try { 
-                    text = File.ReadAllText(filepath,Encoding.GetEncoding(enc));
-                } catch (SystemException e)
-                {
-                    text = string.Format("(error: can not read : {0})",e.Message);
-                }
-            }
-            else
-            {
-                text = "(error: file not found : " + filepath + ")";
-            }
             m_resultlines.Add(G.GetComment(" #start include -" + file));
 
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
@@ -98,6 +74,42 @@ public partial class MacroControl  {
             m_bDone = true;
         }
     }
+
+    //private string readfile(out string matchstr,out string file)
+    //{
+    //    matchstr = m_mw.GetMatchStr();
+    //    file = m_mw.GetIncludFilename();
+    //    var enc = m_mw.GetIncludeFileEnc();
+    //    if(string.IsNullOrEmpty(enc))
+    //        enc = "utf-8";
+
+    //    var filepath = Path.Combine(G.INCDIR,file);
+    //    if(!File.Exists(filepath))
+    //    {
+    //        filepath = Path.Combine(G.XLSDIR,file);
+    //        if(!File.Exists(filepath))
+    //        {
+    //            filepath = Path.Combine(G.GENDIR,file);
+    //        }
+    //    }
+    //    var text = string.Empty;
+    //    if(File.Exists(filepath))
+    //    {
+    //        try
+    //        {
+    //            text = File.ReadAllText(filepath,Encoding.GetEncoding(enc));
+    //        }
+    //        catch(SystemException e)
+    //        {
+    //            text = string.Format("(error: can not read : {0})",e.Message);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        text = "(error: file not found : " + filepath + ")";
+    //    }
+    //    return text;
+    //}
 
     void do_macro()
     {

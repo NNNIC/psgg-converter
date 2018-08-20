@@ -371,15 +371,8 @@ public partial class SourceControl  {
         {
             var matchstr = m_mw.GetMatchStr();
             var file     = m_mw.GetIncludFilename();
-            var text     = string.Empty;
-            try
-            {
-                text = File.ReadAllText(Path.Combine(G.INCDIR,file),Encoding.UTF8);
-            }
-            catch (SystemException e)
-            {
-                text = string.Format("(error: cannot read :{0})",e.Message);
-            }
+            var enc      = m_mw.GetIncludeFileEnc();
+            var text     = IncludeFile.readfile(G, matchstr, file, enc);
 
             m_resultlist.Add(G.GetComment(" #start include -" + file));
 

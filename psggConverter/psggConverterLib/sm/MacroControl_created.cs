@@ -1,4 +1,4 @@
-﻿// psggConverterLib.dll converted from MacroControl.xlsx. 
+﻿//  psggConverterLib.dll converted from MacroControl.xlsx. 
 public partial class MacroControl : StateManager {
 
     public void Start()
