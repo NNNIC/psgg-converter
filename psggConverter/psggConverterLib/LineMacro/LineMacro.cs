@@ -9,9 +9,11 @@ namespace psggConverterLib
     public partial class Convert
     {
         //var replacevalue3  = get_line_macro_value(namereplacevalue2);
-        string get_line_macro_value(string name, string s)
+        string get_line_macro_value(string macroname, string s)
         {
-            var macrovalue = getMacroValueFunc("@" + name);
+            if (string.IsNullOrEmpty(s)) return s;
+
+            var macrovalue = getMacroValueFunc("@" + macroname);
             if (string.IsNullOrEmpty(macrovalue)) return s; //null時は、変更なし
 
             var lines = StringUtil.SplitTrim(s,'\x0a');
@@ -37,6 +39,7 @@ namespace psggConverterLib
                 }
                 else
                 {
+                    if (args == null) args = new List<string>();
                     args.Insert(0,api);
                     api = null;
                 }

@@ -230,9 +230,19 @@ namespace psggConverterLib
                 var targetvalue = RegexUtil.Get1stMatch(@"\[\[.*?\]\]",line);
                 if (!string.IsNullOrEmpty(targetvalue)) {
                     var name = targetvalue.Trim('[',']');
+                    var macroname = name;
+                    if (name.Contains("->@"))  //[itemname->@macro]]対応
+                    {                        
+                        var index = name.IndexOf("->@");
+                        if (index >= 0)
+                        {
+                            macroname = name.Substring(index + 3);
+                            name = name.Substring(0,index);
+                        }
+                    }
                     var replacevalue   = getString(state,name);
                     //var replacevalue2  = lang_work(LANG,name,replacevalue);
-                    var replacevalue3  = get_line_macro_value(name,replacevalue); // @stateマクロがあれば、各行に適用する
+                    var replacevalue3  = get_line_macro_value(macroname,replacevalue); // @stateマクロがあれば、各行に適用する
  
                     var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue3);
 
