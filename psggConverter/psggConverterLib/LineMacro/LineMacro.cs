@@ -41,19 +41,6 @@ namespace psggConverterLib
                     api = null;
                 }
                 // この時点で argsリスト完成
-                //var text = macrovalue;
-                //for(var loop = 0; loop<=100; loop++)
-                //{
-                //    if (loop==100) throw new SystemException("Unexpected! {4ACD9F85-8663-4241-ABB2-E2E96EFD84F0}");
-                //    var match = RegexUtil.Get1stMatch(MacroWork.m_argpattern,text);
-                //    if (!string.IsNullOrEmpty(match))
-                //    { 
-                //        var value = MacroWork.GetArgValue(match,args);
-                //        text = text.Replace(match,value);
-                //        continue;
-                //    }
-                //    break;
-                //}
                 var text = MacroWork.Convert(macrovalue,args);
                 result.Add(text);
             }

@@ -55,6 +55,8 @@ namespace psggConverterLib
         public Func<int,int,string> getChartFunc; // string = (row,col) Base 1,  as Excel Access
         public Func<string,string>  getMacroValueFunc; // get macro value
 
+        public string setting_ini; // setting_ini text
+
         public List<string> state_list;
         public List<int>    state_col_list;
 
@@ -135,7 +137,7 @@ namespace psggConverterLib
 
             return;
         }
-        public void Prepare()
+        public void Prepare() // Prepare for converting
         {
             if(BRKP)
             {

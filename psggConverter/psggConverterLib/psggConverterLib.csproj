@@ -46,6 +46,7 @@
     <Compile Include="LineMacro\LineMacro.cs" />
     <Compile Include="MacroWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingIniWork.cs" />
     <Compile Include="sm\base\StateManager.cs" />
     <Compile Include="sm\FunctionControl.cs" />
     <Compile Include="sm\FunctionControl_created.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="sm\MacroControl_created.cs" />
     <Compile Include="sm\SourceControl.cs" />
     <Compile Include="sm\SourceControl_created.cs" />
+    <Compile Include="Util\IniUtil.cs" />
     <Compile Include="Util\RegexUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="ver.cs" />
