@@ -138,7 +138,7 @@ public partial class MacroControl : StateManager {
         }
         if (!HasNextState())
         {
-            SetNextState(S_DO_INCLUDE);
+            SetNextState(S_DO_PREFIX);
         }
         if (HasNextState())
         {
@@ -216,6 +216,23 @@ public partial class MacroControl : StateManager {
         {
             SetNextState(S_END);
         }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_DO_PREFIX
+        プリフィックス変換
+    */
+    void S_DO_PREFIX(bool bFirst)
+    {
+        if (bFirst)
+        {
+            do_if_prefix();
+        }
+        br_Done(S_ADDRESTLINES);
+        br_NotAbove(S_DO_INCLUDE);
         if (HasNextState())
         {
             GoNextState();

@@ -254,7 +254,7 @@ public partial class SourceControl : StateManager {
             is_contents_2_lc();
         }
         br_CONTINUE(S_NEXT_LC);
-        br_NOTABOVE(S_IS_INCLUDE_LC);
+        br_NOTABOVE(S_IS_PREFIX);
         if (HasNextState())
         {
             GoNextState();
@@ -493,6 +493,23 @@ public partial class SourceControl : StateManager {
         }
         br_INIT(S_LOADSETTING);
         br_CVT(S_WRITEHEDDER);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_IS_PREFIX
+        $prefix$確認
+    */
+    void S_IS_PREFIX(bool bFirst)
+    {
+        if (bFirst)
+        {
+            is_prefix_lc();
+        }
+        br_CONTINUE(S_SET_CHECKAGAIN);
+        br_NOTABOVE(S_IS_INCLUDE_LC);
         if (HasNextState())
         {
             GoNextState();

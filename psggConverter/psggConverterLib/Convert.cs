@@ -44,18 +44,19 @@ namespace psggConverterLib
         public string TEMSRC_save  = "";  //save TEMSRC for clear
         public string TEMFUNC_save = "" ; //save TEMFUNC for clear
 
-        public readonly string CONTENTS1="$contents1$";
-        public readonly string CONTENTS2="$contents2$";
-        public readonly string CONTENTS3="$contents3$";
-        public readonly string INCLUDEFILE= @"\$include:.+?\$"; //Regexp
-        public readonly string MACRO      = @"$MACRO:.+?\$";    //Regexp
+        public readonly string CONTENTS1  ="$contents1$";
+        public readonly string CONTENTS2  ="$contents2$";
+        public readonly string CONTENTS3  ="$contents3$";
+        public readonly string PREFIXMACRO ="$prefix$";
+        //public readonly string INCLUDEFILE= @"\$include:.+?\$"; //Regexp
+        //public readonly string MACRO      = @"$MACRO:.+?\$";    //Regexp
 
         public string template_src; // buffer
         public string template_func;// buffer
         public Func<int,int,string> getChartFunc; // string = (row,col) Base 1,  as Excel Access
         public Func<string,string>  getMacroValueFunc; // get macro value
 
-        public string setting_ini; // setting_ini text
+        public string setting_ini; // setting_ini text 使用保留
 
         public List<string> state_list;
         public List<int>    state_col_list;

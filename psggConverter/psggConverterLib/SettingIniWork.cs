@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace psggConverterLib
 {
-    class SettingIniWork
+    public class SettingIniWork
     {
         static Hashtable m_ht;
         public static void Init(string s)

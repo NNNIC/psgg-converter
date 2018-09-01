@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 
+//using psggConverterLib;
+
 public partial class SourceControl  {
 
     public psggConverterLib.Convert G;
@@ -136,6 +138,10 @@ public partial class SourceControl  {
             G.COMMENTLINE_FORMAT = "' {%0}";
         }
     }
+    //void read_settinig_ini() 
+    //{
+    //   SettingIniWork.Init(G.setting_ini); 
+    //}
     #endregion
     #region creating source
     string m_src = string.Empty;
@@ -354,6 +360,15 @@ public partial class SourceControl  {
         if (m_line.Contains(G.CONTENTS2))
         {
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,G.CONTENTS2,m_contents2);
+            m_resultlist.AddRange(tmplines);
+            m_bContinue = true;
+        }
+    }
+    void is_prefix_lc()
+    {
+        if (m_line.Contains(G.PREFIXMACRO))
+        {
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,G.PREFIXMACRO,G.PREFIX);
             m_resultlist.AddRange(tmplines);
             m_bContinue = true;
         }
