@@ -1,4 +1,4 @@
-﻿// psggConverterLib.dll converted from FunctionControl.xlsx. 
+﻿//  psggConverterLib.dll converted from FunctionControl.xlsx. 
 public partial class FunctionControl : StateManager {
 
     public void Start()
@@ -76,7 +76,7 @@ public partial class FunctionControl : StateManager {
     /*
         S_PREPROC
         バッファの前処理
-        <<<?xxxx ... >>>　を処理
+        <..?xxxx ...>　を処理
     */
     void S_PREPROC(bool bFirst)
     {
