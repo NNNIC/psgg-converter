@@ -44,7 +44,9 @@ namespace psggConverterLib
         public string TEMSRC_save  = "";  //save TEMSRC for clear
         public string TEMFUNC_save = "" ; //save TEMFUNC for clear
 
-        public readonly string CONTENTS1  ="$contents1$";
+        public readonly string CONTENTS1     =  "$contents1$";
+        public readonly string CONTENTS1PTN  = @"\$contents1.*?\$";
+
         public readonly string CONTENTS2  ="$contents2$";
         public readonly string CONTENTS3  ="$contents3$";
         public readonly string PREFIXMACRO ="$prefix$";

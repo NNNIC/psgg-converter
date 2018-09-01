@@ -219,7 +219,7 @@ public partial class SourceControl  {
         var s = string.Empty;
         foreach(var state in G.state_list)
         {
-            s += state + ",";
+            s += state + "," + G.NEWLINECHAR;
         }
         m_contents1 = s;
     }
@@ -348,9 +348,28 @@ public partial class SourceControl  {
     }
     void is_contents_1_lc()
     {
+#if obs
         if (m_line.Contains(G.CONTENTS1))
         {
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,G.CONTENTS1,m_contents1);
+            m_resultlist.AddRange(tmplines);
+            m_bContinue = true;
+        }
+#endif
+        var match = RegexUtil.Get1stMatch(G.CONTENTS1PTN,m_line);
+        if (!string.IsNullOrEmpty(match) )
+        {
+            var macro = string.Empty;
+            if (match.Contains("->@"))
+            {
+                var index = match.IndexOf("->@");
+                if (index >= 0)
+                {
+                    macro = match.Substring(index + 3).Trim('$');
+                }
+            }
+            var replacevalue = G.get_line_macro_value(macro,m_contents1);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,match,replacevalue);
             m_resultlist.AddRange(tmplines);
             m_bContinue = true;
         }
@@ -433,5 +452,5 @@ public partial class SourceControl  {
     {
         m_resultlist.Add(m_line);
     }
-    #endregion
+#endregion
 }

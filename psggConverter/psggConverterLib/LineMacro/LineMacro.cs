@@ -9,7 +9,7 @@ namespace psggConverterLib
     public partial class Convert
     {
         //var replacevalue3  = get_line_macro_value(namereplacevalue2);
-        string get_line_macro_value(string macroname, string s)
+        public string get_line_macro_value(string macroname, string s)
         {
             if (string.IsNullOrEmpty(s)) return s;
 
