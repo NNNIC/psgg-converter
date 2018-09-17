@@ -144,13 +144,13 @@ namespace psggConverterLib
         }
 
         //埋込用文字列    引数はargpatternで取得した文字列
-        public string GetArgValue(string argstr)
-        {
-            return GetArgValue(argstr, m_args);
-        }
+        //public string GetArgValue(string argstr, bool bAcceptNullArg = false)
+        //{
+        //    return GetArgValue(argstr, m_args, bAcceptNullArg);
+        //}
 
         // 別からも利用できるように static化
-        public static string GetArgValue(string argstr, List<string> args)
+        public static string GetArgValue(string argstr, List<string> args, bool bAcceptNullArg = false)
         {
             if (args==null) return "<!!" + argstr.Trim('<','>') +  "(error:no args in macro)!!>"; //変換できず。
             if (!RegexUtil.IsMatch(m_argpattern,argstr))
@@ -161,13 +161,25 @@ namespace psggConverterLib
             var num = int.Parse(numstr);
             var bDqOff = argstr.Contains("~");
 
-            if (num>=args.Count) return "<!!" + argstr.Trim('<','>') + "(error: arg num is grater than args count)!!>"; //変換できず
-            var v = args[num];
+            var v = string.Empty;
+            if (bAcceptNullArg)
+            {
+                if (num  < args.Count)
+                {
+                    v = args[num];
+                }
+            }
+            else
+            {
+                if (num>=args.Count) return "<!!" + argstr.Trim('<','>') + "(error: arg num is grater than args count)!!>"; //変換できず
+                v = args[num];
+            }
+
             if (bDqOff)
             {
                 v = v.Trim('\"');
             }
-            if (string.IsNullOrEmpty(v))
+            if (!bAcceptNullArg && string.IsNullOrEmpty(v))
             {
                 v = "<!!" + argstr.Trim('<','>') + "(error: arg is null)!!>"; 
             }
@@ -175,7 +187,7 @@ namespace psggConverterLib
         }
 
         // 汎用コンバータ
-        public static string Convert(string text, List<string> args)
+        public static string Convert(string text, List<string> args,bool bAcceptNullArg=false)
         {
             var src = text;
             for(var loop = 0; loop<=100; loop++)
@@ -185,7 +197,7 @@ namespace psggConverterLib
                 var match = RegexUtil.Get1stMatch(m_argpattern,src);
                 if (!string.IsNullOrEmpty(match))
                 {
-                    var val = GetArgValue(match,args);
+                    var val = GetArgValue(match,args,bAcceptNullArg);
                     src = src.Replace(match,val);
                     continue;
                 }

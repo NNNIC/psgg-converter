@@ -44,7 +44,7 @@ namespace psggConverterLib
                     api = null;
                 }
                 // この時点で argsリスト完成
-                var text = MacroWork.Convert(macrovalue,args);
+                var text = MacroWork.Convert(macrovalue,args,true);
                 result.Add(text);
             }
 
