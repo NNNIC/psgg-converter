@@ -180,7 +180,8 @@ namespace psggConverterLib
             var src = text;
             for(var loop = 0; loop<=100; loop++)
             {
-                if (loop==100) throw new SystemException("Unexpected! {69EA9451-D50D-492B-9BD8-A42EFCFC3758}");
+                if (loop==100) throw new SystemException("Unexpected! {710FA2E8-7740-43F9-8A26-703AF71085C6}");
+                
                 var match = RegexUtil.Get1stMatch(m_argpattern,src);
                 if (!string.IsNullOrEmpty(match))
                 {
