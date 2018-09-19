@@ -208,10 +208,21 @@ namespace psggConverterLib
             {
                 var size = targetlines.Count;
 
+                //最終行が EOF>>>か？
+                bool bEOF = (targetlines[targetlines.Count - 1].ToLower().Contains("eof>>>"));
+
                 //先頭行と最終行の削除
                 targetlines.RemoveAt(0);
                 targetlines.RemoveAt(targetlines.Count-1);
 
+                if (bEOF) //以降を削除
+                {
+                    while(lines.Count > findindex + 1)
+                    {
+                        lines.RemoveAt(lines.Count-1);
+                    }
+                    size = 1;
+                }
                 //変換したものに入れ替え
                 lines = StringUtil.ReplaceLines(lines,findindex,size,targetlines);
             }
