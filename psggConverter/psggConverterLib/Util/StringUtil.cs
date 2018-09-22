@@ -9,8 +9,8 @@ using System.Drawing;
 
 public class StringUtil
 {
-    static readonly string _0d0a = "\x0d\x0a";
-    static readonly string _0a   = "\x0a";
+    public static readonly string _0d0a = "\x0d\x0a";
+    public static readonly string _0a   = "\x0a";
 
     public static List<string> SplitTrim(string s, char separator)
     {
@@ -324,5 +324,35 @@ public class StringUtil
         }
         args = arglist;
         return true;
+    }
+    public static List<string> SplittComma_And_ApiArges(string s) //API型もカンマ区切のデータも、まとめて引数化
+    {
+        string api;
+        List<string> args;
+        string error;
+
+        StringUtil.SplitApiArges(s, out api, out args, out error);
+        if (!string.IsNullOrEmpty(error) || api.Contains(","))
+        {// カンマリストとみなす
+            api = null;
+            args = StringUtil.SplitComma(s);
+        }
+        else
+        {
+            if (args == null) args = new List<string>();
+            args.Insert(0, api);
+            api = null;
+        }
+        return args;
+    }
+    public static int CountChar(string s, char c)
+    {
+        if (string.IsNullOrEmpty(s)) return 0;
+        var count = 0;
+        foreach(var i in s)
+        {
+            if (i==c) count++;
+        }
+        return count;
     }
 }

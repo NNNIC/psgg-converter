@@ -16,6 +16,8 @@ namespace psggConverterLib
 
         public void   TEST()      { Console.WriteLine("psggConvertLib TEST");}
 
+        public string ERRMSG;
+
         public string VERSION()   { return ver.version;    }
         public string GITHASH()   { return githash.hash;   }
         public string BUILDTIME() { return ver.datetime;   }
@@ -198,6 +200,7 @@ namespace psggConverterLib
             return sm.m_result_src;
         }
 
+        [Obsolete]
         public bool createFunc_prepare_obs(string state, ref List<string> lines)
         {
             if (lines == null) return false;              
@@ -328,28 +331,91 @@ namespace psggConverterLib
             {
                 var line = lines[i];
                 var targetvalue = RegexUtil.Get1stMatch(@"\[\[.*?\]\]",line);
-                if (!string.IsNullOrEmpty(targetvalue)) {
-                    var name = targetvalue.Trim('[',']');
-                    var macroname = name;
-                    if (name.Contains("->@"))  //[itemname->@macro]]対応
-                    {                        
-                        var index = name.IndexOf("->@");
-                        if (index >= 0)
-                        {
-                            macroname = name.Substring(index + 3);
-                            name = name.Substring(0,index);
-                        }
+                var name = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+",targetvalue);
+                var macroname = string.Empty;
+                var linenum = -1;
+                var argnum  = -1;
+                var num_colon = StringUtil.CountChar(targetvalue,':');
+                if (num_colon>=1)
+                {
+                    try {
+                        var linenumstr = RegexUtil.GetNthMatch(@":\d+",targetvalue,1);
+                        linenumstr = linenumstr.Substring(1);
+                        linenum = int.Parse(linenumstr);
+                    } catch (SystemException e)
+                    {
+                        throw new SystemException("Unpexected! {09F04A64-E5DE-4692-8784-1D0A493715D7} " + e.Message +"\n" + line);
                     }
-                    var replacevalue   = getString(state,name);
-                    //var replacevalue2  = lang_work(LANG,name,replacevalue);
-                    var replacevalue3  = get_line_macro_value(macroname,replacevalue); // @stateマクロがあれば、各行に適用する
- 
-                    var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue3);
-
-                    lines.RemoveAt(i);
-                    lines.InsertRange(i,tmplines);
-                    return true;
                 }
+                if (num_colon>=2)
+                {
+                    try {
+                        var argnumstr = RegexUtil.GetNthMatch(@":\d+", targetvalue, 2);
+                        argnumstr = argnumstr.Substring(1);
+                        argnum = int.Parse(argnumstr);
+                    } catch (SystemException e)
+                    {
+                        throw new SystemException("Unpexected! {68DE5327-ECE6-4241-A2E3-CF9F87C9F5F1} " + e.Message + "\n" + line);
+                    }
+                }
+                macroname = name;
+                if (targetvalue.Contains("->@"))
+                {
+                    macroname = RegexUtil.Get1stMatch(@"->@.+]",targetvalue);
+                    macroname = macroname.Substring(3);
+                    macroname = macroname.Substring(0,macroname.Length - 1);
+                    if (argnum != -1)
+                    {
+                        throw new SystemException("Macro cannot use with argnument number. { 68DE5327 - ECE6 - 4241 - A2E3 - CF9F87C9F5F1 } \n" + line);
+                    }
+                }
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
+                var val = getString(state, name);
+                if (!string.IsNullOrEmpty(val) && linenum>=0)
+                {
+                    var tmplines = StringUtil.SplitTrimEnd(val,StringUtil._0a[0]);
+                    val = linenum < tmplines.Count ? tmplines[linenum] : string.Empty;
+                }
+                if (!string.IsNullOrEmpty(val) && argnum>=0)
+                {
+                    var args = StringUtil.SplittComma_And_ApiArges(val);
+                    val = argnum < args.Count ? args[argnum] : string.Empty;
+                }
+                var replacevalue = val;
+                var replacevalue3 = get_line_macro_value(macroname, replacevalue); // @stateマクロがあれば、各行に適用する
+
+                var tmplines2 = StringUtil.ReplaceWordsInLine(line, targetvalue, replacevalue3);
+
+                lines.RemoveAt(i);
+                lines.InsertRange(i, tmplines2);
+                return true;
+
+
+                //if (!string.IsNullOrEmpty(name)) {
+                //    var name = targetvalue.Trim('[',']');
+                //    var macroname = name;
+                //    if (name.Contains("->@"))  //[itemname->@macro]]対応
+                //    {                        
+                //        var index = name.IndexOf("->@");
+                //        if (index >= 0)
+                //        {
+                //            macroname = name.Substring(index + 3);
+                //            name = name.Substring(0,index);
+                //        }
+                //    }
+                //    var replacevalue   = getString(state,name);
+                //    //var replacevalue2  = lang_work(LANG,name,replacevalue);
+                //    var replacevalue3  = get_line_macro_value(macroname,replacevalue); // @stateマクロがあれば、各行に適用する
+ 
+                //    var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue3);
+
+                //    lines.RemoveAt(i);
+                //    lines.InsertRange(i,tmplines);
+                //    return true;
+                //}
 
             }
             return false;

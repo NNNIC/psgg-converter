@@ -85,4 +85,25 @@ public class RegexUtil
         }
         return s;
     }
+
+    public static string GetNthMatch(string regexstr, string s, int n)
+    {
+        if (string.IsNullOrEmpty(s)) return string.Empty;
+        if (string.IsNullOrEmpty(regexstr)) return string.Empty;
+        var regex = new Regex(regexstr);
+        var matches = regex.Matches(s);
+        if (matches == null || matches.Count == 0) return string.Empty;
+
+        int c = 0;
+        foreach (var i in matches)
+        {
+            c++;
+            if ( c==n)
+            {
+                var m = (Match)i;
+                return m.Value;
+            }
+        }
+        return string.Empty;
+    }
 }

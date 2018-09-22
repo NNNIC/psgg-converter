@@ -28,22 +28,25 @@ namespace psggConverterLib
             { 
                 if (string.IsNullOrEmpty(l)) continue;
 
-                string api;
-                List<string > args;
-                string error;
+                //string api;
+                //List<string > args;
+                //string error;
 
-                StringUtil.SplitApiArges(l,out api, out args, out error);
-                if (!string.IsNullOrEmpty(error) || api.Contains(","))
-                {// カンマリストとみなす
-                    api = null;
-                    args = StringUtil.SplitComma(l);
-                }
-                else
-                {
-                    if (args == null) args = new List<string>();
-                    args.Insert(0,api);
-                    api = null;
-                }
+                //StringUtil.SplitApiArges(l,out api, out args, out error);
+                //if (!string.IsNullOrEmpty(error) || api.Contains(","))
+                //{// カンマリストとみなす
+                //    api = null;
+                //    args = StringUtil.SplitComma(l);
+                //}
+                //else
+                //{
+                //    if (args == null) args = new List<string>();
+                //    args.Insert(0,api);
+                //    api = null;
+                //}
+
+                var args = StringUtil.SplittComma_And_ApiArges(l);
+
                 // この時点で argsリスト完成
                 var text = MacroWork.Convert(macrovalue, linenum,args,true);
                 result.Add(text);
