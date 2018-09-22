@@ -15,10 +15,8 @@ public partial class FunctionControl : StateManager {
         if (bFirst)
         {
         }
-        if (!HasNextState())
-        {
-            SetNextState(S_SETBUF);
-        }
+        br_USE_TEMPFUNC(S_SETBUF);
+        br_USE_MACROBUF(S_SETMACROBUF);
         if (HasNextState())
         {
             GoNextState();
@@ -197,6 +195,25 @@ public partial class FunctionControl : StateManager {
         if (!HasNextState())
         {
             SetNextState(S_LOOPCHECK);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_SETMACROBUF
+        対象バッファにMACROバッファを設定する
+    */
+    void S_SETMACROBUF(bool bFirst)
+    {
+        if (bFirst)
+        {
+            set_macrobuf();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_SPLITBUF);
         }
         if (HasNextState())
         {

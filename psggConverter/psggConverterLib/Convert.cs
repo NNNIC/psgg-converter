@@ -51,7 +51,8 @@ namespace psggConverterLib
         public readonly string CONTENTS3  ="$contents3$";
         public readonly string PREFIXMACRO ="$prefix$";
 
-        public readonly string REGEXCONT  = @"\$\/.+\/\$\s*$"; // $/正規表現/$ 
+        public readonly string REGEXCONT  = @"\$\/.+\/\$\s*$";      // $/正規表現/$ 
+        public readonly string REGEXCONT2 = @"\$\/.+\/->#.+\$\s*$"; // $/正規表現/->#xxx$
 
         //public readonly string INCLUDEFILE= @"\$include:.+?\$"; //Regexp
         //public readonly string MACRO      = @"$MACRO:.+?\$";    //Regexp
@@ -176,7 +177,7 @@ namespace psggConverterLib
         }
 
 
-        public string CreateFunc(string state)
+        public string CreateFunc(string state,string macrobuf = null)
         {
             if (BRKGF)
             { 
@@ -185,6 +186,8 @@ namespace psggConverterLib
             var sm = new FunctionControl();
             sm.G = this;
             sm.m_state = state;
+            sm.m_macro_buf = macrobuf;
+            sm.m_useMacroOrTemplate = !string.IsNullOrEmpty(macrobuf);
             sm.Start();
             for(var loop=0;loop<=10000;loop++)
             {

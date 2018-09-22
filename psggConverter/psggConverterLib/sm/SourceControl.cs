@@ -236,7 +236,7 @@ public partial class SourceControl  {
         }
         m_contents2 = s;
     }
-    string create_regex_contents(string regex)
+    string create_regex_contents(string regex, string macrobuf=null)
     {
         var state_list = new List<string>();
         G.state_list.ForEach(i=> {
@@ -250,7 +250,7 @@ public partial class SourceControl  {
         var s = string.Empty;
         foreach (var state in state_list)
         {
-            s += G.CreateFunc(state) + G.NEWLINECHAR;
+            s += G.CreateFunc(state,macrobuf) + G.NEWLINECHAR;
         }
         return s;
     }
@@ -413,6 +413,31 @@ public partial class SourceControl  {
             var regex = match.Trim().Substring(2); //"$/"を除去
             regex = regex.Substring(0,regex.Length-2);  // 行末の "/$"を除去
             var c = create_regex_contents(regex);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line, match, c);
+            m_resultlist.AddRange(tmplines);
+            m_bContinue = true;
+        }
+    }
+    void is_regex_contents2_lc()
+    {
+        var match = RegexUtil.Get1stMatch(G.REGEXCONT2,m_line);
+        if (!string.IsNullOrEmpty(match))
+        {
+            //1 正規表現部分の取得
+            var regex = RegexUtil.Get1stMatch(@"\$\/.+\/->#",match); // $/正規表現/->#    
+            regex = regex.Substring(2);
+            regex = regex.Substring(0,regex.Length - 4);
+
+            //マクロ名の取得
+            var macroname = RegexUtil.Get1stMatch(@"#.+\$$",match);  // #macro$
+            macroname = macroname.TrimEnd('$');
+
+            var macrobuf = G.getMacroValueFunc(macroname);
+            if (string.IsNullOrEmpty(macrobuf)) {
+                throw new SystemException("Macro is not defined. : " + macroname);
+            }
+            var c = create_regex_contents(regex,macrobuf);
+
             var tmplines = StringUtil.ReplaceWordsInLine(m_line, match, c);
             m_resultlist.AddRange(tmplines);
             m_bContinue = true;

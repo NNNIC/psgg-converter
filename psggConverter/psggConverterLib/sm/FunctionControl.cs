@@ -15,27 +15,44 @@ public partial class FunctionControl  {
 
 	public string m_result_src  = null;
 
+    public string m_macro_buf   = null;
+    public bool   m_useMacroOrTemplate = false;
+
     string        m_buf         = string.Empty;
     List<string>  m_lines       = null;
     //string        m_newLineChar = string.Empty;
     int           m_loopIndex   = 0;
     const int     m_loopMax     = 10000;
+
     void set_buf()
     {
         m_buf = G.template_func;
     }
-    
+
+    void set_macrobuf()
+    {
+        m_buf = m_macro_buf;
+    }
+
     void split_buf()
     {
         var newlinechar = StringUtil.FindNewLineChar(m_buf);
-        m_OkNG = newlinechar!=null;
-        if (m_OkNG)
+        if (newlinechar!=null)
         {
             m_lines = StringUtil.SplitTrimEnd(m_buf,'\x0a');
+            m_OkNG = true;
+        }
+        else if (!string.IsNullOrEmpty(m_buf))
+        {
+            //m_error = "buffer not found! {E1BB5578-E9E5-4C46-ABE9-4152D3A1AB1C}";
+            m_lines = new List<string>();
+            m_lines.Add(m_buf);
+            m_OkNG = true;
         }
         else
         {
             m_error = "buffer not found! {E1BB5578-E9E5-4C46-ABE9-4152D3A1AB1C}";
+            m_OkNG = false;
         }
     }
 
@@ -124,6 +141,21 @@ public partial class FunctionControl  {
             if (m_needAgain) SetNextState(st);
         }
     }
+    void br_USE_TEMPFUNC(Action<bool> st)
+    {
+        if (!HasNextState())
+        {
+            if (!m_useMacroOrTemplate) SetNextState(st);
+        }
+    }
+    void br_USE_MACROBUF(Action<bool> st)
+    {
+        if (!HasNextState())
+        {
+            if (m_useMacroOrTemplate) SetNextState(st);
+        }
+    }
+
     #endregion
 
 
