@@ -216,8 +216,10 @@ public partial class SourceControl  {
     string m_contents2=string.Empty;
     void create_contents1()
     {
+        var state_list = new List<string>( G.state_list);
+        state_list.Sort();
         var s = string.Empty;
-        foreach(var state in G.state_list)
+        foreach(var state in state_list)
         {
             s += state + "," + G.NEWLINECHAR;
         }
