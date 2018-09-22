@@ -227,16 +227,36 @@ public partial class SourceControl  {
     }
     void create_contents2()
     {
+        var state_list = new List<string>(G.state_list);
+        state_list.Sort();
         var s = string.Empty;
-        foreach(var state in G.state_list)
+        foreach(var state in state_list)
         {
             s += G.CreateFunc(state) + G.NEWLINECHAR;
         }
         m_contents2 = s;
     }
+    string create_regex_contents(string regex)
+    {
+        var state_list = new List<string>();
+        G.state_list.ForEach(i=> {
+            var a = RegexUtil.Get1stMatch(regex,i);
+            if (!string.IsNullOrEmpty(a))
+            {
+                state_list.Add(i);
+            }
+        });
+        state_list.Sort();
+        var s = string.Empty;
+        foreach (var state in state_list)
+        {
+            s += G.CreateFunc(state) + G.NEWLINECHAR;
+        }
+        return s;
+    }
     #endregion
     #region line convert
-    
+
     string       m_targetsrc        = null;
     List<string> m_resultlist       = null;
     List<string> m_lines            = null;
@@ -381,6 +401,19 @@ public partial class SourceControl  {
         if (m_line.Contains(G.CONTENTS2))
         {
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,G.CONTENTS2,m_contents2);
+            m_resultlist.AddRange(tmplines);
+            m_bContinue = true;
+        }
+    }
+    void is_regex_contents_lc()
+    {
+        var match = RegexUtil.Get1stMatch(G.REGEXCONT,m_line);
+        if (!string.IsNullOrEmpty(match))
+        {
+            var regex = match.Trim().Substring(2); //"$/"を除去
+            regex = regex.Substring(0,regex.Length-2);  // 行末の "/$"を除去
+            var c = create_regex_contents(regex);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line, match, c);
             m_resultlist.AddRange(tmplines);
             m_bContinue = true;
         }

@@ -254,7 +254,7 @@ public partial class SourceControl : StateManager {
             is_contents_2_lc();
         }
         br_CONTINUE(S_NEXT_LC);
-        br_NOTABOVE(S_IS_PREFIX);
+        br_NOTABOVE(S_IS_REGEX_LC);
         if (HasNextState())
         {
             GoNextState();
@@ -499,8 +499,25 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
+        S_IS_REGEX_LC
+        正規表現コンテンツ確認
+    */
+    void S_IS_REGEX_LC(bool bFirst)
+    {
+        if (bFirst)
+        {
+            is_regex_contents_lc();
+        }
+        br_CONTINUE(S_NEXT_LC);
+        br_NOTABOVE(S_IS_PREFIX);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
         S_IS_PREFIX
-        $prefix$確認
+        確認
     */
     void S_IS_PREFIX(bool bFirst)
     {

@@ -50,6 +50,9 @@ namespace psggConverterLib
         public readonly string CONTENTS2  ="$contents2$";
         public readonly string CONTENTS3  ="$contents3$";
         public readonly string PREFIXMACRO ="$prefix$";
+
+        public readonly string REGEXCONT  = @"\$\/.+\/\$\s*$"; // $/正規表現/$ 
+
         //public readonly string INCLUDEFILE= @"\$include:.+?\$"; //Regexp
         //public readonly string MACRO      = @"$MACRO:.+?\$";    //Regexp
 
