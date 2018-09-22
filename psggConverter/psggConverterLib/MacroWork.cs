@@ -12,6 +12,8 @@ namespace psggConverterLib
         public const string m_includepattern = @"\$include:.+?\$";
         public const string m_macropattern   = @"\$macro:.+?\$";
         public const string m_argpattern     = @"\{%(~{0,1})\d+\}";   //埋め込み側の引数パターン  {%0} または {%~0}  チルダ(~)があると文字列両端のダブルクォートを削除する
+        public const string m_numpattern     = @"\{%[Nn]\}";          //埋め込み側の引数パターン  {%N} または {%n} 
+
         public string       m_prefixpattern  = @"\$prefix\$";
 
         public string       m_error;
@@ -187,7 +189,7 @@ namespace psggConverterLib
         }
 
         // 汎用コンバータ
-        public static string Convert(string text, List<string> args,bool bAcceptNullArg=false)
+        public static string Convert(string text, int num, List<string> args,bool bAcceptNullArg=false)
         {
             var src = text;
             for(var loop = 0; loop<=100; loop++)
@@ -198,6 +200,13 @@ namespace psggConverterLib
                 if (!string.IsNullOrEmpty(match))
                 {
                     var val = GetArgValue(match,args,bAcceptNullArg);
+                    src = src.Replace(match,val);
+                    continue;
+                }
+                match = RegexUtil.Get1stMatch(m_numpattern, src);
+                if (!string.IsNullOrEmpty(match))
+                {
+                    var val = num.ToString();
                     src = src.Replace(match,val);
                     continue;
                 }
@@ -217,7 +226,7 @@ namespace psggConverterLib
             if (arg1!=null) args.Add(arg1);
             if (arg2!=null) args.Add(arg2);
 
-            return Convert(text,args);
+            return Convert(text,0,args);
         }
     }
 }

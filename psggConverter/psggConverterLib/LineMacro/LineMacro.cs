@@ -23,6 +23,7 @@ namespace psggConverterLib
             // 各ラインを args に変換
             // カンマ区切りはその通りに args
             // api(a,b..)は api を arg0 として
+            int linenum = 0;
             foreach(var l in lines)
             { 
                 if (string.IsNullOrEmpty(l)) continue;
@@ -44,8 +45,9 @@ namespace psggConverterLib
                     api = null;
                 }
                 // この時点で argsリスト完成
-                var text = MacroWork.Convert(macrovalue,args,true);
+                var text = MacroWork.Convert(macrovalue, linenum,args,true);
                 result.Add(text);
+                linenum++;
             }
 
             return StringUtil.LineToBuf(result,NEWLINECHAR);

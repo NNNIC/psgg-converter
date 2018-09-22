@@ -197,7 +197,8 @@ namespace psggConverterLib
             }
             return sm.m_result_src;
         }
-        public bool createFunc_prepare(string state, ref List<string> lines)
+
+        public bool createFunc_prepare_obs(string state, ref List<string> lines)
         {
             if (lines == null) return false;              
 
@@ -231,14 +232,94 @@ namespace psggConverterLib
                 }
                 //変換したものに入れ替え
                 lines = StringUtil.ReplaceLines(lines,findindex,size,targetlines);
+                return true;
+            }
+            else
+            {            
+                lines.RemoveRange(findindex,targetlines.Count);
+            }            
+            return true;
+        }
+        public bool createFunc_prepare(string state, ref List<string> lines)
+        {
+            if (lines == null) return false;
+
+            var findindex = -1;
+            var targetlines = StringUtil.FindMatchedLines(lines, "<<<?", ">>>", out findindex);
+            if (targetlines == null) return false;
+            if (targetlines.Count < 2) throw new SystemException("Unexpected! {A6446D1F-DFD0-4A63-93C7-299265119AC7}");
+
+            //存在を確認して、残すか消す
+
+            var line0 = targetlines[0];
+            var bValid = false;
+            var itemname = string.Empty;
+            var val = string.Empty;
+            var regex = string.Empty;
+            var target = RegexUtil.Get1stMatch(@"\<\<\<\?.+\s*$",line0);
+            target = target.Substring(4).Trim(); // <<<?を削除
+            if (target[0] == '\"') //　　<<<?"文字列"/正規表現/
+            {
+                var dqw= RegexUtil.Get1stMatch(@"\x22.*\x22",target);
+                val = dqw.Trim('\x22');
+                regex = target.Substring(dqw.Length);
+            }
+            else 
+            { //  <<<?itemname    または  <<<?itemname/正規表現/
+                itemname = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_]+", target);
+                regex = target.Substring(itemname.Length);
+                val = getString(state, itemname);
+            }
+
+            bValid = !string.IsNullOrEmpty(val);
+
+            if (!string.IsNullOrEmpty(regex) && regex.Length > 2)
+            {
+                if (regex[0]=='/' && regex[regex.Length-1]=='/')
+                {
+                    regex = regex.Substring(1);
+                    regex = regex.Substring(0,regex.Length - 1);
+
+                    var match = RegexUtil.Get1stMatch(regex,val);
+                    bValid = !string.IsNullOrEmpty(match);
+                }
+                else
+                {
+                    bValid  = false;
+                    throw new SystemException("Unexpected! {9280C652-054F-46D2-9340-BC281A2299A7} \n" + line0);
+                }
+            }
+
+            if (bValid)
+            {
+                var size = targetlines.Count;
+
+                //最終行が EOF>>>か？
+                bool bEOF = (targetlines[targetlines.Count - 1].ToLower().Contains("eof>>>"));
+
+                //先頭行と最終行の削除
+                targetlines.RemoveAt(0);
+                targetlines.RemoveAt(targetlines.Count - 1);
+
+                if (bEOF) //以降を削除
+                {
+                    while (lines.Count > findindex + 1)
+                    {
+                        lines.RemoveAt(lines.Count - 1);
+                    }
+                    size = 1;
+                }
+                //変換したものに入れ替え
+                lines = StringUtil.ReplaceLines(lines, findindex, size, targetlines);
+                return true;
             }
             else
             {
-                lines.RemoveRange(findindex,targetlines.Count);
+                lines.RemoveRange(findindex, targetlines.Count);
             }
-            
             return true;
         }
+
         public bool createFunc_work(string state, ref List<string> lines)
         {
             if (lines == null) return false;
@@ -269,10 +350,11 @@ namespace psggConverterLib
                     lines.InsertRange(i,tmplines);
                     return true;
                 }
+
             }
             return false;
         }
-        #endregion
+#endregion
 
         // --- tools
         public bool isExist(string state, string name)

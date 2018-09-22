@@ -499,7 +499,7 @@ public partial class SourceControl  {
                 }
                 else
                 {
-                    text = psggConverterLib.MacroWork.Convert(text,m_mw.GetArgValueList());
+                    text = psggConverterLib.MacroWork.Convert(text,0,m_mw.GetArgValueList());
                 }
             }
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
