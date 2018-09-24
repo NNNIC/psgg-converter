@@ -43,50 +43,51 @@ public partial class SourceControl  {
         G.TEMSRC = null;
         G.TEMFUNC = null;
 
-        var lines = StringUtil.SplitTrimEnd(G.template_src,'\x0a');
-        if (lines == null)
-        {
-            throw new SystemException("Unexpected! {F794458F-407A-490F-9666-B96369567B4C}");
+        if (!string.IsNullOrEmpty(G.template_src)) {
+            var lines = StringUtil.SplitTrimEnd(G.template_src,'\x0a');
+            if (lines == null)
+            {
+                throw new SystemException("Unexpected! {F794458F-407A-490F-9666-B96369567B4C}");
+            }
+            foreach(var i in lines)
+            {
+                //                012345678
+                if (i.StartsWith(":output="))
+                {
+                    G.OUTPUT = i.Substring(8).Trim();
+                }
+                //                012345
+                if (i.StartsWith(":enc="))
+                {
+                    G.ENC = i.Substring(5).Trim();
+                }
+                //                0123456
+                if (i.StartsWith(":lang="))
+                {
+                    G.LANG= i.Substring(6).Trim();
+                }
+                //                0123456789
+                if (i.StartsWith(":tempsrc=")) //共通のテンプレートソースを使用 __PREFIX__があれば prefixの値に入れ替え
+                {
+                    G.TEMSRC = i.Substring(9).Trim();
+                }
+                //                01234567890
+                if (i.StartsWith(":tempfunc=")) //共通のテンプレート関数を使用
+                {
+                    G.TEMFUNC = i.Substring(10).Trim();
+                }
+                //                012345678
+                if (i.StartsWith(":prefix="))
+                {
+                    G.PREFIX = i.Substring(8).Trim();
+                }
+                //
+                if (i.StartsWith(":end"))
+                {
+                    break;
+                }
+            }
         }
-        foreach(var i in lines)
-        {
-            //                012345678
-            if (i.StartsWith(":output="))
-            {
-                G.OUTPUT = i.Substring(8).Trim();
-            }
-            //                012345
-            if (i.StartsWith(":enc="))
-            {
-                G.ENC = i.Substring(5).Trim();
-            }
-            //                0123456
-            if (i.StartsWith(":lang="))
-            {
-                G.LANG= i.Substring(6).Trim();
-            }
-            //                0123456789
-            if (i.StartsWith(":tempsrc=")) //共通のテンプレートソースを使用 __PREFIX__があれば prefixの値に入れ替え
-            {
-                G.TEMSRC = i.Substring(9).Trim();
-            }
-            //                01234567890
-            if (i.StartsWith(":tempfunc=")) //共通のテンプレート関数を使用
-            {
-                G.TEMFUNC = i.Substring(10).Trim();
-            }
-            //                012345678
-            if (i.StartsWith(":prefix="))
-            {
-                G.PREFIX = i.Substring(8).Trim();
-            }
-            //
-            if (i.StartsWith(":end"))
-            {
-                break;
-            }
-        }
-
         if (!string.IsNullOrEmpty(G.TEMSRC))
         {
             try
