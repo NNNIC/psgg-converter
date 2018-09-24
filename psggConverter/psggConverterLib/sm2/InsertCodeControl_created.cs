@@ -2,11 +2,11 @@
 using System;
 public partial class InsertCodeControl : StateManager {
 
-    public override void Start()
+    public void Start()
     {
         Goto(S_START);
     }
-    public override bool IsEnd()
+    public bool IsEnd()
     {
         return CheckState(S_END);
     }
