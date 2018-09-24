@@ -47,6 +47,8 @@
     <Compile Include="MacroWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingIniWork.cs" />
+    <Compile Include="sm2\InsertCodeControl.cs" />
+    <Compile Include="sm2\InsertCodeControl_created.cs" />
     <Compile Include="sm\base\StateManager.cs" />
     <Compile Include="sm\FunctionControl.cs" />
     <Compile Include="sm\FunctionControl_created.cs" />
