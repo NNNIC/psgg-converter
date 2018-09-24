@@ -331,6 +331,10 @@ namespace psggConverterLib
             {
                 var line = lines[i];
                 var targetvalue = RegexUtil.Get1stMatch(@"\[\[.*?\]\]",line);
+                if (string.IsNullOrEmpty(targetvalue))
+                {
+                    continue;
+                }
                 var name = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+",targetvalue);
                 var macroname = string.Empty;
                 var linenum = -1;
