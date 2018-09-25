@@ -8,16 +8,18 @@ public partial class SourceControl : StateManager {
 
 
     /*
-        S_START
+        S_ADDLINE_LC
+        どれにも当てはまらない場合、ママ追加
     */
-    void S_START(bool bFirst)
+    void S_ADDLINE_LC(bool bFirst)
     {
         if (bFirst)
         {
+            add_line_lc();
         }
         if (!HasNextState())
         {
-            SetNextState(S_CHECKMODE);
+            SetNextState(S_NEXT_LC);
         }
         if (HasNextState())
         {
@@ -25,49 +27,18 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
-        S_END
+        S_BIND_SRC
+        SRCにバインド
     */
-    void S_END(bool bFirst)
+    void S_BIND_SRC(bool bFirst)
     {
         if (bFirst)
         {
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_LOADSETTING
-        設定読込み
-    */
-    void S_LOADSETTING(bool bFirst)
-    {
-        if (bFirst)
-        {
-            load_setting();
-        }
-        need_check_again();
-        br_YES(S_LOADSETTING);
-        br_NO(S_SETLANG);
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_SETLANG
-        言語設定
-    */
-    void S_SETLANG(bool bFirst)
-    {
-        if (bFirst)
-        {
-            set_lang();
+            bind_src_lc();
         }
         if (!HasNextState())
         {
-            SetNextState(S_END);
+            SetNextState(S_ESCAPE_TO_CHAR);
         }
         if (HasNextState())
         {
@@ -75,56 +46,53 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
-        S_WRITEHEDDER
-        ヘッダ―記入
+        S_CHECK_AGAIN
+        再確認必要か？
     */
-    void S_WRITEHEDDER(bool bFirst)
+    void S_CHECK_AGAIN(bool bFirst)
     {
         if (bFirst)
         {
-            write_header();
+            check_again_lc();
         }
-        if (!HasNextState())
-        {
-            SetNextState(S_CREATESOURCE);
-        }
+        br_YES(S_SETUP2_LC);
+        br_NO(S_BIND_SRC);
         if (HasNextState())
         {
             GoNextState();
         }
     }
     /*
-        S_CREATESOURCE
-        ソース生成スタート
+        S_CHECKCOUNT_LC
+        行変換のカウンタ確認
     */
-    void S_CREATESOURCE(bool bFirst)
+    void S_CHECKCOUNT_LC(bool bFirst)
     {
         if (bFirst)
         {
+            checkcount_lc();
         }
-        if (!HasNextState())
-        {
-            SetNextState(S_CONTENTS_1);
-        }
+        br_OK(S_GETLINE_LC);
+        br_NG(S_LINESTOBUF_LC);
         if (HasNextState())
         {
             GoNextState();
         }
     }
     /*
-        S_WRITEFILE
-        ファイル書込み
+        S_CHECKMODE
+        選択
+        >初期化モード
+        >変換モード
     */
-    void S_WRITEFILE(bool bFirst)
+    void S_CHECKMODE(bool bFirst)
     {
         if (bFirst)
         {
-            write_file();
         }
-        if (!HasNextState())
-        {
-            SetNextState(S_END);
-        }
+        br_INIT(S_LOADSETTING);
+        br_CVT(S_WRITEHEDDER);
+        br_INSERT(S_WRITEHEDDER);
         if (HasNextState())
         {
             GoNextState();
@@ -171,6 +139,56 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
+        S_CREATESOURCE
+        ソース生成スタート
+    */
+    void S_CREATESOURCE(bool bFirst)
+    {
+        if (bFirst)
+        {
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_CONTENTS_1);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_END
+    */
+    void S_END(bool bFirst)
+    {
+        if (bFirst)
+        {
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_ESCAPE_TO_CHAR
+        エスケープ文字を変換
+    */
+    void S_ESCAPE_TO_CHAR(bool bFirst)
+    {
+        if (bFirst)
+        {
+            escape_to_char();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_OUTPUTCHECK);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
         S_GETLINE_LC
         一行取得
     */
@@ -190,37 +208,18 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
-        S_SETUP_LC
-        行変換準備
-        lc = LineConvert
+        S_IS_COMMENT
+        コメントの確認
+        但し、:end以後の場合はコードとして扱う
     */
-    void S_SETUP_LC(bool bFirst)
+    void S_IS_COMMENT(bool bFirst)
     {
         if (bFirst)
         {
-            setup_buffer_lc();
+            is_comment();
         }
-        if (!HasNextState())
-        {
-            SetNextState(S_SETUP2_LC);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_CHECKCOUNT_LC
-        行変換のカウンタ確認
-    */
-    void S_CHECKCOUNT_LC(bool bFirst)
-    {
-        if (bFirst)
-        {
-            checkcount_lc();
-        }
-        br_OK(S_GETLINE_LC);
-        br_NG(S_LINESTOBUF_LC);
+        br_CONTINUE(S_NEXT_LC);
+        br_NOTABOVE(S_IS_CONTENTS_1_LC);
         if (HasNextState())
         {
             GoNextState();
@@ -261,6 +260,24 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
+        S_IS_END_LC
+        :endを確認
+        以後、":"を行要素とみなす。
+    */
+    void S_IS_END_LC(bool bFirst)
+    {
+        if (bFirst)
+        {
+            is_end_lc();
+        }
+        br_CONTINUE(S_NEXT_LC);
+        br_NOTABOVE(S_IS_COMMENT);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
         S_IS_INCLUDE_LC
         インクルード確認
     */
@@ -295,204 +312,17 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
-        S_NEXT_LC
-        ループＮＥＸＴ処理
+        S_IS_PREFIX
+        確認
     */
-    void S_NEXT_LC(bool bFirst)
+    void S_IS_PREFIX(bool bFirst)
     {
         if (bFirst)
         {
-            next_lc();
+            is_prefix_lc();
         }
-        if (!HasNextState())
-        {
-            SetNextState(S_CHECKCOUNT_LC);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_ADDLINE_LC
-        どれにも当てはまらない場合、ママ追加
-    */
-    void S_ADDLINE_LC(bool bFirst)
-    {
-        if (bFirst)
-        {
-            add_line_lc();
-        }
-        if (!HasNextState())
-        {
-            SetNextState(S_NEXT_LC);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_IS_END_LC
-        :endを確認
-        以後、":"を行要素とみなす。
-    */
-    void S_IS_END_LC(bool bFirst)
-    {
-        if (bFirst)
-        {
-            is_end_lc();
-        }
-        br_CONTINUE(S_NEXT_LC);
-        br_NOTABOVE(S_IS_COMMENT);
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_SETUP2_LC
-        バッファを行に分割
-    */
-    void S_SETUP2_LC(bool bFirst)
-    {
-        if (bFirst)
-        {
-            setup_split_lc();
-        }
-        if (!HasNextState())
-        {
-            SetNextState(S_CHECKCOUNT_LC);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_IS_COMMENT
-        コメントの確認
-        但し、:end以後の場合はコードとして扱う
-    */
-    void S_IS_COMMENT(bool bFirst)
-    {
-        if (bFirst)
-        {
-            is_comment();
-        }
-        br_CONTINUE(S_NEXT_LC);
-        br_NOTABOVE(S_IS_CONTENTS_1_LC);
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_LINESTOBUF_LC
-        ラインリストをバッファに
-    */
-    void S_LINESTOBUF_LC(bool bFirst)
-    {
-        if (bFirst)
-        {
-            lines_to_buf();
-        }
-        if (!HasNextState())
-        {
-            SetNextState(S_CHECK_AGAIN);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_ESCAPE_TO_CHAR
-        エスケープ文字を変換
-    */
-    void S_ESCAPE_TO_CHAR(bool bFirst)
-    {
-        if (bFirst)
-        {
-            escape_to_char();
-        }
-        if (!HasNextState())
-        {
-            SetNextState(S_WRITEFILE);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_BIND_SRC
-        SRCにバインド
-    */
-    void S_BIND_SRC(bool bFirst)
-    {
-        if (bFirst)
-        {
-            bind_src_lc();
-        }
-        if (!HasNextState())
-        {
-            SetNextState(S_ESCAPE_TO_CHAR);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_SET_CHECKAGAIN
-        再変換要素がある可能性があるので、再チェック依頼
-    */
-    void S_SET_CHECKAGAIN(bool bFirst)
-    {
-        if (bFirst)
-        {
-            set_check_again();
-        }
-        if (!HasNextState())
-        {
-            SetNextState(S_NEXT_LC);
-        }
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_CHECK_AGAIN
-        再確認必要か？
-    */
-    void S_CHECK_AGAIN(bool bFirst)
-    {
-        if (bFirst)
-        {
-            check_again_lc();
-        }
-        br_YES(S_SETUP2_LC);
-        br_NO(S_BIND_SRC);
-        if (HasNextState())
-        {
-            GoNextState();
-        }
-    }
-    /*
-        S_CHECKMODE
-        選択
-        >初期化モード
-        >変換モード
-    */
-    void S_CHECKMODE(bool bFirst)
-    {
-        if (bFirst)
-        {
-        }
-        br_INIT(S_LOADSETTING);
-        br_CVT(S_WRITEHEDDER);
+        br_CONTINUE(S_SET_CHECKAGAIN);
+        br_NOTABOVE(S_IS_INCLUDE_LC);
         if (HasNextState())
         {
             GoNextState();
@@ -533,17 +363,259 @@ public partial class SourceControl : StateManager {
         }
     }
     /*
-        S_IS_PREFIX
-        確認
+        S_LINESTOBUF_LC
+        ラインリストをバッファに
     */
-    void S_IS_PREFIX(bool bFirst)
+    void S_LINESTOBUF_LC(bool bFirst)
     {
         if (bFirst)
         {
-            is_prefix_lc();
+            lines_to_buf();
         }
-        br_CONTINUE(S_SET_CHECKAGAIN);
-        br_NOTABOVE(S_IS_INCLUDE_LC);
+        if (!HasNextState())
+        {
+            SetNextState(S_CHECK_AGAIN);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_LOADSETTING
+        設定読込み
+    */
+    void S_LOADSETTING(bool bFirst)
+    {
+        if (bFirst)
+        {
+            load_setting();
+        }
+        need_check_again();
+        br_YES(S_LOADSETTING);
+        br_NO(S_SETLANG);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_NEXT_LC
+        ループＮＥＸＴ処理
+    */
+    void S_NEXT_LC(bool bFirst)
+    {
+        if (bFirst)
+        {
+            next_lc();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_CHECKCOUNT_LC);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_OUTPUT_INSERTBUF
+        インサートバッファへ
+    */
+    void S_OUTPUT_INSERTBUF(bool bFirst)
+    {
+        if (bFirst)
+        {
+            write_insertbuf();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_END);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_OUTPUTCHECK
+        モード別に出力を変える
+    */
+    void S_OUTPUTCHECK(bool bFirst)
+    {
+        if (bFirst)
+        {
+        }
+        br_CVT(S_WRITEFILE);
+        br_INSERT(S_OUTPUT_INSERTBUF);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_SET_CHECKAGAIN
+        再変換要素がある可能性があるので、再チェック依頼
+    */
+    void S_SET_CHECKAGAIN(bool bFirst)
+    {
+        if (bFirst)
+        {
+            set_check_again();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_NEXT_LC);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_SETLANG
+        言語設定
+    */
+    void S_SETLANG(bool bFirst)
+    {
+        if (bFirst)
+        {
+            set_lang();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_END);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_SETUP_LC
+        チェックモード
+    */
+    void S_SETUP_LC(bool bFirst)
+    {
+        if (bFirst)
+        {
+        }
+        br_CVT(S_USE_G_TEMPLSRC);
+        br_INSERT(S_USE_INSERT_TEMP);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_SETUP2_LC
+        バッファを行に分割
+    */
+    void S_SETUP2_LC(bool bFirst)
+    {
+        if (bFirst)
+        {
+            setup_split_lc();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_CHECKCOUNT_LC);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_START
+    */
+    void S_START(bool bFirst)
+    {
+        if (bFirst)
+        {
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_CHECKMODE);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_USE_G_TEMPLSRC
+        行変換準備
+        lc = LineConvert
+    */
+    void S_USE_G_TEMPLSRC(bool bFirst)
+    {
+        if (bFirst)
+        {
+            setup_buffer_lc();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_SETUP2_LC);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_USE_INSERT_TEMP
+        行変換準備
+        lc = LineConvert
+    */
+    void S_USE_INSERT_TEMP(bool bFirst)
+    {
+        if (bFirst)
+        {
+            setup_buffer_lc_insert();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_SETUP2_LC);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_WRITEFILE
+        ファイル書込み
+    */
+    void S_WRITEFILE(bool bFirst)
+    {
+        if (bFirst)
+        {
+            write_file();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_END);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_WRITEHEDDER
+        ヘッダ―記入
+    */
+    void S_WRITEHEDDER(bool bFirst)
+    {
+        if (bFirst)
+        {
+            write_header();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_CREATESOURCE);
+        }
         if (HasNextState())
         {
             GoNextState();

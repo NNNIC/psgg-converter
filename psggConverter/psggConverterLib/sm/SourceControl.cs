@@ -14,9 +14,13 @@ public partial class SourceControl  {
     {
         UNKNOWN,
         INIT,
-        CVT
+        CVT,
+        INSERT
     }
     public MODE mode;
+
+    public string m_insert_template_src; //インサート時のテンプレートソース
+    public string m_insert_output;       //インサート時の出力バッファ
 
     #region check mode
     void br_INIT(Action<bool> st)
@@ -31,6 +35,13 @@ public partial class SourceControl  {
         if (!HasNextState())
         {
             if (mode == MODE.CVT) SetNextState(st);
+        }
+    }
+    void br_INSERT(Action<bool> st)
+    {
+        if (!HasNextState())
+        {
+            if (mode == MODE.INSERT) SetNextState(st);
         }
     }
     #endregion
@@ -211,6 +222,10 @@ public partial class SourceControl  {
 
         File.WriteAllText(path,m_src,Encoding.GetEncoding(G.ENC));
     }
+    void write_insertbuf()
+    {
+        m_insert_output = m_src;
+    }
     #endregion
     #region create_source
     string m_contents1=string.Empty;
@@ -272,6 +287,12 @@ public partial class SourceControl  {
     {
         m_targetsrc = G.template_src;
     }
+
+    void setup_buffer_lc_insert()
+    {
+        m_targetsrc = m_insert_template_src;
+    }
+
     void setup_split_lc()
     {
         m_resultlist = new List<string>();

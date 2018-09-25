@@ -46,6 +46,10 @@ namespace psggConverterLib
         public string TEMSRC_save  = "";  //save TEMSRC for clear
         public string TEMFUNC_save = "" ; //save TEMFUNC for clear
 
+        public string MARK_START  = "";  //インサート用
+        public string MARK_END    = "";
+        public string TGTFILE     = "";  //インサートターゲットファイル
+
         public readonly string CONTENTS1     =  "$contents1$";
         public readonly string CONTENTS1PTN  = @"\$contents1.*?\$";
 
@@ -136,15 +140,34 @@ namespace psggConverterLib
             //if(string.IsNullOrEmpty(INCDIR))
             //    INCDIR = gendir;
 
+            //var sm = new SourceControl();
+            //sm.G = this;
+            //sm.m_excel = excel;
+            //sm.m_gendir = gendir;
+
+            //_runSourceControl(sm,SourceControl.MODE.INIT);
+            //_runSourceControl(sm,SourceControl.MODE.CVT);
+
             var sm = new SourceControl();
             sm.G = this;
             sm.m_excel = excel;
             sm.m_gendir = gendir;
 
-            _runSourceControl(sm,SourceControl.MODE.INIT);
-            _runSourceControl(sm,SourceControl.MODE.CVT);
+            _runSourceControl(sm, SourceControl.MODE.INIT);
+            _runSourceControl(sm, SourceControl.MODE.CVT);
 
             return;
+        }
+        public string generate_for_inserting_src(string excel, string template_src_for_inserting) //throw ! 
+        {
+            var sm = new SourceControl();
+            sm.G = this;
+            sm.m_excel = excel;
+            sm.m_insert_template_src = template_src_for_inserting;
+
+            _runSourceControl(sm, SourceControl.MODE.INSERT);
+
+            return sm.m_insert_output;
         }
         public void Prepare() // Prepare for converting
         {
@@ -424,8 +447,40 @@ namespace psggConverterLib
             }
             return false;
         }
-#endregion
+        #endregion
 
+        #region insert the output to the target file
+        public void InsertOutputToFile(string excel, string targetfile, string incdir)
+        {
+            if (BRKGS)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
+            INCDIR = incdir;
+            TGTFILE = targetfile;
+            
+            var sm = new InsertCodeControl();
+            sm.G = this;
+            sm.m_excel = excel;
+            sm.m_filepath = targetfile;
+
+            sm.MARK_START = MARK_START;
+            sm.MARK_END = MARK_END;
+
+            sm.Start();
+            for (var loop = 0; loop < 10000; loop++)
+            {
+                if (sm.IsEnd())
+                {
+                    break;
+                }
+                sm.update();
+            }
+            return;
+        }
+
+        #endregion
         // --- tools
         public bool isExist(string state, string name)
         {

@@ -37,6 +37,18 @@ public class StringUtil
         }
         return list;
     }
+    public static List<string> SplitTrimKeepSpace(string s, char separator)
+    {
+        if (string.IsNullOrEmpty(s)) return new List<string>() { "" };
+        var lines = s.Split(separator);
+        var outlines = new List<string>();
+        foreach (var l in lines)   //元の状態を保つ！
+        {
+            var nl = l.Trim('\x0d', '\x0a');
+            outlines.Add(nl);
+        }
+        return outlines;
+    }
     public static string CutEmptyLines(string s)
     {
         if (s==null) return null;
