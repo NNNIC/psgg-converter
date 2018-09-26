@@ -292,7 +292,7 @@ namespace psggConverterLib
             }
             else 
             { //  <<<?itemname    または  <<<?itemname/正規表現/
-                itemname = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_]+", target);
+                itemname = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+", target);
                 regex = target.Substring(itemname.Length);
                 val = getString(state, itemname);
             }
