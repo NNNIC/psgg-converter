@@ -154,7 +154,7 @@ namespace psggConverterLib
         // 別からも利用できるように static化
         public static string GetArgValue(string argstr, List<string> args, bool bAcceptNullArg = false)
         {
-            if (args==null) return "<!!" + argstr.Trim('<','>') +  "(error:no args in macro)!!>"; //変換できず。
+            if (args==null) return "<!!" + argstr.Replace("{%","//").Trim('<','>') +  "(error:no args in macro)!!>"; //変換できず。
             if (!RegexUtil.IsMatch(m_argpattern,argstr))
             {
                 throw new SystemException("Unexpected! {0A4A6F44-838E-44D4-8CCA-873C26573E6B}");
@@ -173,7 +173,7 @@ namespace psggConverterLib
             }
             else
             {
-                if (num>=args.Count) return "<!!" + argstr.Trim('<','>') + "(error: arg num is grater than args count)!!>"; //変換できず
+                if (num>=args.Count) return "<!!" + argstr.Replace("{%", "//").Trim('<','>') + "(error: arg num is grater than args count)!!>"; //変換できず
                 v = args[num];
             }
 
@@ -183,7 +183,7 @@ namespace psggConverterLib
             }
             if (!bAcceptNullArg && string.IsNullOrEmpty(v))
             {
-                v = "<!!" + argstr.Trim('<','>') + "(error: arg is null)!!>"; 
+                v = "<!!" + argstr.Replace("{%", "//").Trim('<','>') + "(error: arg is null)!!>"; 
             }
             return v;
         }
@@ -194,7 +194,7 @@ namespace psggConverterLib
             var src = text;
             for(var loop = 0; loop<=100; loop++)
             {
-                if (loop==100) throw new SystemException("Unexpected! {710FA2E8-7740-43F9-8A26-703AF71085C6}");
+                if (loop==100) throw new SystemException("Unexpected! {710FA2E8-7740-43F9-8A26-703AF71085C6}\n" + src + " #" + num.ToString());
                 
                 var match = RegexUtil.Get1stMatch(m_argpattern,src);
                 if (!string.IsNullOrEmpty(match))
