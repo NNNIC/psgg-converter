@@ -109,7 +109,14 @@ namespace psggConverterLib
             string error;
             StringUtil.SplitApiArges(m_macrovalue,out api, out args, out error);
             m_api = api;
+
+            if (args==null)
+            {
+                args = new List<string>();
+            }
+            if (args!=null)  args.Insert(0,api); //$0-apiとする
             m_args = args;
+
             m_error = error;
         }
         public bool IsValid()
