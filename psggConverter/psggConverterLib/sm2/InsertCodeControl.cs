@@ -67,7 +67,7 @@ public partial class InsertCodeControl  {
 
         if (string.IsNullOrEmpty(m_command))
         {
-            m_error = "Cannot find command ";
+            m_error = "Cannot find command : " + s;
         }
     }
 

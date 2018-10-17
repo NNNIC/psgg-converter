@@ -388,12 +388,19 @@ namespace psggConverterLib
                 macroname = name;
                 if (targetvalue.Contains("->@"))
                 {
-                    macroname = RegexUtil.Get1stMatch(@"->@.+]",targetvalue);
+                    macroname = RegexUtil.Get1stMatch(@"->@.+?]",targetvalue);
                     macroname = macroname.Substring(3);
                     macroname = macroname.Substring(0,macroname.Length - 1);
                     if (argnum != -1)
                     {
                         throw new SystemException("Macro cannot use with argnument number. { 68DE5327 - ECE6 - 4241 - A2E3 - CF9F87C9F5F1 } \n" + line);
+                    }
+
+                    {//nameの語尾に - があるケースがあった。targetvalueの ->のインデックスまではnameとする。
+                        var s = (string)targetvalue;
+                        var idx = s.IndexOf("->@");
+                        var newname = s.Substring(0,idx);
+                        name = newname.TrimStart('['); 
                     }
                 }
                 if (string.IsNullOrEmpty(name))
