@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 
 public class RegexUtil
 {
+    public static readonly string VARNAME_PATTERN = @"[_a-zA-Z][_a-zA-Z0-9]+"; //変数名・関数名のパターン
+
     public static bool IsMatch(string regexstr, string s)
     {
         if (string.IsNullOrEmpty(s)) return false;

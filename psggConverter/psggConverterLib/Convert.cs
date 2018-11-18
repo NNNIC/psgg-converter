@@ -352,21 +352,47 @@ namespace psggConverterLib
 
             for(var i = 0; i<lines.Count; i++)
             {
+                var tstate = state;
                 var line = lines[i];
                 var targetvalue = RegexUtil.Get1stMatch(@"\[\[.*?\]\]",line);
                 if (string.IsNullOrEmpty(targetvalue))
                 {
                     continue;
                 }
-                var name = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+",targetvalue);
+                var tmp_targetvalue = targetvalue;
+                // ::STATE_NAMEの取得
+                if (tmp_targetvalue.StartsWith("[[::"))
+                {
+                    tstate = RegexUtil.Get1stMatch(@"^" + RegexUtil.VARNAME_PATTERN , tmp_targetvalue.Substring(4));
+                    if (string.IsNullOrEmpty(tstate)) continue;
+
+                    tmp_targetvalue = tmp_targetvalue.Substring(4);
+                    if (string.IsNullOrEmpty(tmp_targetvalue))
+                    {
+                        continue;
+                    }
+                    tmp_targetvalue = tmp_targetvalue.Substring(tstate.Length);
+                    if (string.IsNullOrEmpty(tmp_targetvalue))
+                    {
+                        continue;
+                    }
+                    if (tmp_targetvalue[0]!=':') // [[::STATE:ITEM]]となるのが正しい
+                    {
+                        continue;
+                    }
+                    tmp_targetvalue = tmp_targetvalue.Substring(1);
+                    tmp_targetvalue = "[[" + tmp_targetvalue; //以降が期待する [[item]]の形
+                }
+
+                var name = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+",tmp_targetvalue);
                 var macroname = string.Empty;
                 var linenum = -1;
                 var argnum  = -1;
-                var num_colon = StringUtil.CountChar(targetvalue,':');
+                var num_colon = StringUtil.CountChar(tmp_targetvalue,':');
                 if (num_colon>=1)
                 {
                     try {
-                        var linenumstr = RegexUtil.GetNthMatch(@":\d+",targetvalue,1);
+                        var linenumstr = RegexUtil.GetNthMatch(@":\d+",tmp_targetvalue,1);
                         linenumstr = linenumstr.Substring(1);
                         linenum = int.Parse(linenumstr);
                     } catch (SystemException e)
@@ -377,7 +403,7 @@ namespace psggConverterLib
                 if (num_colon>=2)
                 {
                     try {
-                        var argnumstr = RegexUtil.GetNthMatch(@":\d+", targetvalue, 2);
+                        var argnumstr = RegexUtil.GetNthMatch(@":\d+", tmp_targetvalue, 2);
                         argnumstr = argnumstr.Substring(1);
                         argnum = int.Parse(argnumstr);
                     } catch (SystemException e)
@@ -386,9 +412,9 @@ namespace psggConverterLib
                     }
                 }
                 macroname = name;
-                if (targetvalue.Contains("->@"))
+                if (tmp_targetvalue.Contains("->@"))
                 {
-                    macroname = RegexUtil.Get1stMatch(@"->@.+?]",targetvalue);
+                    macroname = RegexUtil.Get1stMatch(@"->@.+?]",tmp_targetvalue);
                     macroname = macroname.Substring(3);
                     macroname = macroname.Substring(0,macroname.Length - 1);
                     if (argnum != -1)
@@ -397,7 +423,7 @@ namespace psggConverterLib
                     }
 
                     {//nameの語尾に - があるケースがあった。targetvalueの ->のインデックスまではnameとする。
-                        var s = (string)targetvalue;
+                        var s = (string)tmp_targetvalue;
                         var idx = s.IndexOf("->@");
                         var newname = s.Substring(0,idx);
                         name = newname.TrimStart('['); 
@@ -407,7 +433,7 @@ namespace psggConverterLib
                 {
                     continue;
                 }
-                var val = getString(state, name);
+                var val = getString(tstate, name);
                 if (!string.IsNullOrEmpty(val) && linenum>=0)
                 {
                     var tmplines = StringUtil.SplitTrimEnd(val,StringUtil._0a[0]);
@@ -426,30 +452,6 @@ namespace psggConverterLib
                 lines.RemoveAt(i);
                 lines.InsertRange(i, tmplines2);
                 return true;
-
-
-                //if (!string.IsNullOrEmpty(name)) {
-                //    var name = targetvalue.Trim('[',']');
-                //    var macroname = name;
-                //    if (name.Contains("->@"))  //[itemname->@macro]]対応
-                //    {                        
-                //        var index = name.IndexOf("->@");
-                //        if (index >= 0)
-                //        {
-                //            macroname = name.Substring(index + 3);
-                //            name = name.Substring(0,index);
-                //        }
-                //    }
-                //    var replacevalue   = getString(state,name);
-                //    //var replacevalue2  = lang_work(LANG,name,replacevalue);
-                //    var replacevalue3  = get_line_macro_value(macroname,replacevalue); // @stateマクロがあれば、各行に適用する
- 
-                //    var tmplines = StringUtil.ReplaceWordsInLine(line,targetvalue,replacevalue3);
-
-                //    lines.RemoveAt(i);
-                //    lines.InsertRange(i,tmplines);
-                //    return true;
-                //}
 
             }
             return false;
