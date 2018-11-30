@@ -27,6 +27,7 @@ namespace psggConverterLib
         public int    NAME_COL     =2;
         public int    STATE_ROW    =2;
         public string NEWLINECHAR  = "\x0d\x0a";
+        public string BASESTATE    = "basestate";
 
         //[Obsolete]
         //public string COMMMENTLINE_OBS = "//";
@@ -294,7 +295,7 @@ namespace psggConverterLib
             { //  <<<?itemname    または  <<<?itemname/正規表現/
                 itemname = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+", target);
                 regex = target.Substring(itemname.Length);
-                val = getString(state, itemname);
+                val = getString2(state, itemname);
             }
 
             bValid = !string.IsNullOrEmpty(val);
@@ -433,7 +434,7 @@ namespace psggConverterLib
                 {
                     continue;
                 }
-                var val = getString(tstate, name);
+                var val = getString2(tstate, name);
                 if (!string.IsNullOrEmpty(val) && linenum>=0)
                 {
                     var tmplines = StringUtil.SplitTrimEnd(val,StringUtil._0a[0]);
@@ -493,7 +494,7 @@ namespace psggConverterLib
         // --- tools
         public bool isExist(string state, string name)
         {
-            var v = getString(state, name);
+            var v = getString2(state, name);
             return !string.IsNullOrWhiteSpace(v);     
         }
         public int getCol(string state)
@@ -514,12 +515,35 @@ namespace psggConverterLib
             }
             return -1;
         }
-        public string getString(string state, string name)
+        public string _getString(string state, string name)
         {
             var col = getCol(state);
             var row = getRow(name);
 
             return getChartFunc(row,col);
+        }
+        public string getString2(string state, string name)
+        {
+            var new_state = state;
+            for(var loop = 0; loop<10; loop++)
+            {
+                var val = _getString(new_state,name);
+                if (string.IsNullOrEmpty(val))
+                {
+                    var next_state = _getString(new_state,BASESTATE);
+                    if (string.IsNullOrEmpty(next_state))
+                    {
+                        return val;
+                    }
+                    else
+                    {
+                        new_state = next_state;
+                        continue;
+                    }
+                }
+                return val;
+            }
+            throw new SystemException("Unexpected! {A91F45A0-6C2D-42B9-A23D-B8A71F56F1A2}");
         }
     }
 }
