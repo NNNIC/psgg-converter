@@ -155,6 +155,60 @@ public class StringUtil
         }
         return null;
     }
+    public static List<string> FindMatchedLines2(List<string> lines, string firstmatch, string endmatch, out int firstline)
+    {
+        firstline = -1;
+        if (lines==null) return null;
+
+        var result = new List<string>();
+
+        var bFirstMatchDone = false;
+        var pushCounter = 0;
+        for(var index = 0; index < lines.Count; index++)
+        {
+            var line = lines[index];
+
+            if (!bFirstMatchDone)
+            {
+                if (line.Contains(firstmatch))
+                {
+                    bFirstMatchDone = true;
+                    firstline = index;
+                    result.Add(line);
+                }
+                continue;
+            }
+            else
+            {
+                result.Add(line);
+
+                if (line.Contains(firstmatch))
+                {
+                    pushCounter++;
+                    continue;
+                }
+                else if (line.Contains(endmatch))
+                {
+                    if (pushCounter>0)
+                    {
+                        pushCounter--;
+                        continue;
+                    }
+                    else if (pushCounter == 0)
+                    {
+                        return result;
+                    }
+                }
+            }
+        }
+
+        if (bFirstMatchDone)
+        {
+            throw new SystemException("Can not find end-match");
+        }
+        return null;
+    }
+    
     public static List<string> ReplaceLines(List<string> src, int src_target_start, int src_target_size, List<string> rep)
     {
         if (src==null) return null;

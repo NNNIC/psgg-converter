@@ -272,7 +272,7 @@ namespace psggConverterLib
             if (lines == null) return false;
 
             var findindex = -1;
-            var targetlines = StringUtil.FindMatchedLines(lines, "<<<?", ">>>", out findindex);
+            var targetlines = StringUtil.FindMatchedLines2(lines, "<<<?", ">>>", out findindex);
             if (targetlines == null) return false;
             if (targetlines.Count < 2) throw new SystemException("Unexpected! {A6446D1F-DFD0-4A63-93C7-299265119AC7}");
 
