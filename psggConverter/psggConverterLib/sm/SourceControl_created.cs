@@ -8,6 +8,10 @@ public partial class SourceControl : StateManager {
 
 
     /*
+        E_OPTIONS
+    */
+    public bool m_cvthexchar = false;
+    /*
         S_ADDLINE_LC
         どれにも当てはまらない場合、ママ追加
     */
@@ -177,7 +181,10 @@ public partial class SourceControl : StateManager {
     {
         if (bFirst)
         {
-            escape_to_char();
+            if (m_cvthexchar)
+            {
+                escape_to_char();
+            }
         }
         if (!HasNextState())
         {
@@ -623,4 +630,3 @@ public partial class SourceControl : StateManager {
     }
 
 }
-

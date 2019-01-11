@@ -13,6 +13,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "batch", "batch", "{32E3B91A-CB28-4973-84CA-BDE892EF381A}"
 	ProjectSection(SolutionItems) = preProject
 		copydlltoInstallpath.bat = copydlltoInstallpath.bat
+		copyreleaseToPgdir.bat = copyreleaseToPgdir.bat
 	EndProjectSection
 EndProject
 Global

@@ -50,6 +50,7 @@ namespace psggConverterLib
         public string MARK_START  = "";  //インサート用
         public string MARK_END    = "";
         public string TGTFILE     = "";  //インサートターゲットファイル
+        public bool   CVTHEXCHAR  = false; // \xXXの変換
 
         public readonly string CONTENTS1     =  "$contents1$";
         public readonly string CONTENTS1PTN  = @"\$contents1.*?\$";
@@ -153,6 +154,7 @@ namespace psggConverterLib
             sm.G = this;
             sm.m_excel = excel;
             sm.m_gendir = gendir;
+            sm.m_cvthexchar = CVTHEXCHAR;
 
             _runSourceControl(sm, SourceControl.MODE.INIT);
             _runSourceControl(sm, SourceControl.MODE.CVT);
@@ -165,6 +167,7 @@ namespace psggConverterLib
             sm.G = this;
             sm.m_excel = excel;
             sm.m_insert_template_src = template_src_for_inserting;
+            sm.m_cvthexchar = CVTHEXCHAR;
 
             _runSourceControl(sm, SourceControl.MODE.INSERT);
 
@@ -181,6 +184,7 @@ namespace psggConverterLib
             sm.G = this;
             sm.m_excel = null;
             sm.m_gendir = null;
+            sm.m_cvthexchar = CVTHEXCHAR;
 
             _runSourceControl(sm,SourceControl.MODE.INIT);
         }

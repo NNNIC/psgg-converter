@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cf_prepare\CfPrepareControl.cs" />
     <Compile Include="CommentLine.cs" />
     <Compile Include="Convert.cs" />
     <Compile Include="githash.cs" />

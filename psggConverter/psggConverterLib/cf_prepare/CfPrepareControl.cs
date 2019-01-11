@@ -1,5 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.IO;
+
+namespace psggConverterLib
+{
 public partial class CfPrepareControl  {
    
     #region manager
@@ -86,7 +94,7 @@ public partial class CfPrepareControl  {
         /*
             E_0003
         */
-        int m_indindex;
+        int m_findindex;
         List<string> m_targetlines = null;
         /*
             E_0005
@@ -95,6 +103,7 @@ public partial class CfPrepareControl  {
         bool   m_bValid;
         string m_itemname;
         string m_regex;
+        string m_val;
         string m_target;
         /*
             E_INOUT
@@ -102,6 +111,7 @@ public partial class CfPrepareControl  {
         public string m_state;
         public List<string> m_lines;
         public bool m_bResult;
+        public Convert m_parent;
         /*
             S_CHECK_BOT
             ターゲットの先頭文字
@@ -112,6 +122,20 @@ public partial class CfPrepareControl  {
             // branch
             if (c=='\"') { Goto( S_STR_W_REGEX ); }
             else { Goto( S_ITEM_W_REGEX ); }
+        }
+        /*
+            S_CHECK_EOF
+            最終行が eof＞＞＞か？
+        */
+        bool m_bEOF;
+        void S_CHECK_EOF(bool bFirst)
+        {
+            m_bEOF = (m_targetlines[m_targetlines.Count - 1].ToLower().Contains("eof>>>"));
+            //
+            if (!HasNextState())
+            {
+                Goto(S_REMOVE_TOPBOT);
+            }
         }
         /*
             S_CHECK_EXCEPTION
@@ -139,10 +163,47 @@ public partial class CfPrepareControl  {
             else { Goto( S_FIND_MATCHLINES ); }
         }
         /*
+            S_CHECK_VALID_VAL
+            対象値が有効か？
+        */
+        void S_CHECK_VALID_VAL(bool bFirst)
+        {
+            m_bValid = !string.IsNullOrEmpty(m_val);
+            // branch
+            if (m_bValid) { Goto( S_IS_VALID_REGEX ); }
+            else { Goto( S_REMOVE ); }
+        }
+        /*
             S_END
         */
         void S_END(bool bFirst)
         {
+        }
+        /*
+            S_EXEC_REGEX
+            正規表現の実行
+        */
+        void S_EXEC_REGEX(bool bFirst)
+        {
+            //
+            if (bFirst)
+            {
+                if (m_regex[0]=='/' && m_regex[m_regex.Length-1]=='/')
+                {
+                    m_regex = m_regex.Substring(1);
+                    m_regex = m_regex.Substring(0,m_regex.Length - 1);
+                    var match = RegexUtil.Get1stMatch(m_regex,m_val);
+                    m_bValid = !string.IsNullOrEmpty(match);
+                }
+                else
+                {
+                    m_bValid  = false;
+                    throw new SystemException("{59858294-6BCF-45B6-B441-076A5A6041D8}\n" + m_line0);
+                }
+            }
+            // branch
+            if (m_bValid) { Goto( S_GET_SIZE ); }
+            else { Goto( S_REMOVE ); }
         }
         /*
             S_FIND_MATCHLINES
@@ -154,11 +215,38 @@ public partial class CfPrepareControl  {
             if (bFirst)
             {
                 m_findindex = -1;
-                m_targetlines = StringUtil.FindMatchedLines2(m_lines, "<<<?", ">>>", out m_findindex);
+                m_targetlines = StringUtil.FindMatchedLines2(m_lines, "\x3c\x3c\x3c\x3f", "\x3e\x3e\x3e", out m_findindex);
             }
             // branch
-            if (m_findlines==null) { Goto( S_RETURN_FALSE ); }
+            if (m_targetlines==null) { Goto( S_RETURN_FALSE ); }
             else { Goto( S_CHECK_EXCEPTION ); }
+        }
+        /*
+            S_GET_SIZE
+            EOFのため先にターゲットラインの行数を求める
+        */
+        int m_size = 0;
+        void S_GET_SIZE(bool bFirst)
+        {
+            //
+            if (bFirst)
+            {
+                m_size = m_targetlines.Count;
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_CHECK_EOF);
+            }
+        }
+        /*
+            S_IF_EOF
+        */
+        void S_IF_EOF(bool bFirst)
+        {
+            // branch
+            if (m_bEOF) { Goto( S_REMOVE_REST ); }
+            else { Goto( S_REPLACE ); }
         }
         /*
             S_INIT2
@@ -168,9 +256,10 @@ public partial class CfPrepareControl  {
             //
             if (bFirst)
             {
-                m_lines0=m_targetlines[0];
+                m_line0=m_targetlines[0];
                 m_bValid = false;
                 m_itemname = string.Empty;
+                m_val = string.Empty;
                 m_regex = string.Empty;
             }
             //
@@ -178,6 +267,16 @@ public partial class CfPrepareControl  {
             {
                 Goto(S_TARGET);
             }
+        }
+        /*
+            S_IS_VALID_REGEX
+        */
+        void S_IS_VALID_REGEX(bool bFirst)
+        {
+            var b = !string.IsNullOrEmpty(m_regex) && m_regex.Length > 2;
+            // branch
+            if (b) { Goto( S_EXEC_REGEX ); }
+            else { Goto( S_REMOVE ); }
         }
         /*
             S_ITEM_W_REGEX
@@ -190,7 +289,84 @@ public partial class CfPrepareControl  {
             {
                 m_itemname = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+", m_target);
                 m_regex = m_target.Substring(m_itemname.Length);
-                m_val = getString2(m_state, m_itemname);
+                m_val = m_parent.getString2(m_state, m_itemname);
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_CHECK_VALID_VAL);
+            }
+        }
+        /*
+            S_REMOVE
+        */
+        void S_REMOVE(bool bFirst)
+        {
+            //
+            if (bFirst)
+            {
+                m_lines.RemoveRange(m_findindex, m_targetlines.Count);
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_RETURN_TRUE);
+            }
+        }
+        /*
+            S_REMOVE_REST
+            以降を削除し、行数を１に
+        */
+        void S_REMOVE_REST(bool bFirst)
+        {
+            //
+            if (bFirst)
+            {
+                while (m_lines.Count > m_findindex + 1)
+                {
+                    m_lines.RemoveAt(m_lines.Count - 1);
+                }
+                m_size = 1;
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_REPLACE);
+            }
+        }
+        /*
+            S_REMOVE_TOPBOT
+            //先頭行と最終行の削除
+        */
+        void S_REMOVE_TOPBOT(bool bFirst)
+        {
+            //
+            if (bFirst)
+            {
+                m_targetlines.RemoveAt(0);
+                m_targetlines.RemoveAt(m_targetlines.Count - 1);
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_IF_EOF);
+            }
+        }
+        /*
+            S_REPLACE
+            変換したものに入れ替え
+        */
+        void S_REPLACE(bool bFirst)
+        {
+            //
+            if (bFirst)
+            {
+                m_lines = StringUtil.ReplaceLines(m_lines, m_findindex, m_size, m_targetlines);
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_RETURN_TRUE);
             }
         }
         /*
@@ -202,6 +378,22 @@ public partial class CfPrepareControl  {
             if (bFirst)
             {
                 m_bResult = false;
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_END);
+            }
+        }
+        /*
+            S_RETURN_TRUE
+        */
+        void S_RETURN_TRUE(bool bFirst)
+        {
+            //
+            if (bFirst)
+            {
+                m_bResult = true;
             }
             //
             if (!HasNextState())
@@ -229,9 +421,14 @@ public partial class CfPrepareControl  {
             //
             if (bFirst)
             {
-                var dqw= RegexUtil.Get1stMatch(@"".*"",m_target);
-                m_val = dqw.Trim('"');
-                m_regex = target.Substring(dqw.Length);
+                var dqw= RegexUtil.Get1stMatch(@"\x22.*\x22",m_target);
+                m_val = dqw.Trim('\x22');
+                m_regex = m_target.Substring(dqw.Length);
+            }
+            //
+            if (!HasNextState())
+            {
+                Goto(S_CHECK_VALID_VAL);
             }
         }
         /*
@@ -281,6 +478,7 @@ public partial class CfPrepareControl  {
 			}
 		}
 	}
+}
 }
 
 /*  :::: PSGG MACRO ::::
