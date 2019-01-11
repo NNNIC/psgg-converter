@@ -271,7 +271,8 @@ namespace psggConverterLib
             }            
             return true;
         }
-        public bool createFunc_prepare(string state, ref List<string> lines)
+        [Obsolete]
+        public bool createFunc_prepare_obs2(string state, ref List<string> lines)
         {
             if (lines == null) return false;
 
@@ -350,6 +351,19 @@ namespace psggConverterLib
             }
             return true;
         }
+        public bool createFunc_prepare(string state, ref List<string> lines)
+        {
+            var sm = new CfPrepareControl();
+            sm.m_state = state;
+            sm.m_lines = lines;
+            sm.m_parent = this;
+            sm.Run();
+
+            lines = sm.m_lines;
+
+            return sm.m_bResult;
+        } 
+
 
         public bool createFunc_work(string state, ref List<string> lines)
         {
