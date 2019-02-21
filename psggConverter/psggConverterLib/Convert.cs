@@ -403,7 +403,7 @@ namespace psggConverterLib
                     tmp_targetvalue = "[[" + tmp_targetvalue; //以降が期待する [[item]]の形
                 }
 
-                var name = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+",tmp_targetvalue);
+                var name = RegexUtil.Get1stMatch(@"[\!0-9a-zA-Z_\-]+",tmp_targetvalue);
                 var macroname = string.Empty;
                 var linenum = -1;
                 var argnum  = -1;
