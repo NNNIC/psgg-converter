@@ -15,12 +15,15 @@ namespace psggConverterLib
         public const string m_numpattern     = @"\{%[Nn]\}";          //埋め込み側の引数パターン  {%N} または {%n} 
 
         public string       m_prefixpattern  = @"\$prefix\$";
+        public string       m_statemachinepattern  = @"\$statemachine\$";
 
         public string       m_error;
                             
         bool         m_bValid;
         bool         m_bInclude;
         bool         m_bPrefix;
+        bool         m_bStatemachine;
+
         string       m_matchstr;   //
         string       m_filename;   // for include
         string       m_fileenc;    // file encoding
@@ -65,14 +68,23 @@ namespace psggConverterLib
                     m_matchstr = match;
                 }
                 else {
-                    match = RegexUtil.Get1stMatch(m_macropattern,buf);
+                    match = RegexUtil.Get1stMatch(m_statemachinepattern,buf);
                     if (!string.IsNullOrEmpty(match))
                     {
-                        m_bValid   = true;
-                        m_bInclude = false;
+                        m_bValid = true;
+                        m_bStatemachine = true;
                         m_matchstr = match;
+                    }
+                    else { 
+                        match = RegexUtil.Get1stMatch(m_macropattern,buf);
+                        if (!string.IsNullOrEmpty(match))
+                        {
+                            m_bValid   = true;
+                            m_bInclude = false;
+                            m_matchstr = match;
 
-                        analyze_macro();
+                            analyze_macro();
+                        }
                     }
                 }
             }
@@ -126,6 +138,10 @@ namespace psggConverterLib
         public bool IsPrefix()
         {
             return m_bPrefix;
+        }
+        public bool IsStatemachine()
+        {
+            return m_bStatemachine;
         }
         public bool IsInclude()
         {

@@ -43,6 +43,7 @@ namespace psggConverterLib
         public string TEMSRC       = ""; //specify another template source.
         public string TEMFUNC      = ""; //specify another template function.
         public string PREFIX       = ""; //for another template souce and function.
+        public string STATEMACHINE = "STATEMACHINENAME"; //ステートマシン名
 
         public string TEMSRC_save  = "";  //save TEMSRC for clear
         public string TEMFUNC_save = "" ; //save TEMFUNC for clear
@@ -58,6 +59,7 @@ namespace psggConverterLib
         public readonly string CONTENTS2  ="$contents2$";
         public readonly string CONTENTS3  ="$contents3$";
         public readonly string PREFIXMACRO ="$prefix$";
+        public readonly string STATEMACHINEMACRO = "$statemachine$";
 
         public readonly string REGEXCONT  = @"\$\/.+\/\$\s*$";      // $/正規表現/$ 
         public readonly string REGEXCONT2 = @"\$\/.+\/->#.+\$\s*$"; // $/正規表現/->#xxx$

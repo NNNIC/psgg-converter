@@ -87,6 +87,19 @@ public partial class MacroControl  {
             m_bDone = true;
         }
     }
+
+    void do_if_statemachine()
+    {
+        m_bDone = false;
+        if (m_mw.IsStatemachine()) // $statemachine$
+        {
+            var matchstr= m_mw.GetMatchStr();
+            var text = G.STATEMACHINE;
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
+            m_resultlines.AddRange(tmplines);
+            m_bDone = true;
+        }
+    }
     void do_macro()
     {
         var matchstr= m_mw.GetMatchStr();
