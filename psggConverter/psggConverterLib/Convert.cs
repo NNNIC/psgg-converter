@@ -53,7 +53,7 @@ namespace psggConverterLib
         public string TGTFILE     = "";  //インサートターゲットファイル
         public bool   CVTHEXCHAR  = false; // \xXXの変換
 
-        public string PSGGPATH    = "";  //出力ファイルに記録するpsggファイルへの相対パス -- ソースコードからpsggファイルを開く機能に利用するため
+        public string PSGGFILE    = "";  //出力ファイルに記録するpsggファイルへの相対パス -- ソースコードからpsggファイルを開く機能に利用するため
 
         public readonly string CONTENTS1     =  "$contents1$";
         public readonly string CONTENTS1PTN  = @"\$contents1.*?\$";
