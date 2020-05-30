@@ -107,6 +107,22 @@ public partial class MacroControl  {
             m_resultlines.AddRange(tmplines);
             m_bDone = true;
         }
+        else if (m_mw.Is_stateMachine()) // $stateMachine$ Lower Camel
+        {
+            var matchstr= m_mw.GetMatchStr();
+            var text = StringUtil.convert_to_camel_word(G.STATEMACHINE, false);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
+            m_resultlines.AddRange(tmplines);
+            m_bDone = true;
+        }
+        else if (m_mw.Is_StateMachine()) // $StateMachine$ Upper Camel
+        {
+            var matchstr= m_mw.GetMatchStr();
+            var text = StringUtil.convert_to_camel_word(G.STATEMACHINE, true);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
+            m_resultlines.AddRange(tmplines);
+            m_bDone = true;
+        }
     }
     void do_macro()
     {

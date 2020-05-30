@@ -480,4 +480,56 @@ public class StringUtil
         var o2 = o.ToLower();
         return o2;
     }
+
+    /// <summary>
+    ///  
+    ///  input to_hoge 
+    ///  
+    ///  to upper camel  ToHoge
+    ///  to lower camel  toHoge
+    /// </summary>
+    public static string convert_to_camel_word(string s, bool upperOrLower)
+    {
+        if (string.IsNullOrEmpty(s)) return s;
+
+        string o = string.Empty;
+        int save = 0;
+        Func<char,int> ckuplow = (_)=> {
+            if ( _ >='a' && _ <='z') return 1;
+            if ( _ >='A' && _ <='Z') return 2;
+            if ( _ == '_') return 3;
+            return 0;
+        }; 
+
+        for(var n = 0; n < s.Length; n++)
+        {
+            var c  = s[n];
+            var cs = new string(c,1);
+            var ul = ckuplow(c);
+            if (n==0)
+            {
+                save = ul;
+                o += upperOrLower ? cs.ToUpper() : cs.ToLower();
+                continue;
+            }
+            if (ul == 3) // 現在 _
+            {
+                save = ul;  
+                // o +=  更新なし
+                continue;
+            }
+            if (save == 3) // 先行は _
+            {
+                save = ul;
+                o  += cs.ToUpper();
+                continue;
+            }
+            save = ul;
+            o += cs;
+            continue;
+        }
+        return o;
+    }
+
+
 }

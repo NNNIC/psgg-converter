@@ -14,9 +14,11 @@ namespace psggConverterLib
         public const string m_argpattern     = @"\{%(~{0,1})\d+\}";   //埋め込み側の引数パターン  {%0} または {%~0}  チルダ(~)があると文字列両端のダブルクォートを削除する
         public const string m_numpattern     = @"\{%[Nn]\}";          //埋め込み側の引数パターン  {%N} または {%n} 
 
-        public string       m_prefixpattern  = @"\$prefix\$";
-        public string       m_statemachinepattern  = @"\$statemachine\$";
-        public string       m_state_machinepattern = @"\$state_machine\$";  //スネーク型に変換
+        public string           m_prefixpattern  = @"\$prefix\$";
+        public readonly string  m_statemachinepattern  = @"\$statemachine\$";
+        public readonly string  m_state_machinepattern = @"\$state_machine\$";  //スネーク型に変換
+        public readonly string  m_stateMachinePattern  = @"\$stateMachine\$";   // lower camelに変換
+        public readonly string  m_StateMachinePattern  = @"\$StateMachine\$";   // Upper camelに変換
 
         public string       m_error;
                             
@@ -25,6 +27,8 @@ namespace psggConverterLib
         bool         m_bPrefix;
         bool         m_bStatemachine;
         bool         m_b_state_machine; //スネーク型
+        bool         m_b_stateMachine;  // lower Camel 型 
+        bool         m_b_StateMachine;  // Upper Camel 型
 
         string       m_matchstr;   //
         string       m_filename;   // for include
@@ -51,7 +55,7 @@ namespace psggConverterLib
 
         public bool CheckMacro(string buf)
         {
-            string match = RegexUtil.Get1stMatch(m_includepattern,buf);
+            string match = RegexUtil.Get1stMatch(m_includepattern,buf); // $include 
             if (!string.IsNullOrEmpty(match))
             {
                 m_bValid = true;
@@ -60,7 +64,7 @@ namespace psggConverterLib
 
                 analyze_include();
             }
-            else
+            if (!m_bValid)
             {
                 match = RegexUtil.Get1stMatch(m_prefixpattern,buf);
                 if (!string.IsNullOrEmpty(match))
@@ -69,33 +73,54 @@ namespace psggConverterLib
                     m_bPrefix = true;
                     m_matchstr = match;
                 }
-                else {
-                    match = RegexUtil.Get1stMatch(m_statemachinepattern,buf);
-                    if (!string.IsNullOrEmpty(match))
-                    {
-                        m_bValid = true;
-                        m_bStatemachine = true;
-                        m_matchstr = match;
-                    }
-                    else {
-                        match = RegexUtil.Get1stMatch(m_state_machinepattern,buf); //スネーク型
-                        if (!string.IsNullOrEmpty(match)) {
-                            m_bValid = true;
-                            m_b_state_machine = true;
-                            m_matchstr = match;
-                        }
-                        else { 
-                            match = RegexUtil.Get1stMatch(m_macropattern,buf);
-                            if (!string.IsNullOrEmpty(match))
-                            {
-                                m_bValid   = true;
-                                m_bInclude = false;
-                                m_matchstr = match;
+            }
+            if (!m_bValid)
+            {
+                match = RegexUtil.Get1stMatch(m_statemachinepattern,buf); // ママ
+                if (!string.IsNullOrEmpty(match))
+                {
+                    m_bValid = true;
+                    m_bStatemachine = true;
+                    m_matchstr = match;
+                }
+            }
+            if (!m_bValid)
+            {
+                match = RegexUtil.Get1stMatch(m_state_machinepattern,buf); //スネーク型
+                if (!string.IsNullOrEmpty(match)) {
+                    m_bValid = true;
+                    m_b_state_machine = true;
+                    m_matchstr = match;
+                }
+            }
+            if (!m_bValid)
+            {
+               match = RegexUtil.Get1stMatch(m_stateMachinePattern,buf); // lower Camel型
+                if (!string.IsNullOrEmpty(match)) {
+                    m_bValid = true;
+                    m_b_stateMachine = true;
+                    m_matchstr = match;
+                }
+            }
+            if (!m_bValid)
+            {
+               match = RegexUtil.Get1stMatch(m_StateMachinePattern,buf); // Upper Camel型
+                if (!string.IsNullOrEmpty(match)) {
+                    m_bValid = true;
+                    m_b_StateMachine = true;
+                    m_matchstr = match;
+                }
+            }
+            if (!m_bValid)
+            {
+                match = RegexUtil.Get1stMatch(m_macropattern,buf);
+                if (!string.IsNullOrEmpty(match))
+                {
+                    m_bValid   = true;
+                    m_bInclude = false;
+                    m_matchstr = match;
 
-                                analyze_macro();
-                            }
-                        }
-                    }
+                    analyze_macro();
                 }
             }
             return m_bValid;
@@ -149,7 +174,7 @@ namespace psggConverterLib
         {
             return m_bPrefix;
         }
-        public bool IsStatemachine()
+        public bool IsStatemachine() //ママ
         {
             return m_bStatemachine;
         }
@@ -157,7 +182,14 @@ namespace psggConverterLib
         {
             return m_b_state_machine;
         }
-
+        public bool Is_stateMachine() //lower Camel
+        {
+            return m_b_stateMachine;
+        }
+        public bool Is_StateMachine() //Upper camel
+        {
+            return m_b_StateMachine;
+        }
         public bool IsInclude()
         {
             return m_bInclude;
