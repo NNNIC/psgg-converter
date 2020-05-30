@@ -99,6 +99,14 @@ public partial class MacroControl  {
             m_resultlines.AddRange(tmplines);
             m_bDone = true;
         }
+        else if (m_mw.Is_state_machine()) // $state_machine$ スネーク型へ
+        {
+            var matchstr= m_mw.GetMatchStr();
+            var text = StringUtil.convert_to_snake_word_and_lower(G.STATEMACHINE);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text);
+            m_resultlines.AddRange(tmplines);
+            m_bDone = true;
+        }
     }
     void do_macro()
     {

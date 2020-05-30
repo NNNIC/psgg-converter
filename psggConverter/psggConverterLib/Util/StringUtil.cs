@@ -422,4 +422,62 @@ public class StringUtil
         }
         return count;
     }
+
+    public static string convert_to_snake_word_and_lower(string s)
+    {
+        if (string.IsNullOrEmpty(s)) return s;
+
+        string o = string.Empty;
+        
+        int  save = 0;
+        Func<char,int> ckuplow = (_)=> {
+            if ( _ >='a' && _ <='z') return 1;
+            if ( _ >='A' && _ <='Z') return 2;
+            if ( _ == '_') return 3;
+            return 0;
+        }; 
+        for(var n = 0; n<s.Length; n++)
+        {
+            var c = s[n];
+            var ul = ckuplow(c);
+            if (n==0)
+            {
+                save = ul;
+                o += c;
+                continue;
+            }
+            if ( ul == 3) //c=='_'
+            {
+                save = 3;
+                o += c;
+                continue;
+            }
+            if (save == ul) //ulが同じ
+            {
+                o += c;
+                continue;
+            }            
+            if (save == 3) //ひとつ前は _ 
+            {
+                save = ul;
+                o += c;
+                continue;
+            }
+            else if (save == 2 && ul == 1) //大文字から小文字はOK
+            {
+                save = ul;
+                o += c;
+                continue;
+            }
+            else //if (ul == 1 || ul == 2 || ul == 0)
+            {
+                save = ul;
+                o += '_';
+                o += c;
+                continue;
+            }
+        }
+        var o2 = o.ToLower();
+        return o2;
+    }
 }

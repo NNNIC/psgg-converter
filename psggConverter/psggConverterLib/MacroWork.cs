@@ -16,6 +16,7 @@ namespace psggConverterLib
 
         public string       m_prefixpattern  = @"\$prefix\$";
         public string       m_statemachinepattern  = @"\$statemachine\$";
+        public string       m_state_machinepattern = @"\$state_machine\$";  //スネーク型に変換
 
         public string       m_error;
                             
@@ -23,6 +24,7 @@ namespace psggConverterLib
         bool         m_bInclude;
         bool         m_bPrefix;
         bool         m_bStatemachine;
+        bool         m_b_state_machine; //スネーク型
 
         string       m_matchstr;   //
         string       m_filename;   // for include
@@ -75,15 +77,23 @@ namespace psggConverterLib
                         m_bStatemachine = true;
                         m_matchstr = match;
                     }
-                    else { 
-                        match = RegexUtil.Get1stMatch(m_macropattern,buf);
-                        if (!string.IsNullOrEmpty(match))
-                        {
-                            m_bValid   = true;
-                            m_bInclude = false;
+                    else {
+                        match = RegexUtil.Get1stMatch(m_state_machinepattern,buf); //スネーク型
+                        if (!string.IsNullOrEmpty(match)) {
+                            m_bValid = true;
+                            m_b_state_machine = true;
                             m_matchstr = match;
+                        }
+                        else { 
+                            match = RegexUtil.Get1stMatch(m_macropattern,buf);
+                            if (!string.IsNullOrEmpty(match))
+                            {
+                                m_bValid   = true;
+                                m_bInclude = false;
+                                m_matchstr = match;
 
-                            analyze_macro();
+                                analyze_macro();
+                            }
                         }
                     }
                 }
@@ -143,6 +153,11 @@ namespace psggConverterLib
         {
             return m_bStatemachine;
         }
+        public bool Is_state_machine() //スネーク型へ
+        {
+            return m_b_state_machine;
+        }
+
         public bool IsInclude()
         {
             return m_bInclude;
