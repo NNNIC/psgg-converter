@@ -256,7 +256,11 @@ public partial class SourceControl  {
         var s = string.Empty;
         foreach (var state in state_list)
         {
-            s += G.CreateFunc(state,macrobuf) + G.NEWLINECHAR;
+            var o = G.CreateFunc(state,macrobuf);
+            if (!string.IsNullOrEmpty(o))
+            {
+                s += o + G.NEWLINECHAR;
+            }
         }
         return s;
     }
