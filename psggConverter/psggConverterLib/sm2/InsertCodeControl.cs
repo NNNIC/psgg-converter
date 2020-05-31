@@ -76,7 +76,7 @@ public partial class InsertCodeControl  {
         var buf =  indent > 0 ? new string(' ', indent) : string.Empty;
 
         buf += command;
-        var output = G.generate_for_inserting_src(m_excel,buf);
+        var output = G.generate_for_inserting_src(m_excel,buf,indent);
         return output;
     }
 

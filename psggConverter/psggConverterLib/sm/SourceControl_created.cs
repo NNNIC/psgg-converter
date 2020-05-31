@@ -1,4 +1,4 @@
-﻿//  psggConverterLib.dll converted from SourceControl.xlsx. 
+﻿//  psggConverterLib.dll converted from SourceControl.xlsx.    psgg-file:SourceControl.psgg
 public partial class SourceControl : StateManager {
 
     public void Start()
@@ -11,6 +11,11 @@ public partial class SourceControl : StateManager {
         E_OPTIONS
     */
     public bool m_cvthexchar = false;
+    /*
+        E_OPTIONS1
+        インデント数
+    */
+    public int m_indent;
     /*
         S_ADDLINE_LC
         どれにも当てはまらない場合、ママ追加

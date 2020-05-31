@@ -159,13 +159,14 @@ public partial class SourceControl  {
     string m_src = string.Empty;
     void write_header()
     {
+        Func<int,string> sp = (i) => (new string(' ',i));
         if (!string.IsNullOrEmpty(G.PSGGFILE))
         {
-            m_src = G.GetComment(" psggConverterLib.dll converted from " + m_excel + ".    psgg-file:") + G.PSGGFILE + G.NEWLINECHAR;
+            m_src = sp(m_indent) +  G.GetComment(sp(12) + "psggConverterLib.dll converted from psgg-file:") + G.PSGGFILE + G.NEWLINECHAR + G.NEWLINECHAR;
         }
         else
         { 
-            m_src = G.GetComment(" psggConverterLib.dll converted from " + m_excel + ". ") + G.NEWLINECHAR;
+            m_src = sp(m_indent) +  G.GetComment(sp(12) + "psggConverterLib.dll converted from " +  m_excel + ".") + G.NEWLINECHAR + G.NEWLINECHAR;
         }
     }
     void escape_to_char()

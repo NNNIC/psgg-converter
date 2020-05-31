@@ -165,7 +165,7 @@ namespace psggConverterLib
 
             return;
         }
-        public string generate_for_inserting_src(string excel, string template_src_for_inserting) //throw ! 
+        public string generate_for_inserting_src(string excel, string template_src_for_inserting, int indent) //throw ! 
         {
             var sm = new SourceControl();
             sm.G = this;
@@ -173,7 +173,7 @@ namespace psggConverterLib
             sm.m_insert_template_src = template_src_for_inserting;
             sm.m_cvthexchar = CVTHEXCHAR;
 
-            _runSourceControl(sm, SourceControl.MODE.INSERT);
+            _runSourceControl(sm, SourceControl.MODE.INSERT, indent);
 
             return sm.m_insert_output;
         }
@@ -193,9 +193,10 @@ namespace psggConverterLib
             _runSourceControl(sm,SourceControl.MODE.INIT);
         }
 
-        private static void _runSourceControl(SourceControl sm, SourceControl.MODE mode)
+        private static void _runSourceControl(SourceControl sm, SourceControl.MODE mode, int indent=0)
         {
             sm.mode = mode;
+            sm.m_indent = indent;
             
             sm.Start();
             for(var loop = 0;loop <= 10000;loop++)
