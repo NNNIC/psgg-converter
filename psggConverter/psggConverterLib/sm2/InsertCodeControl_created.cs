@@ -1,4 +1,5 @@
-﻿//  psggConverterLib.dll converted from InsertCodeControl.xlsx. 
+﻿//             psggConverterLib.dll converted from psgg-file:InsertCodeControl.psgg
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,11 @@ public partial class InsertCodeControl : StateManager {
 
 
 
+    /*
+        I_BOM
+        BOMの有無
+    */
+    System.Text.Encoding m_enc = System.Text.Encoding.UTF8;
     /*
         I_BREAKLINE
         改行コード

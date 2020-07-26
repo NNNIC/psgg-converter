@@ -11,9 +11,37 @@ public partial class InsertCodeControl  {
 
     void read_file()
     {
+
+        //System.Diagnostics.Debugger.Break();
         try
         {
-            m_src = File.ReadAllText(m_filepath);
+            m_enc = Encoding.UTF8;
+            if (!string.IsNullOrEmpty(G.ENC))
+            {
+                try {
+                    m_enc =  Encoding.GetEncoding(G.ENC);
+                }
+                catch(SystemException e)
+                {
+                    m_error = "Error Encoding :" + e.Message;
+                    m_enc = Encoding.UTF8;
+                }
+            }
+            if (m_enc == Encoding.UTF8)
+            {
+                var bom = false;
+                var bytes = File.ReadAllBytes(m_filepath);
+                if (bytes.Length > 3)
+                {
+                    if ((bytes[0] == 0xef) && (bytes[1] == 0xbb) && (bytes[2] == 0xbf))
+                    {
+                        bom = true;
+                    }
+                }
+                m_enc = new UTF8Encoding(bom);
+            }
+
+            m_src = File.ReadAllText(m_filepath,m_enc);
             m_bl = StringUtil.FindNewLineChar(m_src);
             m_lines = StringUtil.SplitTrimKeepSpace(m_src,m_bl[0]);
         }
@@ -116,7 +144,7 @@ public partial class InsertCodeControl  {
             }
             s+= l;
         }
-        File.WriteAllText(G.TGTFILE,s,Encoding.GetEncoding(G.ENC));
+        File.WriteAllText(G.TGTFILE,s,m_enc);
     }
 
 }
