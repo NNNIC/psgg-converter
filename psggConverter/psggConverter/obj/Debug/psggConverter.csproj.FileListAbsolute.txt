@@ -13,3 +13,5 @@ C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverter\obj\Deb
 C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverter\obj\Debug\psggConverter.pdb
 C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverter\bin\Debug\psggConverter.exe
 C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverter\bin\Debug\psggConverter.pdb
+C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverter\obj\Debug\psggConverter.csprojAssemblyReference.cache
+C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverter\obj\Debug\psggConverter.csproj.CoreCompileInputs.cache

@@ -90,7 +90,8 @@ public partial class CfPrepareControl  {
 	}
 
 	#region    // [PSGG OUTPUT START] indent(8) $/./$
-//  psggConverterLib.dll converted from CfPrepareControl.xlsx. 
+        //             psggConverterLib.dll converted from psgg-file:CfPrepareControl.psgg
+
         /*
             E_0003
         */
@@ -324,8 +325,9 @@ public partial class CfPrepareControl  {
             //
             if (bFirst)
             {
-                m_findindex = -1;
-                m_targetlines = StringUtil.FindMatchedLines2(m_lines, "\x3c\x3c\x3c\x3f", "\x3e\x3e\x3e", out m_findindex);
+                var findindex = -1;
+                m_targetlines = StringUtil.FindMatchedLines2(m_lines, "\x3c\x3c\x3c\x3f", "\x3e\x3e\x3e", out findindex);
+                m_findindex = findindex;
             }
             // branch
             if (m_targetlines==null) { Goto( S_RETURN_FALSE ); }

@@ -1,0 +1,10 @@
+1. ref xx がおそらくNG
+　 単体テストではOKだが、
+　 本番で不明のエラーが出て、refを修正したら通った。
+2. forループでcontinueが使えない場合があった。エラーコードで通知
+    Consider changing to a while loop instead. [2027..4272) Method: CreateHashtable, Type: IniUtil
+3. new xxx(){x=x}がサポートされていない。エラーコードで通知
+　　Object initialization syntax is not supported.
+4. typeofが使えない
+   typeof is not supported unless part of Enum.Parse or Enum.GetValues
+5.

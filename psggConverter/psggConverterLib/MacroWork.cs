@@ -262,8 +262,12 @@ namespace psggConverterLib
         public static string Convert(string text, int num, List<string> args,bool bAcceptNullArg=false)
         {
             var src = text;
-            for(var loop = 0; loop<=100; loop++)
+
+            //for(var loop = 0; loop<=100; loop++)
+            var loop = -1;
+            while(true)
             {
+                loop++;
                 if (loop==100) throw new SystemException("Unexpected! {710FA2E8-7740-43F9-8A26-703AF71085C6}\n" + src + " #" + num.ToString());
                 
                 var match = RegexUtil.Get1stMatch(m_argpattern,src);

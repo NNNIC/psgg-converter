@@ -12,4 +12,5 @@ C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\bin\
 C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\bin\Debug\psggConverterLib.pdb
 C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.dll
 C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.pdb
-C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.csprojResolveAssemblyReference.cache
+C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.csprojAssemblyReference.cache
+C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\obj\Debug\psggConverterLib.csproj.CoreCompileInputs.cache

@@ -73,8 +73,10 @@ public partial class FunctionControl  {
     void preprocess()
     {
         m_OkNG = true;
-        try { 
-            m_needAgain = G.createFunc_prepare(m_state,ref m_lines);
+        try {
+            var r = new RefListString();
+            r.list = m_lines;
+            m_needAgain = G.createFunc_prepare(m_state,r/*ref m_lines*/);
         }
         catch (SystemException e)
         {
@@ -88,7 +90,9 @@ public partial class FunctionControl  {
         m_OkNG = true;
         try
         {
-            m_needAgain = G.createFunc_work(m_state, ref m_lines);
+            var r = new RefListString();
+            r.list = m_lines;
+            m_needAgain = G.createFunc_work(m_state, r/*ref m_lines*/);
         }
         catch (SystemException e)
         {

@@ -72,8 +72,14 @@ public class IniUtil {
         Hashtable cathash  = null;
 
         var lines = initext.Split('\n');
-        for(var n=0; n<lines.Length;n++)
+
+        //for(var n=0; n<lines.Length;n++)
+        var n = -1;
+        while(true)
         {
+            n++;
+            if (n >= lines.Length) break;            
+
             var l = lines[n];
             if (string.IsNullOrEmpty(l) || string.IsNullOrEmpty(l.Trim()))
             {
@@ -170,32 +176,32 @@ public class IniUtil {
     }
     #endregion
 
-    public static T GetParsedValueFromHashtable<T>(string key, Hashtable ht)
-    {
-        var value = GetValueFromHashtable(key,ht);
-        if (value==null) return default(T);
+    //使われていない。
+    //public static T GetParsedValueFromHashtable<T>(string key, Hashtable ht)
+    //{
+    //    var value = GetValueFromHashtable(key,ht);
+    //    if (value==null) return default(T);
 
-        var type = typeof(T);
-        if (type == typeof(int))
-        {
-            int x=0;
-            if (int.TryParse(value, out x))
-            {
-                return (T)((object)x);
-            } 
-            return default(T);            
-        }
-        if (type == typeof(float))
-        {
-            float x=0;
-            if (float.TryParse(value, out x))
-            {
-                return (T)((object)x);
-            } 
-            return default(T);            
-        }
-        return default(T);
-    }
-    
+    //    var type = typeof(T);
+    //    if (type == typeof(int))
+    //    {
+    //        int x=0;
+    //        if (int.TryParse(value, out x))
+    //        {
+    //            return (T)((object)x);
+    //        } 
+    //        return default(T);            
+    //    }
+    //    if (type == typeof(float))
+    //    {
+    //        float x=0;
+    //        if (float.TryParse(value, out x))
+    //        {
+    //            return (T)((object)x);
+    //        } 
+    //        return default(T);            
+    //    }
+    //    return default(T);
+    //}
 
 }

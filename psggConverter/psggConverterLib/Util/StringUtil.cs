@@ -39,7 +39,12 @@ public class StringUtil
     }
     public static List<string> SplitTrimKeepSpace(string s, char separator)
     {
-        if (string.IsNullOrEmpty(s)) return new List<string>() { "" };
+        if (string.IsNullOrEmpty(s)) {
+            //return new List<string>() { "" }; 
+            var p = new List<string>();
+            p.Add("");
+            return p;
+        }
         var lines = s.Split(separator);
         var outlines = new List<string>();
         foreach (var l in lines)   //元の状態を保つ！
@@ -125,8 +130,16 @@ public class StringUtil
         var result = new List<string>();
 
         var bFirstMatchDone = false;
-        for(var index = 0; index < lines.Count; index++)
+        //for(var index = 0; index < lines.Count; index++)
+        var index = -1;
+        while (true) 
         {
+            index++;
+            if (index >= lines.Count)
+            {
+                break;
+            }
+
             var line = lines[index];
 
             if (!bFirstMatchDone)
@@ -164,8 +177,16 @@ public class StringUtil
 
         var bFirstMatchDone = false;
         var pushCounter = 0;
-        for(var index = 0; index < lines.Count; index++)
+        //for(var index = 0; index < lines.Count; index++)
+        var index = -1;
+        while(true)
         {
+            index++;
+            if (index >= lines.Count)
+            {
+                break;
+            }
+
             var line = lines[index];
 
             if (!bFirstMatchDone)
@@ -245,7 +266,9 @@ public class StringUtil
         if (newline==null) //1行
         {
             var tmp = line.Replace(target,replace2);
-            return new List<string>() { tmp };
+            // return new List<string>() { tmp };
+            var p = new List<string>();
+            p.Add(tmp);
         }
         /*
             複数行
@@ -435,9 +458,17 @@ public class StringUtil
             if ( _ >='A' && _ <='Z') return 2;
             if ( _ == '_') return 3;
             return 0;
-        }; 
-        for(var n = 0; n<s.Length; n++)
+        };
+        //for(var n = 0; n<s.Length; n++)
+        var n = -1;
+        while(true)
         {
+            n++;
+            if (n >= s.Length)
+            {
+                break;
+            }
+
             var c = s[n];
             var ul = ckuplow(c);
             if (n==0)
@@ -499,10 +530,15 @@ public class StringUtil
             if ( _ >='A' && _ <='Z') return 2;
             if ( _ == '_') return 3;
             return 0;
-        }; 
+        };
 
-        for(var n = 0; n < s.Length; n++)
+        //for(var n = 0; n < s.Length; n++)
+        var n = -1;
+        while(true)
         {
+            n++;
+            if (n >= s.Length) { break; }
+
             var c  = s[n];
             var cs = new string(c,1);
             var ul = ckuplow(c);

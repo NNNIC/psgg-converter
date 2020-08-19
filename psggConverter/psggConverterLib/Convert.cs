@@ -356,8 +356,9 @@ namespace psggConverterLib
             }
             return true;
         }
-        public bool createFunc_prepare(string state, ref List<string> lines)
+        public bool createFunc_prepare(string state, RefListString r/*ref List<string> lines*/)
         {
+            var lines = r.list;
             var sm = new CfPrepareControl();
             sm.m_state = state;
             sm.m_lines = lines;
@@ -366,16 +367,23 @@ namespace psggConverterLib
 
             lines = sm.m_lines;
 
+            r.list = lines;
             return sm.m_bResult;
         } 
 
 
-        public bool createFunc_work(string state, ref List<string> lines)
+        public bool createFunc_work(string state, RefListString r/*ref List<string> lines*/)
         {
+            var lines = r.list;
             if (lines == null) return false;
 
-            for(var i = 0; i<lines.Count; i++)
+            //for(var i = 0; i<lines.Count; i++)
+            var i = -1;
+            while(true)
             {
+                i++;
+                if (i >= lines.Count) break;
+
                 var tstate = state;
                 var line = lines[i];
                 var targetvalue = RegexUtil.Get1stMatch(@"\[\[.*?\]\]",line);
@@ -475,9 +483,12 @@ namespace psggConverterLib
 
                 lines.RemoveAt(i);
                 lines.InsertRange(i, tmplines2);
+
+                r.list = lines;
                 return true;
 
             }
+            r.list = lines;
             return false;
         }
         #endregion
@@ -548,8 +559,13 @@ namespace psggConverterLib
         public string getString2(string state, string name)
         {
             var new_state = state;
-            for(var loop = 0; loop<10; loop++)
+            //for(var loop = 0; loop<10; loop++)
+            var loop = -1;
+            while(true)
             {
+                loop++;
+                if (loop >= 10) break;
+
                 var val = _getString(new_state,name);
                 if (string.IsNullOrEmpty(val))
                 {
