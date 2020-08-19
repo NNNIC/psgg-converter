@@ -397,16 +397,16 @@ public partial class SourceControl  {
         var match = RegexUtil.Get1stMatch(G.CONTENTS1PTN,m_line);
         if (!string.IsNullOrEmpty(match) )
         {
-            var macro = string.Empty;
+            var macrov = string.Empty;
             if (match.Contains("->@"))
             {
                 var index = match.IndexOf("->@");
                 if (index >= 0)
                 {
-                    macro = match.Substring(index + 3).Trim('$');
+                    macrov = match.Substring(index + 3).Trim('$');
                 }
             }
-            var replacevalue = G.get_line_macro_value(macro,m_contents1);
+            var replacevalue = G.get_line_macro_value(macrov,m_contents1);
             var tmplines = StringUtil.ReplaceWordsInLine(m_line,match,replacevalue);
             m_resultlist.AddRange(tmplines);
             m_bContinue = true;

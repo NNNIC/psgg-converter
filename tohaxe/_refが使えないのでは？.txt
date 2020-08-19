@@ -1,3 +1,0 @@
-使えるけど、弱いと考えるべき。
-
-ref List<string> --> RefListString へ
