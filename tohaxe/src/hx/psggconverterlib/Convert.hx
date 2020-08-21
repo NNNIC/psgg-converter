@@ -24,15 +24,15 @@ class Convert
     public var ERRMSG:String;
     public function VERSION():String
     {
-        return psggconverterlib.ver.version;
+        return psggconverterlib.Ver.version;
     }
     public function GITHASH():String
     {
-        return psggconverterlib.githash.hash;
+        return psggconverterlib.Githash.hash;
     }
     public function BUILDTIME():String
     {
-        return psggconverterlib.ver.datetime;
+        return psggconverterlib.Ver.datetime;
     }
     public function COPYRIGHT():String
     {
@@ -40,7 +40,7 @@ class Convert
     }
     public function DEPOT():String
     {
-        return psggconverterlib.ver.depot;
+        return psggconverterlib.Ver.depot;
     }
     public var NAME_COL:Int = 2;
     public var STATE_ROW:Int = 2;

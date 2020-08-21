@@ -18,11 +18,11 @@ namespace psggConverterLib
 
         public string ERRMSG;
 
-        public string VERSION()   { return ver.version;    }
-        public string GITHASH()   { return githash.hash;   }
-        public string BUILDTIME() { return ver.datetime;   }
+        public string VERSION()   { return Ver.version;    }
+        public string GITHASH()   { return Githash.hash;   }
+        public string BUILDTIME() { return Ver.datetime;   }
         public string COPYRIGHT() { return "2018 NNNIC / MIT Licence"; }
-        public string DEPOT()     { return ver.depot;      }
+        public string DEPOT()     { return Ver.depot;      }
 
         public int    NAME_COL     =2;
         public int    STATE_ROW    =2;

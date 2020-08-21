@@ -139,7 +139,8 @@ public partial class MacroControl  {
 
             if (string.IsNullOrEmpty(text))
             {
-                text = string.Format("(error: no value for {0} )", macroname);
+                //text = string.Format("(error: no value for {0} )", macroname);
+                text = "(error: no value for "+macroname+" )";
             }
             else
             {

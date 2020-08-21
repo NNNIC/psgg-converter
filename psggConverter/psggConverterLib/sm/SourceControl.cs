@@ -222,8 +222,10 @@ public partial class SourceControl  {
     string m_contents2=string.Empty;
     void create_contents1()
     {
-        var state_list = new List<string>( G.state_list);
-        state_list.Sort();
+        //var state_list = new List<string>( G.state_list);
+        var state_list = new List<string>();
+        state_list.AddRange(G.state_list);
+        state_list = SortUtil.Sort(state_list);//state_list.Sort();
         var s = string.Empty;
         foreach(var state in state_list)
         {
@@ -233,8 +235,10 @@ public partial class SourceControl  {
     }
     void create_contents2()
     {
-        var state_list = new List<string>(G.state_list);
-        state_list.Sort();
+        //var state_list = new List<string>(G.state_list);
+        var state_list = new List<string>();
+        state_list.AddRange(G.state_list);
+        state_list = SortUtil.Sort(state_list);//state_list.Sort();
         var s = string.Empty;
         foreach(var state in state_list)
         {
@@ -252,7 +256,7 @@ public partial class SourceControl  {
                 state_list.Add(i);
             }
         });
-        state_list.Sort();
+        state_list = SortUtil.Sort(state_list);//state_list.Sort();
         var s = string.Empty;
         foreach (var state in state_list)
         {
@@ -511,7 +515,8 @@ public partial class SourceControl  {
                 text = G.getMacroValueFunc(macroname);
                 if (string.IsNullOrEmpty(text))
                 {
-                    text = string.Format("(error: no value for {0} )", macroname);
+                    //text = string.Format("(error: no value for {0} )", macroname);
+                    text = "(error: no value for "+ macroname +" )";
                 }
                 else
                 {

@@ -1,1 +1,1 @@
-﻿namespace psggConverterLib { public class githash { public const string hash="no hash because of debug";  } }
+﻿namespace psggConverterLib { public class Githash { public const string hash="no hash because of debug";  } }

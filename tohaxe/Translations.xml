@@ -1,4 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Translations>
-  <Method SourceObject="System.String" Match="Format" ExtensionNamespace="system.Cs2Hx" />
+  <Method SourceObject="System.String" Match="Format" ExtensionNamespace="psgg.HxString" />
+  <Method SourceObject="System.IO.File" Match="ReadAllText" ExtensionNamespace="psgg.HxFile" SkipExtensionParameter="true"/>
+  <Method SourceObject="System.IO.File" Match="WriteAllText" ExtensionNamespace="psgg.HxFile" SkipExtensionParameter="true"/>
+  <Method SourceObject="System.Text.Encoding" Match="GetEncoding" ExtensionNamespace="psgg.HxEncoding" SkipExtensionParameter="true"/>
+  <Method SourceObject="System.Text" Match="UTF8Encoding" ExtensionNamespace="psgg.HxEncoding" SkipExtensionParameter="true"/>
+  <Type Match="System.Text.UTF8Encoding" SourceObject="*" ReplaceWith="psgg.HxUTF8Encoding" />
+
 </Translations>

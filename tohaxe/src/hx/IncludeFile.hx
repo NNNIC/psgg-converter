@@ -25,11 +25,11 @@ class IncludeFile
         {
             try
             {
-                text = system.io.File.ReadAllText_String_Encoding(filepath, system.text.Encoding.GetEncoding_String(enc));
+                text = psgg.HxFile.ReadAllText_String_Encoding(filepath, psgg.HxEncoding.GetEncoding_String(enc));
             }
             catch (e:system.SystemException)
             {
-                text = system.Cs2Hx.Format("(error: can not read : {0})", e.Message);
+                text = "(error: can not read : " + system.Cs2Hx.NullCheck(e.Message);
             }
         }
         else

@@ -39,54 +39,54 @@ public class RegexUtil
         return string.Empty;
     }
 
-    public static Match Get1stMatchAsMatch(string regexstr, string s)
-    {
-        if (string.IsNullOrEmpty(s)) return null;
-        if (string.IsNullOrEmpty(regexstr)) return null;
-        var regex   = new Regex(regexstr);
-        var matches =  regex.Matches(s);
-        if (matches == null || matches.Count==0) return null;
+    //public static Match Get1stMatchAsMatch(string regexstr, string s)
+    //{
+    //    if (string.IsNullOrEmpty(s)) return null;
+    //    if (string.IsNullOrEmpty(regexstr)) return null;
+    //    var regex   = new Regex(regexstr);
+    //    var matches =  regex.Matches(s);
+    //    if (matches == null || matches.Count==0) return null;
 
-        foreach(var i in matches)
-        {
-            var m = (Match)i;
-            return m;
-        }
-        return null;
-    }
+    //    foreach(var i in matches)
+    //    {
+    //        var m = (Match)i;
+    //        return m;
+    //    }
+    //    return null;
+    //}
 
-    public static string[] GetAllMatches(string regexstr, string s)
-    {
-        if (string.IsNullOrEmpty(s)) return null;
-        if (string.IsNullOrEmpty(regexstr)) return null;
-        var regex   = new Regex(regexstr);
-        var matches = regex.Matches(s);
-        var list    = new List<string>();
-        foreach(var i in matches)
-        {
-            var m   = (Match)i;
-            list.Add(m.Value);
-        }
-        return list.ToArray();
-    }
+    //public static string[] GetAllMatches(string regexstr, string s)
+    //{
+    //    if (string.IsNullOrEmpty(s)) return null;
+    //    if (string.IsNullOrEmpty(regexstr)) return null;
+    //    var regex   = new Regex(regexstr);
+    //    var matches = regex.Matches(s);
+    //    var list    = new List<string>();
+    //    foreach(var i in matches)
+    //    {
+    //        var m   = (Match)i;
+    //        list.Add(m.Value);
+    //    }
+    //    return list.ToArray();
+    //}
 
-    public static string Replace1stMatch(string s, string regstr, string target)
-    {
-        var regex = new Regex(regstr);
-        var matches = regex.Matches(s);
-        if (matches == null || matches.Count==0) return s;
+    //public static string Replace1stMatch(string s, string regstr, string target)
+    //{
+    //    var regex = new Regex(regstr);
+    //    var matches = regex.Matches(s);
+    //    if (matches == null || matches.Count==0) return s;
 
-        foreach(var i in matches)
-        {
-            var m = (Match)i;
+    //    foreach(var i in matches)
+    //    {
+    //        var m = (Match)i;
 
-            var pre  = s.Substring(0,m.Index);
-            var post = s.Substring(m.Index + m.Length);
+    //        var pre  = s.Substring(0,m.Index);
+    //        var post = s.Substring(m.Index + m.Length);
 
-            return pre + target + post;
-        }
-        return s;
-    }
+    //        return pre + target + post;
+    //    }
+    //    return s;
+    //}
 
     public static string GetNthMatch(string regexstr, string s, int n)
     {

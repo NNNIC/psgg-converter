@@ -129,7 +129,7 @@ class MacroControl extends StateManager
             text = G.getMacroValueFunc(macroname);
             if (system.Cs2Hx.IsNullOrEmpty(text))
             {
-                text = system.Cs2Hx.Format("(error: no value for {0} )", macroname);
+                text = "(error: no value for " + system.Cs2Hx.NullCheck(macroname) + " )";
             }
             else
             {

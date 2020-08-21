@@ -369,7 +369,7 @@ class StringUtil
         var p2:String = "[^\\x22]+?$";
         var p3:String = system.Cs2Hx.NullCheck(dw) + "\\s*\\x2c";
         var p4:String = system.Cs2Hx.NullCheck(dw) + "\\s*$";
-        var regex:String = system.Cs2Hx.Format("^(({0})|({1})|({2})|({3}))", [ p1, p2, p3, p4 ]);
+        var regex:String = psgg.HxString.Format("^(({0})|({1})|({2})|({3}))", [ p1, p2, p3, p4 ]);
         var tb:String = s;
         var list:Array<String> = new Array<String>();
         { //for

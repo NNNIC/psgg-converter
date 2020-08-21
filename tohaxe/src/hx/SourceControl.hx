@@ -92,7 +92,7 @@ class SourceControl extends StateManager
         {
             try
             {
-                G.template_src = system.io.File.ReadAllText_String_Encoding(system.io.Path.Combine_String_String(G.XLSDIR, G.TEMSRC), system.text.Encoding.UTF8);
+                G.template_src = psgg.HxFile.ReadAllText_String_Encoding(system.io.Path.Combine_String_String(G.XLSDIR, G.TEMSRC), system.text.Encoding.UTF8);
                 if (!system.Cs2Hx.IsNullOrEmpty(G.PREFIX))
                 {
                     G.template_src = G.template_src.replace("__PREFIX__", G.PREFIX);
@@ -107,7 +107,7 @@ class SourceControl extends StateManager
         {
             try
             {
-                G.template_func = system.io.File.ReadAllText_String_Encoding(system.io.Path.Combine_String_String(G.XLSDIR, G.TEMFUNC), system.text.Encoding.UTF8);
+                G.template_func = psgg.HxFile.ReadAllText_String_Encoding(system.io.Path.Combine_String_String(G.XLSDIR, G.TEMFUNC), system.text.Encoding.UTF8);
                 if (!system.Cs2Hx.IsNullOrEmpty(G.PREFIX))
                 {
                     G.template_func = G.template_func.replace("__PREFIX__", G.PREFIX);
@@ -198,7 +198,7 @@ class SourceControl extends StateManager
         {
             system.io.Directory.CreateDirectory(dir);
         }
-        system.io.File.WriteAllText_String_String_Encoding(path, m_src, system.text.Encoding.GetEncoding_String(G.ENC));
+        psgg.HxFile.WriteAllText_String_String_Encoding(path, m_src, psgg.HxEncoding.GetEncoding_String(G.ENC));
     }
     function write_insertbuf():Void
     {
@@ -208,8 +208,9 @@ class SourceControl extends StateManager
     var m_contents2:String = "";
     function create_contents1():Void
     {
-        var state_list:Array<String> = new Array<String>(G.state_list);
-        state_list.sort(Cs2Hx.SortStrings);
+        var state_list:Array<String> = new Array<String>();
+        system.Cs2Hx.AddRange(state_list, G.state_list);
+        state_list = SortUtil.Sort(state_list);
         var s:String = "";
         for (state in state_list)
         {
@@ -219,8 +220,9 @@ class SourceControl extends StateManager
     }
     function create_contents2():Void
     {
-        var state_list:Array<String> = new Array<String>(G.state_list);
-        state_list.sort(Cs2Hx.SortStrings);
+        var state_list:Array<String> = new Array<String>();
+        system.Cs2Hx.AddRange(state_list, G.state_list);
+        state_list = SortUtil.Sort(state_list);
         var s:String = "";
         for (state in state_list)
         {
@@ -240,7 +242,7 @@ class SourceControl extends StateManager
             }
         }
         );
-        state_list.sort(Cs2Hx.SortStrings);
+        state_list = SortUtil.Sort(state_list);
         var s:String = "";
         for (state in state_list)
         {
@@ -477,7 +479,7 @@ class SourceControl extends StateManager
                 text = G.getMacroValueFunc(macroname);
                 if (system.Cs2Hx.IsNullOrEmpty(text))
                 {
-                    text = system.Cs2Hx.Format("(error: no value for {0} )", macroname);
+                    text = "(error: no value for " + system.Cs2Hx.NullCheck(macroname) + " )";
                 }
                 else
                 {

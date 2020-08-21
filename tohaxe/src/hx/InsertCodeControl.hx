@@ -16,7 +16,7 @@ class InsertCodeControl extends StateManager
             {
                 try
                 {
-                    m_enc = system.text.Encoding.GetEncoding_String(G.ENC);
+                    m_enc = psgg.HxEncoding.GetEncoding_String(G.ENC);
                 }
                 catch (e:system.SystemException)
                 {
@@ -35,9 +35,9 @@ class InsertCodeControl extends StateManager
                         bom = true;
                     }
                 }
-                m_enc = new system.text.UTF8Encoding(bom);
+                m_enc = new psgg.HxUTF8Encoding(bom);
             }
-            m_src = system.io.File.ReadAllText_String_Encoding(m_filepath, m_enc);
+            m_src = psgg.HxFile.ReadAllText_String_Encoding(m_filepath, m_enc);
             m_bl = StringUtil.FindNewLineChar(m_src);
             m_lines = StringUtil.SplitTrimKeepSpace(m_src, m_bl.charCodeAt(0));
         }
@@ -140,7 +140,7 @@ class InsertCodeControl extends StateManager
             }
             s += l;
         }
-        system.io.File.WriteAllText_String_String_Encoding(G.TGTFILE, s, m_enc);
+        psgg.HxFile.WriteAllText_String_String_Encoding(G.TGTFILE, s, m_enc);
     }
     public function Start():Void
     {

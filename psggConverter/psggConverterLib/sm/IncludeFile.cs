@@ -31,7 +31,8 @@ public class IncludeFile
             }
             catch(SystemException e)
             {
-                text = string.Format("(error: can not read : {0})",e.Message);
+                //text = string.Format("(error: can not read : {0})",e.Message);
+                text = "(error: can not read : " + e.Message;
             }
         }
         else

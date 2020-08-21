@@ -44,7 +44,7 @@
     <Compile Include="CommentLine.cs" />
     <Compile Include="Convert.cs" />
     <Compile Include="forHx\RefListString.cs" />
-    <Compile Include="githash.cs" />
+    <Compile Include="Githash.cs" />
     <Compile Include="LineMacro\LineMacro.cs" />
     <Compile Include="MacroWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +61,7 @@
     <Compile Include="sm\SourceControl_created.cs" />
     <Compile Include="Util\IniUtil.cs" />
     <Compile Include="Util\RegexUtil.cs" />
+    <Compile Include="Util\SortUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="ver.cs" />
   </ItemGroup>
