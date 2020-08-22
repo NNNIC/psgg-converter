@@ -57,6 +57,9 @@ class Program {
         trace("utf8enc2 : IsUTF8wBOM -> " + psgg.HxEncoding.ISUTF8Encoding_with_bom(utf8enc2) );
         trace("utf8enc3 : IsUTF8wBOM -> " + psgg.HxEncoding.ISUTF8Encoding_with_bom(utf8enc3) );
 
+        trace("\n#7 Read File ファイル読込");
+        trace("Read : utf8-wbom.txt "  + PsggFile.ReadUTF8("testdata/utf8-wbom.txt"));
+        trace("Read : utf8-wobom.txt " + PsggFile.ReadUTF8("testdata/utf8-wobom.txt"));
 
     }
 }

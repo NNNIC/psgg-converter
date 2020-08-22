@@ -21,11 +21,14 @@ del /f src\hx\SortUtil.hx 2>nul
 echo :
 echo : compile
 echo : 
-Haxe -p src\hx_alt  -p src\cs2hx_src -p src\hx -p src\test -m Program  --cpp out\c 
+Haxe -p src\sys -p src\hx_alt -p src\cs2hx_src -p src\hx -p src\test   -m Program  --cpp out\c 
 echo : done
 echo : 
 echo : run
 echo :
 pause
-out\c\Program.exe
+chcp 65001
+out\c\Program.exe > a.txt
+type a.txt
+cmd /k
 pause

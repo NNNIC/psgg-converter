@@ -7,6 +7,35 @@ function $extend(from, fields) {
 	if( fields.toString !== Object.prototype.toString ) proto.toString = fields.toString;
 	return proto;
 }
+var EReg = function(r,opt) {
+	this.r = new RegExp(r,opt.split("u").join(""));
+};
+EReg.__name__ = "EReg";
+EReg.prototype = {
+	match: function(s) {
+		if(this.r.global) {
+			this.r.lastIndex = 0;
+		}
+		this.r.m = this.r.exec(s);
+		this.r.s = s;
+		return this.r.m != null;
+	}
+	,matched: function(n) {
+		if(this.r.m != null && n >= 0 && n < this.r.m.length) {
+			return this.r.m[n];
+		} else {
+			throw haxe_Exception.thrown("EReg::matched");
+		}
+	}
+	,matchedRight: function() {
+		if(this.r.m == null) {
+			throw haxe_Exception.thrown("No string matched");
+		}
+		var sz = this.r.m.index + this.r.m[0].length;
+		return HxOverrides.substr(this.r.s,sz,this.r.s.length - sz);
+	}
+	,__class__: EReg
+};
 var StateManager = function() {
 	this.m_noWait = false;
 };
@@ -971,8 +1000,55 @@ Math.__name__ = "Math";
 var Program = function() { };
 Program.__name__ = "Program";
 Program.main = function() {
+	console.log("src\test/Program.hx:4:","#0. call Convert");
 	var p = new psggconverterlib_Convert();
 	p.TEST();
+	console.log("src\test/Program.hx:8:","\n#1. test RegexUtil.IsMatch");
+	var r = RegexUtil.IsMatch("^HOGE$","HOGE");
+	console.log("src\test/Program.hx:11:","RegexUtil.IsMatch(\"^HOGE$\",\"HOGE\")->" + (r == null ? "null" : "" + r));
+	r = RegexUtil.IsMatch("^HOGE$","HEGE");
+	console.log("src\test/Program.hx:13:","RegexUtil.IsMatch(\"^HOGE$\",\"HEGE\")->" + (r == null ? "null" : "" + r));
+	r = RegexUtil.IsMatch("^H_.*$","H_EGE");
+	console.log("src\test/Program.hx:15:","RegexUtil.IsMatch(\"^H_.*$\",\"H_EGE\")->" + (r == null ? "null" : "" + r));
+	console.log("src\test/Program.hx:17:","\n#2 Get1stMatch");
+	var s = RegexUtil.Get1stMatch("_._","xxxx_n_v_c_");
+	console.log("src\test/Program.hx:20:","RegexUtil.Get1stMatch(\"_._\",xxxx_n_v_c_\")->" + s);
+	s = RegexUtil.Get1stMatch("^A_.*","A_xxxx_n_v_c_");
+	console.log("src\test/Program.hx:22:","RegexUtil.Get1stMatch(\"$A_.*\",\"A_xxxx_n_v_c_\")->" + s);
+	console.log("src\test/Program.hx:24:","\n#3 GetNthMatch");
+	var m0 = RegexUtil.GetNthMatch("_._","xxxx_n__v__c_",0);
+	var m1 = RegexUtil.GetNthMatch("_._","xxxx_n__v__c_",1);
+	var m2 = RegexUtil.GetNthMatch("_._","xxxx_n__v__c_",2);
+	var m3 = RegexUtil.GetNthMatch("_._","xxxx_n__v__c_",3);
+	console.log("src\test/Program.hx:30:","RegexUtil.GetNstMatch(\"_._\",\"xxxx_n__v__c_\",[0..3)" + m0 + "," + m1 + "," + m2 + "," + m3 + ",");
+	console.log("src\test/Program.hx:32:","\n#4 Array<String>.sort");
+	var l = ["dog","cat","mouse","monkey","sheep","tiger"];
+	var l2 = SortUtil.Sort(l);
+	var _g = 0;
+	while(_g < l2.length) {
+		var i = l2[_g];
+		++_g;
+		console.log("src\test/Program.hx:36:",i);
+	}
+	console.log("src\test/Program.hx:39:","\n#5 Encoding ascii");
+	var asciienc1 = new system_text_ASCIIEncoding();
+	var asciienc2 = psgg_HxEncoding.GetEncoding_String("ascii");
+	console.log("src\test/Program.hx:42:","asciienc1 : IsAscii -> " + Std.string(psgg_HxEncoding.IsASCIIEncoding(asciienc1)));
+	console.log("src\test/Program.hx:43:","asciienc2 : IsAscii -> " + Std.string(psgg_HxEncoding.IsASCIIEncoding(asciienc2)));
+	console.log("src\test/Program.hx:44:","asciienc1 : IsUtf8  -> " + Std.string(psgg_HxEncoding.IsUTF8Encoding(asciienc1)));
+	console.log("src\test/Program.hx:45:","asciienc2 : IsUtf8  -> " + Std.string(psgg_HxEncoding.IsUTF8Encoding(asciienc2)));
+	console.log("src\test/Program.hx:47:","\n#6 Encoding utf8");
+	var utf8enc1 = new system_text_UTF8Encoding();
+	var utf8enc2 = new psgg_HxUTF8Encoding(true);
+	var utf8enc3 = new psgg_HxUTF8Encoding(false);
+	var utf8enc4 = psgg_HxEncoding.GetEncoding_String("utf8");
+	console.log("src\test/Program.hx:52:","utf8enc1 : IsUTF8 -> " + Std.string(psgg_HxEncoding.IsUTF8Encoding(utf8enc1)));
+	console.log("src\test/Program.hx:53:","utf8enc2 : IsUTF8 -> " + Std.string(psgg_HxEncoding.IsUTF8Encoding(utf8enc2)));
+	console.log("src\test/Program.hx:54:","utf8enc3 : IsUTF8 -> " + Std.string(psgg_HxEncoding.IsUTF8Encoding(utf8enc3)));
+	console.log("src\test/Program.hx:55:","utf8enc4 : IsUTF8 -> " + Std.string(psgg_HxEncoding.IsUTF8Encoding(utf8enc4)));
+	console.log("src\test/Program.hx:56:","asciienc1: IsUTF8 -> " + Std.string(psgg_HxEncoding.IsUTF8Encoding(asciienc1)));
+	console.log("src\test/Program.hx:57:","utf8enc2 : IsUTF8wBOM -> " + Std.string(psgg_HxEncoding.ISUTF8Encoding_with_bom(utf8enc2)));
+	console.log("src\test/Program.hx:58:","utf8enc3 : IsUTF8wBOM -> " + Std.string(psgg_HxEncoding.ISUTF8Encoding_with_bom(utf8enc3)));
 };
 var RefListString = function() {
 };
@@ -984,12 +1060,27 @@ var RegexUtil = function() {
 };
 RegexUtil.__name__ = "RegexUtil";
 RegexUtil.IsMatch = function(regexstr,s) {
-	return false;
+	var r = new EReg(regexstr,"m");
+	return r.match(s);
 };
 RegexUtil.Get1stMatch = function(regexstr,s) {
+	var r = new EReg(regexstr,"m");
+	if(r.match(s)) {
+		return r.matched(0);
+	}
 	return null;
 };
 RegexUtil.GetNthMatch = function(regexstr,s,n) {
+	var input = s;
+	var cnt = 0;
+	var r = new EReg(regexstr,"m");
+	while(r.match(input)) {
+		if(n == cnt) {
+			return r.matched(0);
+		}
+		input = r.matchedRight();
+		++cnt;
+	}
 	return null;
 };
 RegexUtil.prototype = {
@@ -999,8 +1090,17 @@ var SortUtil = function() {
 };
 SortUtil.__name__ = "SortUtil";
 SortUtil.Sort = function(l) {
-	console.log("src\hx_alt/SortUtil.hx:10:","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TO BE IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-	return l;
+	var l2 = l.slice();
+	l2.sort(function(a,b) {
+		if(a < b) {
+			return -1;
+		}
+		if(a > b) {
+			return 1;
+		}
+		return 0;
+	});
+	return l2;
 };
 SortUtil.prototype = {
 	__class__: SortUtil
@@ -2393,6 +2493,9 @@ StringUtil.convert_to_camel_word = function(s,upperOrLower) {
 StringUtil.prototype = {
 	__class__: StringUtil
 };
+var haxe_IMap = function() { };
+haxe_IMap.__name__ = "haxe.IMap";
+haxe_IMap.__isInterface__ = true;
 var haxe_Exception = function(message,previous,native) {
 	Error.call(this,message);
 	this.message = message;
@@ -2656,6 +2759,7 @@ var haxe_ds_IntMap = function() {
 	this.h = { };
 };
 haxe_ds_IntMap.__name__ = "haxe.ds.IntMap";
+haxe_ds_IntMap.__interfaces__ = [haxe_IMap];
 haxe_ds_IntMap.prototype = {
 	__class__: haxe_ds_IntMap
 };
@@ -2790,6 +2894,90 @@ js_Boot.__string_rec = function(o,s) {
 		return String(o);
 	}
 };
+js_Boot.__interfLoop = function(cc,cl) {
+	if(cc == null) {
+		return false;
+	}
+	if(cc == cl) {
+		return true;
+	}
+	var intf = cc.__interfaces__;
+	if(intf != null) {
+		var _g = 0;
+		var _g1 = intf.length;
+		while(_g < _g1) {
+			var i = _g++;
+			var i1 = intf[i];
+			if(i1 == cl || js_Boot.__interfLoop(i1,cl)) {
+				return true;
+			}
+		}
+	}
+	return js_Boot.__interfLoop(cc.__super__,cl);
+};
+js_Boot.__instanceof = function(o,cl) {
+	if(cl == null) {
+		return false;
+	}
+	switch(cl) {
+	case Array:
+		return ((o) instanceof Array);
+	case Bool:
+		return typeof(o) == "boolean";
+	case Dynamic:
+		return o != null;
+	case Float:
+		return typeof(o) == "number";
+	case Int:
+		if(typeof(o) == "number") {
+			return ((o | 0) === o);
+		} else {
+			return false;
+		}
+		break;
+	case String:
+		return typeof(o) == "string";
+	default:
+		if(o != null) {
+			if(typeof(cl) == "function") {
+				if(js_Boot.__downcastCheck(o,cl)) {
+					return true;
+				}
+			} else if(typeof(cl) == "object" && js_Boot.__isNativeObj(cl)) {
+				if(((o) instanceof cl)) {
+					return true;
+				}
+			}
+		} else {
+			return false;
+		}
+		if(cl == Class ? o.__name__ != null : false) {
+			return true;
+		}
+		if(cl == Enum ? o.__ename__ != null : false) {
+			return true;
+		}
+		return o.__enum__ != null ? $hxEnums[o.__enum__] == cl : false;
+	}
+};
+js_Boot.__downcastCheck = function(o,cl) {
+	if(!((o) instanceof cl)) {
+		if(cl.__isInterface__) {
+			return js_Boot.__interfLoop(js_Boot.getClass(o),cl);
+		} else {
+			return false;
+		}
+	} else {
+		return true;
+	}
+};
+js_Boot.__cast = function(o,t) {
+	if(o == null || js_Boot.__instanceof(o,t)) {
+		return o;
+	} else {
+		throw haxe_Exception.thrown("Cannot cast " + Std.string(o) + " to " + Std.string(t));
+	}
+};
 js_Boot.__nativeClassName = function(o) {
 	var name = js_Boot.__toStr.call(o).slice(8,-1);
 	if(name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
@@ -2797,18 +2985,80 @@ js_Boot.__nativeClassName = function(o) {
 	}
 	return name;
 };
+js_Boot.__isNativeObj = function(o) {
+	return js_Boot.__nativeClassName(o) != null;
+};
 js_Boot.__resolveNativeClass = function(name) {
 	return $global[name];
 };
+var system_text_Encoding = function() {
+};
+system_text_Encoding.__name__ = "system.text.Encoding";
+system_text_Encoding.get_UTF8 = function() {
+	return new system_text_UTF8Encoding();
+};
+system_text_Encoding.prototype = {
+	__class__: system_text_Encoding
+};
 var psgg_HxEncoding = function() {
+	system_text_Encoding.call(this);
 };
 psgg_HxEncoding.__name__ = "psgg.HxEncoding";
 psgg_HxEncoding.GetEncoding_String = function(enc) {
-	return new system_text_UTF8Encoding();
+	var p = new psgg_HxEncoding();
+	p.enc = enc;
+	p.bom = false;
+	return p;
 };
-psgg_HxEncoding.prototype = {
+psgg_HxEncoding.IsASCIIEncoding = function(enc) {
+	var error = "";
+	if(((enc) instanceof system_text_ASCIIEncoding)) {
+		var c1 = js_Boot.__cast(enc , system_text_ASCIIEncoding);
+		return c1 != null;
+	}
+	if(((enc) instanceof psgg_HxEncoding)) {
+		var c2 = js_Boot.__cast(enc , psgg_HxEncoding);
+		if(c2 != null) {
+			return c2.enc.toLowerCase() == "ascii";
+		} else {
+			return false;
+		}
+	}
+	return false;
+};
+psgg_HxEncoding.IsUTF8Encoding = function(enc) {
+	var error = "";
+	if(((enc) instanceof system_text_UTF8Encoding)) {
+		var c1 = js_Boot.__cast(enc , system_text_UTF8Encoding);
+		return c1 != null;
+	}
+	if(((enc) instanceof psgg_HxEncoding)) {
+		var c2 = js_Boot.__cast(enc , psgg_HxEncoding);
+		if(c2 != null) {
+			return c2.enc.toLowerCase() == "utf8";
+		} else {
+			return false;
+		}
+	}
+	return false;
+};
+psgg_HxEncoding.ISUTF8Encoding_with_bom = function(enc) {
+	if(psgg_HxEncoding.IsUTF8Encoding(enc)) {
+		if(((enc) instanceof psgg_HxEncoding)) {
+			var c2 = js_Boot.__cast(enc , psgg_HxEncoding);
+			if(c2 != null) {
+				return c2.bom;
+			} else {
+				return false;
+			}
+		}
+	}
+	return false;
+};
+psgg_HxEncoding.__super__ = system_text_Encoding;
+psgg_HxEncoding.prototype = $extend(system_text_Encoding.prototype,{
 	__class__: psgg_HxEncoding
-};
+});
 var psgg_HxFile = function() {
 };
 psgg_HxFile.__name__ = "psgg.HxFile";
@@ -2829,21 +3079,14 @@ psgg_HxString.Format = function(fmt,plist) {
 psgg_HxString.prototype = {
 	__class__: psgg_HxString
 };
-var system_text_Encoding = function() {
-};
-system_text_Encoding.__name__ = "system.text.Encoding";
-system_text_Encoding.get_UTF8 = function() {
-	return new system_text_UTF8Encoding();
-};
-system_text_Encoding.prototype = {
-	__class__: system_text_Encoding
-};
 var psgg_HxUTF8Encoding = function(bom) {
-	system_text_Encoding.call(this);
+	psgg_HxEncoding.call(this);
+	this.enc = "utf8";
+	this.bom = bom;
 };
 psgg_HxUTF8Encoding.__name__ = "psgg.HxUTF8Encoding";
-psgg_HxUTF8Encoding.__super__ = system_text_Encoding;
-psgg_HxUTF8Encoding.prototype = $extend(system_text_Encoding.prototype,{
+psgg_HxUTF8Encoding.__super__ = psgg_HxEncoding;
+psgg_HxUTF8Encoding.prototype = $extend(psgg_HxEncoding.prototype,{
 	__class__: psgg_HxUTF8Encoding
 });
 var psggconverterlib_CfPrepareControl = function() {
@@ -4561,6 +4804,18 @@ system_TypeCS.__name__ = "system.TypeCS";
 system_TypeCS.prototype = {
 	__class__: system_TypeCS
 };
+var system_collections_generic_IComparer = function() { };
+system_collections_generic_IComparer.__name__ = "system.collections.generic.IComparer";
+system_collections_generic_IComparer.__isInterface__ = true;
+system_collections_generic_IComparer.prototype = {
+	__class__: system_collections_generic_IComparer
+};
+var system_collections_generic_IEnumerable = function() { };
+system_collections_generic_IEnumerable.__name__ = "system.collections.generic.IEnumerable";
+system_collections_generic_IEnumerable.__isInterface__ = true;
+system_collections_generic_IEnumerable.prototype = {
+	__class__: system_collections_generic_IEnumerable
+};
 var system_diagnostics_Debugger = function() {
 };
 system_diagnostics_Debugger.__name__ = "system.diagnostics.Debugger";
@@ -4695,6 +4950,17 @@ system_io_Path.GetTempFileName = function() {
 system_io_Path.prototype = {
 	__class__: system_io_Path
 };
+var system_text_ASCIIEncoding = function() {
+	system_text_Encoding.call(this);
+};
+system_text_ASCIIEncoding.__name__ = "system.text.ASCIIEncoding";
+system_text_ASCIIEncoding.__super__ = system_text_Encoding;
+system_text_ASCIIEncoding.prototype = $extend(system_text_Encoding.prototype,{
+	GetBytes_String: function(str) {
+		throw haxe_Exception.thrown(new system_NotImplementedException());
+	}
+	,__class__: system_text_ASCIIEncoding
+});
 var system_text_StringBuilder = function(initial) {
 	if(initial == null) {
 		this.buffer = "";
@@ -4814,6 +5080,12 @@ if( String.fromCodePoint == null ) String.fromCodePoint = function(c) { return c
 String.prototype.__class__ = String;
 String.__name__ = "String";
 Array.__name__ = "Array";
+var Int = { };
+var Dynamic = { };
+var Float = Number;
+var Bool = Boolean;
+var Class = { };
+var Enum = { };
 js_Boot.__toStr = ({ }).toString;
 FunctionControl.m_loopMax = 10000;
 RegexUtil.VARNAME_PATTERN = "[_a-zA-Z][_a-zA-Z0-9]+";

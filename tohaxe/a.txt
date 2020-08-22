@@ -1,0 +1,45 @@
+src\test/Program.hx:4: #0. call Convert
+src\cs2hx_src/system/Console.hx:13: psggConvertLib TEST
+src\test/Program.hx:8: 
+#1. test RegexUtil.IsMatch
+src\test/Program.hx:11: RegexUtil.IsMatch("^HOGE$","HOGE")->true
+src\test/Program.hx:13: RegexUtil.IsMatch("^HOGE$","HEGE")->false
+src\test/Program.hx:15: RegexUtil.IsMatch("^H_.*$","H_EGE")->true
+src\test/Program.hx:17: 
+#2 Get1stMatch
+src\test/Program.hx:20: RegexUtil.Get1stMatch("_._",xxxx_n_v_c_")->_n_
+src\test/Program.hx:22: RegexUtil.Get1stMatch("$A_.*","A_xxxx_n_v_c_")->A_xxxx_n_v_c_
+src\test/Program.hx:24: 
+#3 GetNthMatch
+src\test/Program.hx:30: RegexUtil.GetNstMatch("_._","xxxx_n__v__c_",[0..3)_n_,_v_,_c_,null,
+src\test/Program.hx:32: 
+#4 Array<String>.sort
+src\test/Program.hx:36: cat
+src\test/Program.hx:36: dog
+src\test/Program.hx:36: monkey
+src\test/Program.hx:36: mouse
+src\test/Program.hx:36: sheep
+src\test/Program.hx:36: tiger
+src\test/Program.hx:39: 
+#5 Encoding ascii
+src\test/Program.hx:42: asciienc1 : IsAscii -> true
+src\test/Program.hx:43: asciienc2 : IsAscii -> true
+src\test/Program.hx:44: asciienc1 : IsUtf8  -> false
+src\test/Program.hx:45: asciienc2 : IsUtf8  -> false
+src\test/Program.hx:47: 
+#6 Encoding utf8
+src\test/Program.hx:52: utf8enc1 : IsUTF8 -> true
+src\test/Program.hx:53: utf8enc2 : IsUTF8 -> true
+src\test/Program.hx:54: utf8enc3 : IsUTF8 -> true
+src\test/Program.hx:55: utf8enc4 : IsUTF8 -> true
+src\test/Program.hx:56: asciienc1: IsUTF8 -> false
+src\test/Program.hx:57: utf8enc2 : IsUTF8wBOM -> true
+src\test/Program.hx:58: utf8enc3 : IsUTF8wBOM -> false
+src\test/Program.hx:60: 
+#7 Read File ファイル読込
+Read : utf8-wbom.txt BOM付きです！
+お早うございます！
+今日も頑張りましょう！
+
+Read : utf8-wobom.txt BOM無しです！
+お先に失礼します。
