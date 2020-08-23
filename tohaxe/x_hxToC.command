@@ -23,4 +23,8 @@ echo : Compile
 echo :
 Haxe -p src/sys -p src/hx_alt -p src/cs2hx_src -p src/hx -p src/test   -m Program  --cpp out/c 
 
+echo :
+echo : Run  [Enter]
+read wait
+./out/c/Program
 read wait
