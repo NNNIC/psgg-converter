@@ -37,9 +37,11 @@ src\test/Program.hx:57: utf8enc2 : IsUTF8wBOM -> true
 src\test/Program.hx:58: utf8enc3 : IsUTF8wBOM -> false
 src\test/Program.hx:60: 
 #7 Read File ファイル読込
-Read : utf8-wbom.txt BOM付きです！
+src\test/Program.hx:61: Read : utf8-wbom.txt BOM付きです！
 お早うございます！
 今日も頑張りましょう！
 
-Read : utf8-wobom.txt BOM無しです！
+
+src\test/Program.hx:62: Read : utf8-wobom.txt BOM無しです！
 お先に失礼します。
+

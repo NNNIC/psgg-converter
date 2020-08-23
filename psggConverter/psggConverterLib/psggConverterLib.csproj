@@ -64,6 +64,7 @@
     <Compile Include="Util\SortUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="ver.cs" />
+    <Compile Include="wordstrage\Store.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
