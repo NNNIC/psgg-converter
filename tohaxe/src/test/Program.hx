@@ -61,5 +61,11 @@ class Program {
         trace("Read : utf8-wbom.txt "  + PsggFile.ReadUTF8("testdata/utf8-wbom.txt"));
         trace("Read : utf8-wobom.txt " + PsggFile.ReadUTF8("testdata/utf8-wobom.txt"));
 
+        trace("\n\n CONVERTER TEST");
+        
+        var cc = new ConvControl();
+        cc.m_psgg_file = "C:/Users/gea01/Documents/psgg/psgg-converter/tohaxe/src/main/ConvControl.psgg";
+        cc.Run();
+
     }
 }
