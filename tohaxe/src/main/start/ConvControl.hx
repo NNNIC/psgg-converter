@@ -1,4 +1,6 @@
-﻿import psgg.HxFile;
+﻿package start;
+
+import psgg.HxFile;
 
 typedef STATEFUNC = Bool->Void;
 
@@ -144,6 +146,17 @@ class ConvControl  {
     */
     public var m_psgg_file : String;
     /*
+        E_0002
+    */
+    var m_buf_chart    : String;
+    var m_buf_config   : String;
+    var m_buf_tmpsrc   : String;
+    var m_buf_tmpfunc  : String;
+    var m_buf_setting  : String;
+    var m_buf_help     : String;
+    var m_buf_iteminfo : String;
+    var m_buf_bitmap   : String;
+    /*
         S_END
     */
     function S_END(bFirst : Bool)
@@ -183,7 +196,7 @@ class ConvControl  {
         var buf : String = psgg.HxFile.ReadAllText_String_Encoding(m_psgg_file, new system.text.UTF8Encoding());
         var list = new List<String>();
         while(buf!=null && buf.length > 1) {
-            var index = buf.indexOf("------#======*<",1);
+            var index = buf.indexOf(wordstrage.Store.PSGG_MARK_PREFIX,1);
             if (index < 0) {
                 break;
             }
@@ -194,14 +207,45 @@ class ConvControl  {
         if (buf!=null && buf.length > 0) {
             list.add(buf);
         }
-        /*
+        
         var i = 0;
+        
         for(item in list) {
-            trace("#" + i);
-            i++;
             trace(item);
-        } 
-        */   
+            if (item.indexOf(wordstrage.Store.PSGG_MARK_STATECHART_SHEET) >= 0) {
+                m_buf_chart = item;
+            } else if (item.indexOf(wordstrage.Store.PSGG_MARK_VARIOUS_SHEET) >= 0) {
+                if (item.indexOf("sheet=config") >= 0 ) {
+                    m_buf_config = item;
+                }
+                else if (item.indexOf("sheet=template-source") >= 0 ) {
+                    m_buf_tmpsrc = item;
+                }
+                else if (item.indexOf("sheet=template-statefunc") >= 0) {
+                    m_buf_tmpfunc = item;
+                }
+                else if (item.indexOf("sheet=setting.ini") >= 0) {
+                    m_buf_setting = item;
+                }
+                else if (item.indexOf("sheet=help") >= 0) {
+                    m_buf_help = item;
+                }
+                else if (item.indexOf("sheet=itemsinfo") >= 0) {
+                    m_buf_iteminfo = item;
+                }
+             } else if (item.indexOf(wordstrage.Store.PSGG_MARK_BITMAP_DATA) >= 0) {
+                m_buf_bitmap = item;
+             }
+            i++;
+        }
+        trace("#m_buf_chart="  + m_buf_chart.substr(0,80));
+        trace("#m_buf_config=" + m_buf_config.substr(0,80));
+        trace("#m_buf_tmpsrc=" + m_buf_tmpsrc.substr(0,80));
+        trace("#m_buf_tmpfnc=" + m_buf_tmpfunc.substr(0,80));
+        trace("#m_buf_setting=" + m_buf_setting.substr(0,80));
+        trace("#m_buf_help=" + m_buf_help.substr(0,80));
+        trace("#m_buf_iteminfo=" + m_buf_iteminfo.substr(0,80));
+        trace("#m_buf_bitmap=" + m_buf_bitmap.substr(0,80));
     }
 }
 

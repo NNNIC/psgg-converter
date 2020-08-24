@@ -1,3 +1,5 @@
+package start;
+import tool.IniUtil;
 import psggconverterlib.Convert;
 class Program {
     public static function main() {
@@ -58,14 +60,19 @@ class Program {
         trace("utf8enc3 : IsUTF8wBOM -> " + psgg.HxEncoding.ISUTF8Encoding_with_bom(utf8enc3) );
 
         trace("\n#7 Read File ファイル読込");
-        trace("Read : utf8-wbom.txt "  + PsggFile.ReadUTF8("testdata/utf8-wbom.txt"));
-        trace("Read : utf8-wobom.txt " + PsggFile.ReadUTF8("testdata/utf8-wobom.txt"));
+        trace("Read : utf8-wbom.txt "  + PsggFile.ReadUTF8("C:/Users/gea01/Documents/psgg/psgg-converter/tohaxe/testdata/utf8-wbom.txt"));
+        trace("Read : utf8-wobom.txt " + PsggFile.ReadUTF8("C:/Users/gea01/Documents/psgg/psgg-converter/tohaxe/testdata/utf8-wobom.txt"));
 
         trace("\n\n CONVERTER TEST");
         
         var cc = new ConvControl();
-        cc.m_psgg_file = "C:/Users/gea01/Documents/psgg/psgg-converter/tohaxe/src/main/ConvControl.psgg";
+        cc.m_psgg_file = "C:/Users/gea01/Documents/psgg/psgg-converter/tohaxe/testdata/win-bat/MainControl.psgg";
         cc.Run();
+
+        trace("\n#8 ini test");
+        trace("X=" + IniUtil.Get("X=GORO","X"));
+        trace("X=" + IniUtil.Get("X=@@@\nSTART\nHOGE\nEND\n@@@","X"));
+
 
     }
 }

@@ -1,58 +1,57 @@
-src\test/Program.hx:4: #0. call Convert
-src\cs2hx_src/system/Console.hx:13: psggConvertLib TEST
-src\test/Program.hx:8: 
+src\main/start/Program.hx:6: #0. call Convert
+src\main/system/Console.hx:13: psggConvertLib TEST
+src\main/start/Program.hx:10: 
 #1. test RegexUtil.IsMatch
-src\test/Program.hx:11: RegexUtil.IsMatch("^HOGE$","HOGE")->true
-src\test/Program.hx:13: RegexUtil.IsMatch("^HOGE$","HEGE")->false
-src\test/Program.hx:15: RegexUtil.IsMatch("^H_.*$","H_EGE")->true
-src\test/Program.hx:17: 
+src\main/start/Program.hx:13: RegexUtil.IsMatch("^HOGE$","HOGE")->true
+src\main/start/Program.hx:15: RegexUtil.IsMatch("^HOGE$","HEGE")->false
+src\main/start/Program.hx:17: RegexUtil.IsMatch("^H_.*$","H_EGE")->true
+src\main/start/Program.hx:19: 
 #2 Get1stMatch
-src\test/Program.hx:20: RegexUtil.Get1stMatch("_._",xxxx_n_v_c_")->_n_
-src\test/Program.hx:22: RegexUtil.Get1stMatch("$A_.*","A_xxxx_n_v_c_")->A_xxxx_n_v_c_
-src\test/Program.hx:24: 
+src\main/start/Program.hx:22: RegexUtil.Get1stMatch("_._",xxxx_n_v_c_")->_n_
+src\main/start/Program.hx:24: RegexUtil.Get1stMatch("$A_.*","A_xxxx_n_v_c_")->A_xxxx_n_v_c_
+src\main/start/Program.hx:26: 
 #3 GetNthMatch
-src\test/Program.hx:30: RegexUtil.GetNstMatch("_._","xxxx_n__v__c_",[0..3)_n_,_v_,_c_,null,
-src\test/Program.hx:32: 
+src\main/start/Program.hx:32: RegexUtil.GetNstMatch("_._","xxxx_n__v__c_",[0..3)_n_,_v_,_c_,null,
+src\main/start/Program.hx:34: 
 #4 Array<String>.sort
-src\test/Program.hx:36: cat
-src\test/Program.hx:36: dog
-src\test/Program.hx:36: monkey
-src\test/Program.hx:36: mouse
-src\test/Program.hx:36: sheep
-src\test/Program.hx:36: tiger
-src\test/Program.hx:39: 
+src\main/start/Program.hx:38: cat
+src\main/start/Program.hx:38: dog
+src\main/start/Program.hx:38: monkey
+src\main/start/Program.hx:38: mouse
+src\main/start/Program.hx:38: sheep
+src\main/start/Program.hx:38: tiger
+src\main/start/Program.hx:41: 
 #5 Encoding ascii
-src\test/Program.hx:42: asciienc1 : IsAscii -> true
-src\test/Program.hx:43: asciienc2 : IsAscii -> true
-src\test/Program.hx:44: asciienc1 : IsUtf8  -> false
-src\test/Program.hx:45: asciienc2 : IsUtf8  -> false
-src\test/Program.hx:47: 
+src\main/start/Program.hx:44: asciienc1 : IsAscii -> true
+src\main/start/Program.hx:45: asciienc2 : IsAscii -> true
+src\main/start/Program.hx:46: asciienc1 : IsUtf8  -> false
+src\main/start/Program.hx:47: asciienc2 : IsUtf8  -> false
+src\main/start/Program.hx:49: 
 #6 Encoding utf8
-src\test/Program.hx:52: utf8enc1 : IsUTF8 -> true
-src\test/Program.hx:53: utf8enc2 : IsUTF8 -> true
-src\test/Program.hx:54: utf8enc3 : IsUTF8 -> true
-src\test/Program.hx:55: utf8enc4 : IsUTF8 -> true
-src\test/Program.hx:56: asciienc1: IsUTF8 -> false
-src\test/Program.hx:57: utf8enc2 : IsUTF8wBOM -> true
-src\test/Program.hx:58: utf8enc3 : IsUTF8wBOM -> false
-src\test/Program.hx:60: 
+src\main/start/Program.hx:54: utf8enc1 : IsUTF8 -> true
+src\main/start/Program.hx:55: utf8enc2 : IsUTF8 -> true
+src\main/start/Program.hx:56: utf8enc3 : IsUTF8 -> true
+src\main/start/Program.hx:57: utf8enc4 : IsUTF8 -> true
+src\main/start/Program.hx:58: asciienc1: IsUTF8 -> false
+src\main/start/Program.hx:59: utf8enc2 : IsUTF8wBOM -> true
+src\main/start/Program.hx:60: utf8enc3 : IsUTF8wBOM -> false
+src\main/start/Program.hx:62: 
 #7 Read File ファイル読込
-src\test/Program.hx:61: Read : utf8-wbom.txt BOM付きです！
+src\main/start/Program.hx:63: Read : utf8-wbom.txt BOM付きです！
 お早うございます！
 今日も頑張りましょう！
 
 
-src\test/Program.hx:62: Read : utf8-wobom.txt BOM無しです！
+src\main/start/Program.hx:64: Read : utf8-wobom.txt BOM無しです！
 お先に失礼します。
 
-src\test/Program.hx:64: 
+src\main/start/Program.hx:66: 
 
  CONVERTER TEST
-src\main/ConvControl.hx:199: #0
-src\main/ConvControl.hx:201: ;PSGG Editor Backup File
+src\main/start/ConvControl.hx:214: ;PSGG Editor Backup File
 version=1.1
-file=ConvControl.xlsx
-guid=31cfa6fb-3da6-4be7-b133-102ab2b3d993
+file=MainControl.xlsx
+guid=5665595d-4754-43ae-a5a8-cbb402c74a93
 ;set read_from  excel or psgg
 read_from=psgg
 ;set savemode with_excel or psgg_only
@@ -61,14 +60,13 @@ save_mode=psgg_only
 check_excel_writable=no
 
 
-src\main/ConvControl.hx:199: #1
-src\main/ConvControl.hx:201: ------#======*<Guid(D13821FE-FA27-4B04-834C-CEC1E5670F48)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(D13821FE-FA27-4B04-834C-CEC1E5670F48)>*======#------
 
 sheet=state-chart
-nameid_list=,n001,n002,n01c,n003,n004,n005,n006,,n007,,n008,,n009,n00a,n00b,n00c,,n00d,n00e,,n00f,n010,,n011,n012,,n013,n014,,,n022,n01e,n01f,n020,,n015,n016,n017,n018,,n019,n01a,n01b,,,,,,
-stateid_list=,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,s0022,s0023,s0024,s0025
-max_name_id=34
-max_state_id=37
+nameid_list=,n001,n002,n003,n004,n00f,n005,n006,,n014,n007,n008,,n010,,n011,n012,n013,,n009,n00a,n00b,,n00c,n00d,n00e,,
+stateid_list=,,,,s0001,s0002,s0004,s0003,s0005,s0006,s0007,s0008,s0009,s000a,s000b,s000c,,,
+max_name_id=20
+max_state_id=13
 [id_name_dic]
 n001=thumbnail
 n002=state
@@ -76,110 +74,226 @@ n003=state-cmt
 n004=state-ref
 n005=basestate
 n006=nextstate
-n007=embed
-n008=members
-n009=vars
-n00a=init
-n00b=init-cmt
-n00c=init-ref
-n00d=update
-n00e=update-cmt
-n00f=wait
-n010=wait-cmt
-n011=post_wait
-n012=post_wait-cmt
-n013=gosubstate
-n014=return
-n015=branch
-n016=branch-cmt
-n017=brcond
-n018=nowait
-n019=!dir
-n01a=!pos
-n01b=!uuid
-n01c=state-typ
-n01e=loop_init
-n01f=loop_cond
-n020=loop_next
-n022=loop
+n007=command
+n008=command-cmt
+n009=branch
+n00a=branch-cmt
+n00b=brcond
+n00c=!dir
+n00d=!pos
+n00e=!uuid
+n00f=state-typ
+n010=gosubstate
+n011=loop_init
+n012=loop_cond
+n013=loop_next
+n014=embed
 
 
 [id_state_dic]
-s0022=S_START
-s0023=S_END
-s0024=S_INIT
-s0025=E_0001
+s0001=S_START
+s0002=S_END
+s0003=S_GOSUB1
+s0004=S_SUBSTART1
+s0005=S_RETURN1
+s0006=S_0001
+s0007=S_SUBSTART2
+s0008=S_LOOP1
+s0009=S_RETURN2
+s000a=S_0002
+s000b=S_ODD_OR_EVEN
+s000c=S_0003
 
 
-[s0022]
+[s0001]
 n002=S_START
-n01c=start
-n006=S_INIT
-n019=@@@
-/
-(100,100)
-The root
-@@@
+n003=
+n00f=start
+n006=S_GOSUB1
+n00d=50,100
+n00e=100001
 
-n01a=40,179
-n01b=1
-
-[s0023]
+[s0002]
 n002=S_END
-n01c=end
-n019=@@@
-/
-(100,100)
-The root
+n003=
+n00f=end
+n007=
+n00d=897,107
+n00e=100002
+
+[s0003]
+n001=(bitmap)
+n002=S_GOSUB1
+n003=
+n00f=gosub
+n006=S_LOOP1
+n010=S_SUBSTART1
+n00c=@@@
+/
+(100,100)
+
 @@@
 
-n01a=914,189
-n01b=2
+n00d=40,341
+n00e=100003
 
-[s0024]
-n002=S_INIT
+[s0004]
+n002=S_SUBSTART1
+n003=
+n00f=substart
+n006=S_0001
+n00c=@@@
+/
+(100,100)
+
+@@@
+
+n00d=107,744
+n00e=100004
+
+[s0005]
+n002=S_RETURN1
+n003=
+n00f=subreturn
+n00c=@@@
+/
+(100,100)
+
+@@@
+
+n00d=434,755
+n00e=100005
+
+[s0006]
+n002=S_0001
+n006=S_RETURN1
+n007=echo : we are in A subroutine
+n00c=@@@
+/
+(100,100)
+
+@@@
+
+n00d=219,751
+n00e=100006
+
+[s0007]
+n002=S_SUBSTART2
+n003=
+n00f=substart
+n006=S_ODD_OR_EVEN
+n00c=@@@
+/
+(100,100)
+
+@@@
+
+n00d=340,438
+n00e=100008
+
+[s0008]
+n002=S_LOOP1
+n003=Loop 10 times
+n00f=loop
 n006=S_END
-n00a=load();
-n019=@@@
-/
-(100,100)
+n010=S_SUBSTART2
+n011=set LOOP=0
+n012=%LOOP% LSS 10
+n013=set /a LOOP=%LOOP%+1
+n00c=@@@
+/
+(100,100)
 
 @@@
 
-n01a=157,179
-n01b=3
+n00d=149,328
+n00e=100007
 
-[s0025]
-n002=E_0001
-n007=public var m_psgg_file : String;
-n019=@@@
-/
-(100,100)
+[s0009]
+n001=(bitmap)
+n002=S_RETURN2
+n003=
+n00f=subreturn
+n00c=@@@
+/
+(100,100)
 
 @@@
 
-n01a=161,110
-n01b=4
+n00d=869,483
+n00e=100009
+
+[s000a]
+n002=S_0002
+n006=S_RETURN2
+n007=echo : EVEN NUMBER = %LOOP%
+n00c=@@@
+/
+(100,100)
+
+@@@
+
+n00d=663,389
+n00e=100010
+
+[s000b]
+n002=S_ODD_OR_EVEN
+n007=set /a b=%LOOP% %% 2
+n009=@@@
+brifc(S_0002);
+brelse(S_0003);
+@@@
+
+n00a=@@@
+EVEN
+?
+@@@
+
+n00b=@@@
+%b%==0
+?
+@@@
+
+n00c=@@@
+/
+(100,100)
+
+@@@
+
+n00d=475,429
+n00e=100011
+
+[s000c]
+n002=S_0003
+n006=S_RETURN2
+n007=echo : ODD NUMBER = %LOOP%
+n00c=@@@
+/
+(0,0)
+
+@@@
+
+n00d=653,597
+n00e=100012
 
 
 
 
-src\main/ConvControl.hx:199: #2
-src\main/ConvControl.hx:201: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
 
 sheet=config
 
 ###VARIOUS-CONTENTS-BEGIN###
-; The setting was created automatically. 2020/08/23 12:13:52
-; * pssgEditor version : 0.66.5030.be6b2a7a2f9e64d0160759469b371cf04a1c84a1
+; The setting was created automatically. 2020/08/08 12:28:06
+; * pssgEditor version : 0.65.67604.f03d07e4a5c314e30d639c92f72384b8c9b8b596
 psggfile=@@@
-ConvControl.psgg
+MainControl.psgg
 @@@
 xlsfile=@@@
-ConvControl.xlsx
+MainControl.xlsx
 @@@
 guid=@@@
-31cfa6fb-3da6-4be7-b133-102ab2b3d993
+5665595d-4754-43ae-a5a8-cbb402c74a93
 @@@
 bitmap_width=5000
 bitmap_height=2000
@@ -188,7 +302,7 @@ c_thumbnail=1
 c_contents=1
 force_display_outpin=0
 last_action=@@@
-varied,Edited a state.
+deleted,E_0000
 @@@
 target_pathdir=@@@
 /
@@ -197,13 +311,13 @@ state_location_list=@@@
 
 @@@
 nodegroup_comment_list=@@@
-[{"Key":"\/","Value":"The root"}]
+[{"Key":"\/","Value":""}]
 @@@
 nodegroup_pos_list=@@@
 [{"Key":"\/","Value":{"x":100,"y":100}}]
 @@@
 fillter_state_location_list=@@@
-[{"Key":"\/","Value":[{"Key":"S_START","Value":{"x":40,"y":179}},{"Key":"S_END","Value":{"x":914,"y":189}},{"Key":"S_0000","Value":{"x":232,"y":100}},{"Key":"S_0001","Value":{"x":952,"y":278}},{"Key":"S_0002","Value":{"x":1213,"y":245}},{"Key":"S_0003","Value":{"x":1215,"y":331}},{"Key":"S_0004","Value":{"x":1214,"y":410}},{"Key":"S_0005","Value":{"x":1217,"y":495}},{"Key":"S_0006","Value":{"x":1216,"y":582}},{"Key":"S_GSB000","Value":{"x":54,"y":548}},{"Key":"S_SBS000","Value":{"x":66,"y":688}},{"Key":"S_0007","Value":{"x":174,"y":656}},{"Key":"S_RET000","Value":{"x":369,"y":705}},{"Key":"S_SBS001","Value":{"x":653,"y":427}},{"Key":"S_RET001","Value":{"x":1815,"y":428}},{"Key":"S_LOP000","Value":{"x":323,"y":356}},{"Key":"S_WAIT1SEC","Value":{"x":1549,"y":426}},{"Key":"E_0001","Value":{"x":161,"y":110}},{"Key":"S_0008","Value":{"x":439,"y":100}},{"Key":"C_0001","Value":{"x":18,"y":22}},{"Key":"S_INIT","Value":{"x":157,"y":179}},{"Key":"E_INIT","Value":{"x":139.428574,"y":32.1428528}}]},{"Key":"\/hoge2\/","Value":[{"Key":"S_START","Value":{"x":50,"y":100}},{"Key":"S_END","Value":{"x":926,"y":87}}]}]
+[{"Key":"\/","Value":[{"Key":"S_START","Value":{"x":50,"y":100}},{"Key":"S_END","Value":{"x":897,"y":107}},{"Key":"S_GOSUB1","Value":{"x":40,"y":341}},{"Key":"S_SUBSTART1","Value":{"x":107,"y":744}},{"Key":"S_RETURN1","Value":{"x":434,"y":755}},{"Key":"S_0001","Value":{"x":219,"y":751}},{"Key":"S_0002","Value":{"x":663,"y":389}},{"Key":"S_LOOP1","Value":{"x":149,"y":328}},{"Key":"S_SUBSTART2","Value":{"x":340,"y":438}},{"Key":"S_RETURN2","Value":{"x":869,"y":483}},{"Key":"S_0003","Value":{"x":653,"y":597}},{"Key":"S_ODD_OR_EVEN","Value":{"x":475,"y":429}},{"Key":"E_0000","Value":{"x":183,"y":74}}]}]
 @@@
 linecolor_data=@@@
 [{"color":{"knownColor":0,"name":null,"state":2,"value":4285493103},"pattern":"BACKTO_"}]
@@ -235,8 +349,8 @@ font_name=@@@
 MS UI Gothic
 @@@
 font_size=11
-comment_font_size=13
-contents_font_size=10
+comment_font_size=0
+contents_font_size=0
 state_width=140
 state_height=20
 state_short_width=50
@@ -253,7 +367,7 @@ userbutton_command=@@@
 @@@
 userbutton_callafterconvert=0
 itemeditform_size_list=@@@
-[{"Key":"state-typ","Value":{"height":398,"width":330}}]
+
 @@@
 decoimage_typ_name=@@@
 sym
@@ -263,8 +377,7 @@ sym
 
 
 
-src\main/ConvControl.hx:199: #3
-src\main/ConvControl.hx:201: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
 
 sheet=template-source
 
@@ -274,8 +387,7 @@ sheet=template-source
 
 
 
-src\main/ConvControl.hx:199: #4
-src\main/ConvControl.hx:201: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
 
 sheet=template-statefunc
 
@@ -283,144 +395,84 @@ sheet=template-statefunc
 <<<?state/^C_/
 eof>>>
 
-/*
-    [[state]]
-    [[state-cmt]]
-*/
+::
+:[[state]]
+::
+:: [[state-cmt]]
+::
 
 <<<?state/^E_/
 [[embed]]
 eof>>>
 
 <<<?state-typ/^start$/
-function [[state]](bFirst : Bool)
-{
-    Goto($statemachine$_STATE.[[nextstate]]);
-    NoWait();
-}
+    goto :[[nextstate]]
 eof>>>
 
 <<<?state-typ/^end$/
-function [[state]](bFirst : Bool)
-{
-}
+    [[command]]
+    goto :_end
 eof>>>
 
 <<<?state-typ/^gosub$/
-function [[state]](bFirst : Bool)
-{
-    GoSubState($statemachine$_STATE.[[gosubstate]],$statemachine$_STATE.[[nextstate]]);
-    NoWait();
-}
-eof>>>
-
-<<<?state-typ/^substart$/
-function [[state]](bFirst : Bool)
-{
-    Goto($statemachine$_STATE.[[nextstate]]);
-    NoWait();
-}
+    set CALLSTACK_%STACKNUM%=[[nextstate]]
+    set /a STACKNUM=%STACKNUM%+1
+    goto :[[gosubstate]]
 eof>>>
 
 <<<?state-typ/^subreturn$/
-function [[state]](bFirst : Bool)
-{
-    ReturnState();
-    NoWait();
-}
+    set /a STACKNUM=%STACKNUM%-1
+    set CALLSTACK_%STACKNUM% >~tmp.txt
+    set _tmp=
+    for /f "tokens=1,2 delims==" %%i in (~tmp.txt) do set _tmp=%%j
+    set CALLSTACK_%STACKNUM%=
+    del ~tmp.txt 2>nul
+    goto :%_tmp%
 eof>>>
 
 <<<?state-typ/^loop$/
-[[members]]
-function [[state]](bFirst : Bool)
-{
     [[loop_init]]
-    Goto($statemachine$_STATE.[[state]]_Check____);
-    NoWait();
-}
-function [[state]]_Check____(bFirst : Bool)
-{
-    if ([[loop_cond]]) GoSubState($statemachine$_STATE.[[gosubstate]],$statemachine$_STATE.[[state]]_Next____);
-    else               Goto($statemachine$_STATE.[[nextstate]]);
-    NoWait();
-}
-function [[state]]_Next____(bFirst : Bool)
-{
+    goto :[[state]]_LoopCheckAndGosub____
+
+:[[state]]_LoopCheckAndGosub____
+    if [[loop_cond]] (
+        set CALLSTACK_%STACKNUM%=[[state]]_LoopNext____
+        set /a STACKNUM=%STACKNUM%+1
+        goto :[[gosubstate]]
+    ) ELSE (
+        goto :[[nextstate]]
+    )
+
+:[[state]]_LoopNext____
     [[loop_next]]
-    Goto($statemachine$_STATE.[[state]]_Check____);
-    NoWait();
-}
+    goto :[[state]]_LoopCheckAndGosub____
 eof>>>
 
-[[members]]
-function [[state]](bFirst : Bool)
-{
-    [[vars]]
+    [[command]]
 
-    <<<?init
-    //
-    if (bFirst)
-    {
-        [[init]]
-    }
-    >>>
-
-    [[update]]
-
-    <<<?wait
-    if ([[wait]]) return;
-    >>>
-
-    [[post_wait]]
-
-    <<<?branch
-    // branch
     [[branch]]
-    >>>
 
     <<<?nextstate
-    //
-    if (!HasNextState())
-    {
-        Goto($statemachine$_STATE.[[nextstate]]);
-    }
+    goto :[[nextstate]]
     >>>
 
-    <<<?nowait
-    //
-    if (HasNextState())
-    {
-        NoWait();
-    }
-    >>>
-}
+    goto :[[state]]
 ###VARIOUS-CONTENTS-END###
 
 
 
-src\main/ConvControl.hx:199: #5
-src\main/ConvControl.hx:201: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
 
 sheet=setting.ini
 
 ###VARIOUS-CONTENTS-BEGIN###
 [setting]
 
-starterkit=@@@
-https://github.com/NNNIC/psgg-starter-kit.git GIT-COMMIT-HASH
-@@@
+psgg=MainControl.psgg
+xls=MainControl.xlsx
 
-
-
-
-
-
-
-
-psgg=ConvControl.psgg
-xls=ConvControl.xlsx
 sub_src=
-gen_src=ConvControl.hx
+gen_src=MainControl.bat
 
 manager_src=
 manager_dir=
@@ -428,331 +480,162 @@ manager_dir=
 template_src=
 template_func=template-statefunc.txt
 
-help=help.ini
-helpweb=@@@
-psgg-starter-kit\starterkit2\haxe\helpweb.html
-@@@
+help=
+helpweb=starterkit\win-bat\helpweb.html
 
-
-src_enc=utf-8
-
-
-
-
-
-
-kitpath=psgg-starter-kit\starterkit2\haxe
+src_enc=sjis
 
 [setupinfo]
 
-starterkit=@@@
-https://github.com/NNNIC/psgg-starter-kit.git GIT-COMMIT-HASH
-@@@
+starterkit=https://github.com/NNNIC/psgg-starter-kit.git 8e411ee9d8a7b0d44485bf03546b59220da6cd14
 
 
+lang=bat
+framework=window
 
+statemachine=MainControl
 
-
-
-
-
-lang=haxe
-framework=
-
-statemachine=ConvControl
 prefix=__PREFIX__
-xlsdir=@@@
-C:\Users\gea01\Documents\psgg\psgg-converter\tohaxe\src\main
-@@@
-
-
-
-
-gendir=@@@
-C:\Users\gea01\Documents\psgg\psgg-converter\tohaxe\src\main
-@@@
-
-
-
-
+xlsdir=C:\Temp\1117
+gendir=C:\Temp\1117
 genrdir=.
 incrdir=.
 
 code_output_start=[PSGG OUTPUT START]
 code_output_end=[PSGG OUTPUT END]
 
-
-
-
-
-
 [jpn]
-
-title=Haxe スタートキット  2019/10/31
+title=Windows バッチ スタートキット 2019/11/17
 
 detail=@@@
-Haxe 用のステートマシンを作成します。
 
-# ファイル
+Windows バッチ用のステートマシンを作成します。
 
-      ConvControl.pssg --- StateGoデータファイル。
-      ConvControl.hx   --- 変換コードを本ファイルに埋め込む。
+※サンプルプロジェクトを次のＵＲＬより入手可能。
+https://github.com/NNNIC/psgg-win-batch
+
+# 以下のファイルを作成します。
+
+      MainControl.pssg     --- StateGo データ ファイル
+      MainControl.bat      --- 変換ソースコード
 
 @@@
 
-
-
-
-
 [en]
-
-title=HAXE STARTER KIT 2019/10/31
+title=Windows Batch STARTER KIT 2019/11/17
 
 detail=@@@
-To create HAXE Stata machine.
+This dialog will create files for a state machine.
+
+* You may get the sample project from the below url.
+https://github.com/NNNIC/psgg-win-batch
 
 # File:
 
-      ConvControl.pssg  --- StateGo Data File.
-      ConvControl.hx   -- The editor will insert converted source code to this file.
+      MainControl.pssg  --- StateGo Data File.
+      MainControl.bat   --- Converted Souece File.
+
 
 @@@
 ###VARIOUS-CONTENTS-END###
 
 
 
-src\main/ConvControl.hx:199: #6
-src\main/ConvControl.hx:201: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
 
 sheet=help
 
 ###VARIOUS-CONTENTS-BEGIN###
-[nextstate]
-
-jpn=次に実行するステートを指定する。
-en=Specify the next state to be executed.
-[branch]
-
-jpn=@@@
-分岐処理を指定する。
-１行に一つの分岐命令を書く。
-GUIにより上書きされるため引数は適当に指定する。
-例）
-br_YES(?);
-br_NO(?);
-br_UNKNOWN(?);
-@@@
-
-en=@@@
-Specify branch functions.
-Each line has a branch function.
-Specify a tentavie parameter for each branch function because GUI overwrites the parameter.
-i.e)
-br_YES(?);
-br_NO(?);
-br_UNKNOWN(?);
-@@@
-
-[update]
-
-jpn=更新処理を指定する。
-en=Specify a update process.
-[wait]
-
-jpn=@@@
-待ち条件を指定する。
-true時にループを解除する。
-@@@
-
-en=@@@
-Specify a waiting condition.
-Release the loop if the condition is true.
-@@@
-
-[gosubstate]
-
-jpn=@@@
-サブルーチンを呼び出す。
-サブルーチンの開始ステート名を指定する。
-@@@
-
-en=@@@
-Call a subroutine.
-Specify the starting state name of the subroutine.
-@@@
-
-[return]
-
-jpn=サブルーチン処理を終了するときに指定する。"return"等を記述。
-en=@@@
-Use for returning from the subroutine. Write "return" etc.
-@@@
-
-[loop_next]
-
-en=loop  iterator advence.
-jpn=ループのイテレーターを更新
-[loop_cond]
-
-en=loop condition
-jpn=ループ条件
-[state]
-
-jpn=@@@
-ステート名を指定する。
-英文字、数字、アンダーバーで構成される。
-先頭は英文字およびアンダーバー。
-@@@
-
-en=@@@
-Specify a state name.
-The state name consits of alphabet, number and underbar except that the head characther should be alphabet or a underbar.
-@@@
-
-[members]
-
-jpn=メンバ変数及び関数等を指定する。
-en=@@@
-Specify members, variables, classes,  etc.
-@@@
-
-[post_wait]
-
-jpn='wait'後の処理を指定する。
-en=Specify the post process after 'wait'.
-[vars]
-
-jpn=変数宣言を指定する。
-en=Specify variable definitions.
-[nowait]
-
-jpn=@@@
-次のステートへ同期待ちをせず実行する時に 'nowait'等を指定する。
-同期待ち時には何も指定しない。
-@@@
-
-en=@@@
-Specify 'nowait' and so on if the next state will be execute without a sync wait.
-Do not specify any word wheh the next state will be execute with a sync wait.
-@@@
-
-[embed]
-
-jpn=@@@
-コード埋め込み用。
-ステート名がE_時に利用可能。
-ステート機能は利用できない。
-@@@
-
-en=@@@
-For embedding code.
-Enable this section if state name starts with "E_".
-Disabled state features.
-@@@
-
-[basestate]
-
-jpn=継承元を指定する。
-en=Specify inheritance source.
-[!uuid]
-
-jpn=システムがステートのuuid指定に使用。
-en=@@@
-System uses this for the uuid of the state.
-@@@
-
-[init]
-
-jpn=初期化用処理を指定する。
-en=Specify a initial process.
-[!dir]
-
-jpn=システムがステートのディレクトリ指定に使用。
-en=@@@
-System uses this for the directory path of the state.
-@@@
-
-[loop_init]
-
-en=loop initialization
-jpn=ループ用初期化
 [thumbnail]
 
-jpn=説明用のイメージを指定する。
 en=@@@
 Specify a image for explanation of this state.
 @@@
 
-[loop_break]
+jpn=説明用のイメージを指定
+[gosubstate]
 
-en=Condition if break
+en=Call subroutine
+jpn=サブルーチン呼出し
+[state-cmt]
+
+en=Comment
+jpn=コメント
+[state]
+
+en=Specify a state name.
+jpn=ステート名を指定
+[loop_init]
+
+en=Loop initialization
+jpn=ループ初期化
+[loop_next]
+
+en=Loop incriment
+jpn=ループインクリメント
+[state-typ]
+
+en=State type
+jpn=ステートタイプ
+[basestate]
+
+en=Base state.
+jpn=ベースステート
+[embed]
+
+en=Write embed command.
+jpn=組込みコマンドを指定して下さい。
+[state-ref]
+
+en=Reference link
+jpn=参照リンク
+[loop_cond]
+
+en=Loop Condition
+jpn=ループ条件
+[command]
+
+en=Command
+jpn=命令
 ###VARIOUS-CONTENTS-END###
 
 
 
-src\main/ConvControl.hx:199: #7
-src\main/ConvControl.hx:201: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
 
 sheet=itemsinfo
 
 ###VARIOUS-CONTENTS-BEGIN###
 [inpmethod]
 
-init=
+nextstate=
+!pos=
+command=
+state=
+gosubstate=
+C_=
+E_=
+command-cmt=
+branch=
 branch-cmt=
 state-ref=
-wait=
-loop-next=
-loop-cond=
-embed=
-loop_cond=
-branch=
-!dir=
-basestate=
-return=
-post_wait-cmt=
-state-cmt=
+brcond=
 nowait=@@@
 *select
 nowait
 @@@
 
-members=
-thumbnail=
-update-cmt=
-gosubstate=
-loop_break=
-loop_ver=
-state-typ=@@@
-*select
-start
-end
-gosub
-substart
-subreturn
-loop
-@@@
-
-!pos=
+embed=
+basestate=
 !uuid=
+state-typ=
 S_=
-nextstate=
-state=
-loop_var=
-wait-cmt=
-loop-init=
-update=
-init-cmt=
-loop-ver=
+!dir=
 loop_next=
-vars=
-loop=
-C_=
-brcond=
-E_=
-init-ref=
 loop_init=
-post_wait=
+thumbnail=
+loop_cond=
+state-cmt=
 [stateloc]
 
 E_=S1
@@ -760,23 +643,49 @@ S_=S0
 C_=S2
 [itemcond]
 
-thumbnail=read_only,share,S.+
-gosubstate=read_only,exclusion,S0
+state-typ=read_only,exclusion,(S0)
+gosubstate=read_only,exclusion,(S0)
 branch=read_only,exclusion,S0
 state=read_only,share,S.+
 nextstate=read_only,exclusion,S0
 return=read_only,exclusion,S0
-brcond=read_only,exclusion,S0
-embed=read_only,exclusion,S1
 basestate=read_only,share,S.+
-state-typ=read_only,exclusion,(S0)
+brcond=read_only,exclusion,S0
+embed=read_only,exclusion,(S0)
+thumbnail=read_only,share,S.+
 ###VARIOUS-CONTENTS-END###
 
 
 
 
-src\main/ConvControl.hx:199: #8
-src\main/ConvControl.hx:201: ------#======*<Guid(4DC98CBA-6257-4E26-A454-A53F85BC234C)>*======#------
+src\main/start/ConvControl.hx:214: ------#======*<Guid(4DC98CBA-6257-4E26-A454-A53F85BC234C)>*======#------
 
 
 
+src\main/start/ConvControl.hx:241: #m_buf_chart=------#======*<Guid(D13821FE-FA27-4B04-834C-CEC1E5670F48)>*======#------
+
+shee
+src\main/start/ConvControl.hx:242: #m_buf_config=------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+shee
+src\main/start/ConvControl.hx:243: #m_buf_tmpsrc=------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+shee
+src\main/start/ConvControl.hx:244: #m_buf_tmpfnc=------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+shee
+src\main/start/ConvControl.hx:245: #m_buf_setting=------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+shee
+src\main/start/ConvControl.hx:246: #m_buf_help=------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+shee
+src\main/start/ConvControl.hx:247: #m_buf_iteminfo=------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+shee
+src\main/start/ConvControl.hx:248: #m_buf_bitmap=------#======*<Guid(4DC98CBA-6257-4E26-A454-A53F85BC234C)>*======#------
+
+
+
+src\main/start/Program.hx:72: 
+#8 ini test

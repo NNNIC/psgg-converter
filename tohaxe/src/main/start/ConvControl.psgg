@@ -13,9 +13,9 @@ check_excel_writable=no
 
 sheet=state-chart
 nameid_list=,n001,n002,n01c,n003,n004,n005,n006,,n007,,n008,,n009,n00a,n00b,n00c,,n00d,n00e,,n00f,n010,,n011,n012,,n013,n014,,,n022,n01e,n01f,n020,,n015,n016,n017,n018,,n019,n01a,n01b,,,,,,
-stateid_list=,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,s0022,s0023,s0024,s0025
+stateid_list=,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,s0022,s0023,s0024,s0025,,s0026
 max_name_id=34
-max_state_id=37
+max_state_id=38
 [id_name_dic]
 n001=thumbnail
 n002=state
@@ -56,6 +56,7 @@ s0022=S_START
 s0023=S_END
 s0024=S_INIT
 s0025=E_0001
+s0026=E_0002
 
 
 [s0022]
@@ -105,8 +106,30 @@ n019=@@@
 
 @@@
 
-n01a=161,110
+n01a=151,30
 n01b=4
+
+[s0026]
+n002=E_0002
+n007=@@@
+var m_buf_chart    : String;
+var m_buf_config   : String;
+var m_buf_tmpsrc   : String;
+var m_buf_tmpfunc  : String;
+var m_buf_setting  : String;
+var m_buf_help     : String;
+var m_buf_iteminfo : String;
+var m_buf_bitmap   : String;
+@@@
+
+n019=@@@
+/
+(100,100)
+
+@@@
+
+n01a=393,29
+n01b=5
 
 
 
@@ -115,7 +138,7 @@ n01b=4
 sheet=config
 
 ###VARIOUS-CONTENTS-BEGIN###
-; The setting was created automatically. 2020/08/23 12:13:52
+; The setting was created automatically. 2020/08/23 22:49:38
 ; * pssgEditor version : 0.66.5030.be6b2a7a2f9e64d0160759469b371cf04a1c84a1
 psggfile=@@@
 ConvControl.psgg
@@ -148,7 +171,7 @@ nodegroup_pos_list=@@@
 [{"Key":"\/","Value":{"x":100,"y":100}}]
 @@@
 fillter_state_location_list=@@@
-[{"Key":"\/","Value":[{"Key":"S_START","Value":{"x":40,"y":179}},{"Key":"S_END","Value":{"x":914,"y":189}},{"Key":"S_0000","Value":{"x":232,"y":100}},{"Key":"S_0001","Value":{"x":952,"y":278}},{"Key":"S_0002","Value":{"x":1213,"y":245}},{"Key":"S_0003","Value":{"x":1215,"y":331}},{"Key":"S_0004","Value":{"x":1214,"y":410}},{"Key":"S_0005","Value":{"x":1217,"y":495}},{"Key":"S_0006","Value":{"x":1216,"y":582}},{"Key":"S_GSB000","Value":{"x":54,"y":548}},{"Key":"S_SBS000","Value":{"x":66,"y":688}},{"Key":"S_0007","Value":{"x":174,"y":656}},{"Key":"S_RET000","Value":{"x":369,"y":705}},{"Key":"S_SBS001","Value":{"x":653,"y":427}},{"Key":"S_RET001","Value":{"x":1815,"y":428}},{"Key":"S_LOP000","Value":{"x":323,"y":356}},{"Key":"S_WAIT1SEC","Value":{"x":1549,"y":426}},{"Key":"E_0001","Value":{"x":161,"y":110}},{"Key":"S_0008","Value":{"x":439,"y":100}},{"Key":"C_0001","Value":{"x":18,"y":22}},{"Key":"S_INIT","Value":{"x":157,"y":179}},{"Key":"E_INIT","Value":{"x":139.428574,"y":32.1428528}}]},{"Key":"\/hoge2\/","Value":[{"Key":"S_START","Value":{"x":50,"y":100}},{"Key":"S_END","Value":{"x":926,"y":87}}]}]
+[{"Key":"\/","Value":[{"Key":"S_START","Value":{"x":40,"y":179}},{"Key":"S_END","Value":{"x":914,"y":189}},{"Key":"E_0001","Value":{"x":151,"y":30}},{"Key":"S_INIT","Value":{"x":157,"y":179}},{"Key":"E_0002","Value":{"x":393,"y":29}}]},{"Key":"\/hoge2\/","Value":[{"Key":"S_START","Value":{"x":50,"y":100}},{"Key":"S_END","Value":{"x":926,"y":87}}]}]
 @@@
 linecolor_data=@@@
 [{"color":{"knownColor":0,"name":null,"state":2,"value":4285493103},"pattern":"BACKTO_"}]
