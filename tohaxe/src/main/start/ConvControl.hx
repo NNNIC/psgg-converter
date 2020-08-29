@@ -1,5 +1,6 @@
 ﻿package start;
 
+import tool.IniUtil;
 import psgg.HxFile;
 
 typedef STATEFUNC = Bool->Void;
@@ -10,6 +11,7 @@ enum ConvControl_STATE {
     //             psggConverterLib.dll converted from psgg-file:ConvControl.psgg
 
     S_END;
+    S_EXTRUCT;
     S_INIT;
     S_START;
 
@@ -98,6 +100,7 @@ class ConvControl  {
             //             psggConverterLib.dll converted from psgg-file:ConvControl.psgg
 
             ConvControl_STATE.S_END=>S_END,
+            ConvControl_STATE.S_EXTRUCT=>S_EXTRUCT,
             ConvControl_STATE.S_INIT=>S_INIT,
             ConvControl_STATE.S_START=>S_START,
 
@@ -147,7 +150,9 @@ class ConvControl  {
     public var m_psgg_file : String;
     /*
         E_0002
+        バッファ
     */
+    var m_buf_header   : String;
     var m_buf_chart    : String;
     var m_buf_config   : String;
     var m_buf_tmpsrc   : String;
@@ -157,10 +162,43 @@ class ConvControl  {
     var m_buf_iteminfo : String;
     var m_buf_bitmap   : String;
     /*
+        E_0003
+        マップ
+    */
+    var m_map_header  : Map<String,Dynamic>;
+    var m_map_chart   : Map<String,Dynamic>;
+    var m_map_config  : Map<String,Dynamic>;
+    var m_map_setting : Map<String,Dynamic>;
+    var m_map_help    : Map<String,Dynamic>;
+    var m_map_iteminfo: Map<String,Dynamic>;
+    /*
+        E_0004
+        テンプレート
+    */
+    var m_tmpsrc : Array<String>;
+    var m_tmpfunc: Array<String>;
+    /*
         S_END
     */
     function S_END(bFirst : Bool)
     {
+    }
+    /*
+        S_EXTRUCT
+        抽出
+    */
+    function S_EXTRUCT(bFirst : Bool)
+    {
+        //
+        if (bFirst)
+        {
+            extract();
+        }
+        //
+        if (!HasNextState())
+        {
+            Goto(ConvControl_STATE.S_END);
+        }
     }
     /*
         S_INIT
@@ -175,7 +213,7 @@ class ConvControl  {
         //
         if (!HasNextState())
         {
-            Goto(ConvControl_STATE.S_END);
+            Goto(ConvControl_STATE.S_EXTRUCT);
         }
     }
     /*
@@ -212,7 +250,10 @@ class ConvControl  {
         
         for(item in list) {
             trace(item);
-            if (item.indexOf(wordstrage.Store.PSGG_MARK_STATECHART_SHEET) >= 0) {
+            if (i == 0) {
+                m_buf_header = item;
+            }
+            else if (item.indexOf(wordstrage.Store.PSGG_MARK_STATECHART_SHEET) >= 0) {
                 m_buf_chart = item;
             } else if (item.indexOf(wordstrage.Store.PSGG_MARK_VARIOUS_SHEET) >= 0) {
                 if (item.indexOf("sheet=config") >= 0 ) {
@@ -238,6 +279,7 @@ class ConvControl  {
              }
             i++;
         }
+        trace("#m_buf_header=" + m_buf_header.substr(0,80));
         trace("#m_buf_chart="  + m_buf_chart.substr(0,80));
         trace("#m_buf_config=" + m_buf_config.substr(0,80));
         trace("#m_buf_tmpsrc=" + m_buf_tmpsrc.substr(0,80));
@@ -246,6 +288,27 @@ class ConvControl  {
         trace("#m_buf_help=" + m_buf_help.substr(0,80));
         trace("#m_buf_iteminfo=" + m_buf_iteminfo.substr(0,80));
         trace("#m_buf_bitmap=" + m_buf_bitmap.substr(0,80));
+    }
+    function extract() {
+        m_map_header  = IniUtil.ReadIni(m_buf_header);
+        m_map_chart   = IniUtil.ReadIni(m_buf_chart);
+        m_map_config  = IniUtil.ReadIni(m_buf_config);
+        m_map_setting = IniUtil.ReadIni(m_buf_setting);
+        m_map_help    = IniUtil.ReadIni(m_buf_help);
+        m_map_iteminfo= IniUtil.ReadIni(m_buf_iteminfo);
+
+
+        var sep = StringUtil.FindNewLineChar(m_buf_tmpsrc);
+        var lines = m_buf_tmpsrc.split(sep);
+        var refval = new CsRef<Int>();
+        refval.Value = 0;
+        m_tmpsrc = StringUtil.FindMatchedLines2(lines, wordstrage.Store.PSGG_MARK_VARIOUS_BEGIN, wordstrage.Store.PSGG_MARK_VARIOUS_END, refval);
+    
+        lines = m_buf_tmpfunc.split(sep);
+        var refval = new CsRef<Int>();
+        refval.Value = 0;
+        m_tmpfunc = StringUtil.FindMatchedLines2(lines, wordstrage.Store.PSGG_MARK_VARIOUS_BEGIN, wordstrage.Store.PSGG_MARK_VARIOUS_END, refval);
+        trace(m_tmpfunc);
     }
 }
 

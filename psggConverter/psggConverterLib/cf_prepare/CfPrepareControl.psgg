@@ -1,3 +1,1356 @@
-﻿; PSGG Editor Shortcut file
-version=1.0
+﻿;PSGG Editor Backup File
+version=1.1
 file=CfPrepareControl.xlsx
+guid=28672353-b06d-433b-a85c-dd10e8edd1e8
+;set read_from  excel or psgg
+read_from=psgg
+;set savemode with_excel or psgg_only
+save_mode=psgg_only
+;set check_excel_writable yes or no
+check_excel_writable=no
+
+------#======*<Guid(D13821FE-FA27-4B04-834C-CEC1E5670F48)>*======#------
+
+sheet=state-chart
+nameid_list=,n001,n002,n003,n004,n005,n006,,n007,,n008,,n009,n00a,n00b,n00c,,n00d,n00e,,n00f,n010,,n011,n012,,n013,n014,,n015,n016,n017,,n018,n019,n01a
+stateid_list=,,,,s0001,s0002,s0003,s0004,s0005,s0006,s0007,s0008,s0009,s000a,s000b,s000c,s000d,s000e,s000f,s0010,s0011,s0012,s0013,s0014,s0015,s0016,s0017,s0018,s0019,s001a,s001b,s001c,s001d,s001e,s001f,s0020,s0021,s0022,s0023,s0024,s0025
+max_name_id=26
+max_state_id=37
+[id_name_dic]
+n001=thumbnail
+n002=state
+n003=state-cmt
+n004=state-ref
+n005=basestate
+n006=nextstate
+n007=embed
+n008=members
+n009=vars
+n00a=init
+n00b=init-cmt
+n00c=init-ref
+n00d=update
+n00e=update-cmt
+n00f=wait
+n010=wait-cmt
+n011=post_wait
+n012=post_wait-cmt
+n013=gosubstate
+n014=return
+n015=branch
+n016=brcond
+n017=nowait
+n018=!dir
+n019=!pos
+n01a=!uuid
+
+
+[id_state_dic]
+s0001=S_START
+s0002=S_END
+s0003=E_INOUT
+s0004=E_0003
+s0005=S_FIND_MATCHLINES
+s0006=E_0005
+s0007=S_RETURN_FALSE
+s0008=S_CHECK_EXCEPTION
+s0009=S_INIT2
+s000a=S_CHECK_LINES
+s000b=S_TARGET
+s000c=S_CHECK_BOT
+s000d=S_STR_W_REGEX
+s000e=S_ITEM_W_REGEX
+s000f=S_CHECK_VALID_VAL
+s0010=S_IS_VALID_REGEX
+s0011=S_EXEC_REGEX
+s0012=S_GET_SIZE
+s0013=S_CHECK_EOF
+s0014=S_REMOVE_TOPBOT
+s0015=S_IF_EOF
+s0016=S_REMOVE_REST
+s0017=S_REPLACE
+s0018=S_REMOVE
+s0019=S_RETURN_TRUE
+s001a=S_USE_NEWWAY
+s001b=E_USE_NEWWAY
+s001c=S_CHECK_BOT1
+s001d=S_CHECK_EQUALS
+s001e=S_ITEM_W_REGEX1
+s001f=S_STR_W_REGEX1
+s0020=S_CHECK_ESTR
+s0021=S_EXTRUCT
+s0022=S_NORMALIZE_REGEX
+s0023=S_CHECK_EQSTR
+s0024=S_COMPARE_EQSTR
+s0025=S_GOTO_FALSE
+
+
+[s0001]
+n002=S_START
+n006=S_CHECK_LINES
+n019=28,171
+n01a=100001
+
+[s0002]
+n002=S_END
+n019=3584,133
+n01a=100002
+
+[s0003]
+n001=(bitmap)
+n002=E_INOUT
+n007=@@@
+public string m_state;
+public List<string> m_lines;
+public bool m_bResult;
+public Convert m_parent;
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=28,14
+n01a=100003
+
+[s0004]
+n001=(bitmap)
+n002=E_0003
+n007=@@@
+int m_findindex;
+List<string> m_targetlines = null;
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=206,39
+n01a=100004
+
+[s0005]
+n001=(bitmap)
+n002=S_FIND_MATCHLINES
+n003=＜＜＜？～＞＞＞に囲まれたバッファ抽出
+n00a=@@@
+var findindex = -1;
+m_targetlines = StringUtil.FindMatchedLines2(m_lines, "\x3c\x3c\x3c\x3f", "\x3e\x3e\x3e", out findindex);
+m_findindex = findindex;
+@@@
+
+n015=@@@
+brifc(S_RETURN_FALSE);
+brelse(S_CHECK_EXCEPTION);
+@@@
+
+n016=@@@
+m_targetlines==null
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=159,375
+n01a=100006
+
+[s0006]
+n001=(bitmap)
+n002=E_0005
+n007=@@@
+string m_line0;
+bool   m_bValid;
+string m_itemname;
+string m_regex;
+string m_val;
+string m_target;
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=382,43
+n01a=100005
+
+[s0007]
+n001=(bitmap)
+n002=S_RETURN_FALSE
+n006=S_END
+n00a=m_bResult = false;
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1752,199
+n01a=100007
+
+[s0008]
+n001=(bitmap)
+n002=S_CHECK_EXCEPTION
+n006=S_INIT2
+n00a=@@@
+if (m_targetlines.Count < 2) throw new SystemException("Unexpected! {A6446D1F-DFD0-4A63-93C7-299265119AC7}");
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=521,570
+n01a=100008
+
+[s0009]
+n001=(bitmap)
+n002=S_INIT2
+n006=S_TARGET
+n00a=@@@
+m_line0=m_targetlines[0];
+m_bValid = false;
+m_itemname = string.Empty;
+m_val = string.Empty;
+m_regex = string.Empty;
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=743,569
+n01a=100009
+
+[s000a]
+n001=(bitmap)
+n002=S_CHECK_LINES
+n015=@@@
+brifc(S_RETURN_FALSE);
+brelse(S_FIND_MATCHLINES);
+@@@
+
+n016=@@@
+m_lines==null
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=42,264
+n01a=100010
+
+[s000b]
+n001=(bitmap)
+n002=S_TARGET
+n003=＜＜＜？のターゲットを取得
+n006=S_USE_NEWWAY
+n00a=@@@
+m_target = RegexUtil.Get1stMatch(@"\<\<\<\?.+\s*$",m_line0);
+m_target = m_target.Substring(4).Trim(); // ＜＜＜？を削除
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=953,560
+n01a=100011
+
+[s000c]
+n001=(bitmap)
+n002=S_CHECK_BOT
+n003=ターゲットの先頭文字
+n009=var c = m_target[0];
+n015=@@@
+brifc(S_STR_W_REGEX);
+brelse(S_ITEM_W_REGEX);
+@@@
+
+n016=@@@
+c=='\"'
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=310,923
+n01a=100012
+
+[s000d]
+n001=(bitmap)
+n002=S_STR_W_REGEX
+n003=＜＜＜？"文字列"/正規表現/
+n006=S_CHECK_VALID_VAL
+n00a=@@@
+var dqw= RegexUtil.Get1stMatch(@"\x22.*\x22",m_target);
+m_val = dqw.Trim('\x22');
+m_regex = m_target.Substring(dqw.Length);
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=544,845
+n01a=100013
+
+[s000e]
+n001=(bitmap)
+n002=S_ITEM_W_REGEX
+n003=＜＜＜？itemname/正規表現/
+n006=S_CHECK_VALID_VAL
+n00a=@@@
+m_itemname = RegexUtil.Get1stMatch(@"[0-9a-zA-Z_\-]+", m_target);
+m_regex = m_target.Substring(m_itemname.Length);
+m_val = m_parent.getString2(m_state, m_itemname);
+
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=544,1049
+n01a=100014
+
+[s000f]
+n001=(bitmap)
+n002=S_CHECK_VALID_VAL
+n003=対象値が有効か？
+n009=m_bValid = !string.IsNullOrEmpty(m_val);
+n015=@@@
+brifc(S_IS_VALID_REGEX);
+brelse(S_REMOVE);
+@@@
+
+n016=@@@
+m_bValid
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=791,1036
+n01a=100015
+
+[s0010]
+n001=(bitmap)
+n002=S_IS_VALID_REGEX
+n009=@@@
+var b = !string.IsNullOrEmpty(m_regex) && m_regex.Length > 2;
+@@@
+
+n015=@@@
+brifc(S_EXEC_REGEX);
+brelse(S_REMOVE);
+@@@
+
+n016=@@@
+b
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1009,925
+n01a=100016
+
+[s0011]
+n001=(bitmap)
+n002=S_EXEC_REGEX
+n003=正規表現の実行
+n00a=@@@
+if (m_regex[0]=='/' && m_regex[m_regex.Length-1]=='/')
+{
+    m_regex = m_regex.Substring(1);
+    m_regex = m_regex.Substring(0,m_regex.Length - 1);
+
+    var match = RegexUtil.Get1stMatch(m_regex,m_val);
+    m_bValid = !string.IsNullOrEmpty(match);
+}
+else
+{
+    m_bValid  = false;
+    throw new SystemException("{59858294-6BCF-45B6-B441-076A5A6041D8}\n" + m_line0);
+}
+
+@@@
+
+n015=@@@
+brifc(S_GET_SIZE);
+brelse(S_REMOVE);
+@@@
+
+n016=@@@
+m_bValid
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1217,587
+n01a=100017
+
+[s0012]
+n001=(bitmap)
+n002=S_GET_SIZE
+n003=EOFのため先にターゲットラインの行数を求める
+n006=S_CHECK_EOF
+n008=int m_size = 0;
+n00a=m_size = m_targetlines.Count;
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1958,795
+n01a=100018
+
+[s0013]
+n001=(bitmap)
+n002=S_CHECK_EOF
+n003=最終行が eof＞＞＞か？
+n006=S_REMOVE_TOPBOT
+n008=bool m_bEOF;
+n009=@@@
+m_bEOF = (m_targetlines[m_targetlines.Count - 1].ToLower().Contains("eof>>>"));
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=2151,787
+n01a=100019
+
+[s0014]
+n001=(bitmap)
+n002=S_REMOVE_TOPBOT
+n003=//先頭行と最終行の削除
+n006=S_IF_EOF
+n00a=@@@
+m_targetlines.RemoveAt(0);
+m_targetlines.RemoveAt(m_targetlines.Count - 1);
+
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=2340,789
+n01a=100020
+
+[s0015]
+n001=(bitmap)
+n002=S_IF_EOF
+n015=@@@
+brifc(S_REMOVE_REST);
+brelse(S_REPLACE);
+@@@
+
+n016=@@@
+m_bEOF
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=2532,805
+n01a=100021
+
+[s0016]
+n001=(bitmap)
+n002=S_REMOVE_REST
+n003=以降を削除し、行数を１に
+n006=S_REPLACE
+n00a=@@@
+while (m_lines.Count > m_findindex + 1)
+{
+    m_lines.RemoveAt(m_lines.Count - 1);
+}
+m_size = 1;
+
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=2786,548
+n01a=100022
+
+[s0017]
+n001=(bitmap)
+n002=S_REPLACE
+n003=変換したものに入れ替え
+n006=S_RETURN_TRUE
+n00a=@@@
+m_lines = StringUtil.ReplaceLines(m_lines, m_findindex, m_size, m_targetlines);
+
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=3042,803
+n01a=100023
+
+[s0018]
+n001=(bitmap)
+n002=S_REMOVE
+n006=S_RETURN_TRUE
+n00a=@@@
+m_lines.RemoveRange(m_findindex, m_targetlines.Count);
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=2263,1244
+n01a=100024
+
+[s0019]
+n001=(bitmap)
+n002=S_RETURN_TRUE
+n006=S_END
+n00a=m_bResult = true;
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=2900,1637
+n01a=100025
+
+[s001a]
+n001=(bitmap)
+n002=S_USE_NEWWAY
+n015=@@@
+brifc(S_CHECK_EQUALS);
+brelse(S_CHECK_BOT);
+@@@
+
+n016=@@@
+m_newway
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=108,1123
+n01a=100026
+
+[s001b]
+n001=(bitmap)
+n002=E_USE_NEWWAY
+n003=新手法切替
+n007=bool m_newway = true;
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=612,52
+n01a=100027
+
+[s001c]
+n001=(bitmap)
+n002=S_CHECK_BOT1
+n005=S_CHECK_BOT
+n015=@@@
+brifc(S_STR_W_REGEX1);
+brelse(S_ITEM_W_REGEX1);
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=290,1432
+n01a=100028
+
+[s001d]
+n001=(bitmap)
+n002=S_CHECK_EQUALS
+n003=開始行の最後が　=="文字列"となってる場合
+n006=S_CHECK_BOT1
+n008=@@@
+string m_eqstr;//==の比較値     ※nullと""は意味が違う。 null時は==""の文字列がなかった意味
+string m_exstr; //抽出結果用
+@@@
+
+n00a=@@@
+m_exstr = null; //結果クリア
+// 抽出　=="hoge"
+var s=RegexUtil.Get1stMatch(@"==\x22[^\x22]*?\x22$",m_target);
+if (!string.IsNullOrEmpty(s))
+{
+    m_eqstr = s.Substring(2).Trim('\x22');
+    m_target = m_target.Substring(0,m_target.Length - s.Length);
+}
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=97,1440
+n01a=100029
+
+[s001e]
+n001=(bitmap)
+n002=S_ITEM_W_REGEX1
+n005=S_ITEM_W_REGEX
+n006=S_NORMALIZE_REGEX
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=535,1572
+n01a=100031
+
+[s001f]
+n001=(bitmap)
+n002=S_STR_W_REGEX1
+n005=S_STR_W_REGEX
+n006=S_NORMALIZE_REGEX
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=537,1347
+n01a=100030
+
+[s0020]
+n001=(bitmap)
+n002=S_CHECK_ESTR
+n003=結果の存在確認
+n009=var bOk=!string.IsNullOrEmpty(m_exstr);
+n015=@@@
+brifc(S_GET_SIZE);
+brelse(S_REMOVE);
+@@@
+
+n016=@@@
+bOk
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1619,1688
+n01a=100038
+
+[s0021]
+n001=(bitmap)
+n002=S_EXTRUCT
+n003=抽出
+n006=S_CHECK_EQSTR
+n00a=@@@
+if (string.IsNullOrEmpty(m_regex) || string.IsNullOrEmpty(m_val))
+{
+    m_exstr = m_val;
+}
+else
+{
+    m_exstr = RegexUtil.Get1stMatch(m_regex,m_val);
+}
+
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1004,1438
+n01a=100033
+
+[s0022]
+n001=(bitmap)
+n002=S_NORMALIZE_REGEX
+n003=正規表現があれば、前後の'/'を削除
+n009=var bOk=false;
+n00a=@@@
+if (string.IsNullOrEmpty(m_regex)) {
+    bOk=true;
+}
+else if (m_regex.Length>2) {
+    if (m_regex[0]=='/' && m_regex[m_regex.Length-1]=='/') {
+        m_regex = m_regex.Substring(1);
+        m_regex = m_regex.Substring(0,m_regex.Length - 1);
+        bOk = true;
+    }
+}
+@@@
+
+n015=@@@
+brifc(S_EXTRUCT);
+brelse(S_GOTO_FALSE);
+@@@
+
+n016=@@@
+bOk
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=781,1486
+n01a=100034
+
+[s0023]
+n001=(bitmap)
+n002=S_CHECK_EQSTR
+n003==="文字列"の確認が必要か？
+n015=@@@
+brifc(S_COMPARE_EQSTR);
+brelse(S_CHECK_ESTR);
+@@@
+
+n016=@@@
+m_eqstr!=null
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1234,1419
+n01a=100035
+
+[s0024]
+n001=(bitmap)
+n002=S_COMPARE_EQSTR
+n003=結果の比較
+n009=var bEq=false;
+n00a=@@@
+if (string.IsNullOrEmpty(m_exstr) && string.IsNullOrEmpty(m_eqstr)) {
+    bEq=true;
+}
+else if (m_exstr == m_eqstr)
+{
+    bEq=true;
+}
+
+
+@@@
+
+n015=@@@
+brifc(S_GET_SIZE);
+brelse(S_REMOVE);
+@@@
+
+n016=@@@
+bEq
+?
+@@@
+
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1610,1331
+n01a=100036
+
+[s0025]
+n001=(bitmap)
+n002=S_GOTO_FALSE
+n006=S_RETURN_FALSE
+n018=@@@
+/
+(100,100)
+
+@@@
+
+n019=1523,383
+n01a=100037
+
+
+
+------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+sheet=config
+
+###VARIOUS-CONTENTS-BEGIN###
+; The setting was created automatically. 2020/08/29 10:58:33
+; * pssgEditor version : 0.66.5030.be6b2a7a2f9e64d0160759469b371cf04a1c84a1
+psggfile=@@@
+CfPrepareControl.psgg
+@@@
+xlsfile=@@@
+CfPrepareControl.xlsx
+@@@
+guid=@@@
+28672353-b06d-433b-a85c-dd10e8edd1e8
+@@@
+bitmap_width=5000
+bitmap_height=2000
+c_statec_cmt=1
+c_thumbnail=1
+c_contents=1
+force_display_outpin=0
+last_action=@@@
+init,Initilized
+@@@
+target_pathdir=@@@
+/
+@@@
+state_location_list=@@@
+
+@@@
+nodegroup_comment_list=@@@
+[{"Key":"\/","Value":""}]
+@@@
+nodegroup_pos_list=@@@
+[{"Key":"\/","Value":{"x":100,"y":100}}]
+@@@
+fillter_state_location_list=@@@
+[{"Key":"\/","Value":[{"Key":"S_START","Value":{"x":28,"y":171}},{"Key":"S_END","Value":{"x":3584,"y":133}},{"Key":"E_0003","Value":{"x":206,"y":39}},{"Key":"E_0005","Value":{"x":382,"y":43}},{"Key":"E_INOUT","Value":{"x":28,"y":14}},{"Key":"S_RETURN_FALSE","Value":{"x":1752,"y":199}},{"Key":"S_CHECK_EXCEPTION","Value":{"x":521,"y":570}},{"Key":"S_INIT2","Value":{"x":743,"y":569}},{"Key":"S_CHECK_LINES","Value":{"x":42,"y":264}},{"Key":"S_FIND_MATCHLINES","Value":{"x":159,"y":375}},{"Key":"S_TARGET","Value":{"x":953,"y":560}},{"Key":"S_CHECK_BOT","Value":{"x":310,"y":923}},{"Key":"S_STR_W_REGEX","Value":{"x":544,"y":845}},{"Key":"S_ITEM_W_REGEX","Value":{"x":544,"y":1049}},{"Key":"S_IS_VALID_REGEX","Value":{"x":1009,"y":925}},{"Key":"S_EXEC_REGEX","Value":{"x":1217,"y":587}},{"Key":"S_CHECK_VALID_VAL","Value":{"x":791,"y":1036}},{"Key":"S_GET_SIZE","Value":{"x":1958,"y":795}},{"Key":"S_CHECK_EOF","Value":{"x":2151,"y":787}},{"Key":"S_REMOVE_TOPBOT","Value":{"x":2340,"y":789}},{"Key":"S_IF_EOF","Value":{"x":2532,"y":805}},{"Key":"S_REMOVE_REST","Value":{"x":2786,"y":548}},{"Key":"S_REPLACE","Value":{"x":3042,"y":803}},{"Key":"S_REMOVE","Value":{"x":2263,"y":1244}},{"Key":"S_RETURN_TRUE","Value":{"x":2900,"y":1637}},{"Key":"S_USE_NEWWAY","Value":{"x":108,"y":1123}},{"Key":"E_USE_NEWWAY","Value":{"x":612,"y":52}},{"Key":"S_CHECK_BOT1","Value":{"x":290,"y":1432}},{"Key":"S_CHECK_EQUALS","Value":{"x":97,"y":1440}},{"Key":"S_STR_W_REGEX1","Value":{"x":537,"y":1347}},{"Key":"S_ITEM_W_REGEX1","Value":{"x":535,"y":1572}},{"Key":"S_EXTRUCT","Value":{"x":1004,"y":1438}},{"Key":"S_NORMALIZE_REGEX","Value":{"x":781,"y":1486}},{"Key":"S_CHECK_EQSTR","Value":{"x":1234,"y":1419}},{"Key":"S_COMPARE_EQSTR","Value":{"x":1610,"y":1331}},{"Key":"S_GOTO_FALSE","Value":{"x":1523,"y":383}},{"Key":"S_CHECK_ESTR","Value":{"x":1619,"y":1688}}]}]
+@@@
+linecolor_data=@@@
+[{"color":{"knownColor":0,"name":null,"state":2,"value":4285493103},"pattern":"GOTO_"}]
+@@@
+use_external_command=0
+external_command=@@@
+
+@@@
+source_editor_set=@@@
+
+@@@
+label_show=0
+label_text=@@@
+test
+@@@
+option_delete_thisstring=1
+option_delete_br_string=1
+option_delete_bracket_string=1
+option_delete_s_state_string=1
+option_copy_output_to_clipboard=0
+option_convert_with_confirm=0
+option_ignore_case_of_state=0
+option_editbranch_automode=0
+option_use_custom_prefix=0
+option_omit_basestate_string=1
+option_hide_basestate_contents=0
+option_hide_branchcmt_onbranchbox=0
+font_name=@@@
+MS UI Gothic
+@@@
+font_size=11
+comment_font_size=0
+contents_font_size=0
+state_width=140
+state_height=20
+state_short_width=50
+state_short_height=20
+comment_block_height=33
+content_max_height=200
+comment_block_fixed=0
+line_space=-1
+userbutton_title=@@@
+
+@@@
+userbutton_command=@@@
+
+@@@
+userbutton_callafterconvert=0
+itemeditform_size_list=@@@
+[{"Key":"init","Value":{"height":401,"width":1203}}]
+@@@
+decoimage_typ_name=@@@
+sym
+@@@
+###VARIOUS-CONTENTS-END###
+
+
+------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+sheet=template-source
+
+###VARIOUS-CONTENTS-BEGIN###
+
+###VARIOUS-CONTENTS-END###
+
+
+------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+sheet=template-statefunc
+
+###VARIOUS-CONTENTS-BEGIN###
+<<<?state/^C_/
+eof>>>
+/*
+    [[state]]
+    [[state-cmt]]
+    <<<?basestate
+     base state : [[basestate]]
+    >>>
+*/
+<<<?state/^E_/
+
+[[embed]]
+
+eof>>>
+
+[[members]]
+void [[state]](bool bFirst)
+{
+    [[vars]]
+
+    <<<?init
+    //
+    if (bFirst)
+    {
+        [[init]]
+    }
+    >>>
+
+    [[update]]
+
+    <<<?wait
+    if ([[wait]]) return;
+    >>>
+
+    [[post_wait]]
+
+<<<?gosubstate
+    GoSubState([[gosubstate]],[[nextstate]]);
+    NoWait();
+}
+eof>>>
+
+<<<?return
+    ReturnState();
+    NoWait();
+}
+eof>>>
+
+
+    <<<?branch
+    // branch
+    [[branch]]
+    >>>
+
+    <<<?nextstate
+    //
+    if (!HasNextState())
+    {
+        Goto([[nextstate]]);
+    }
+    >>>
+
+    <<<?nowait
+    //
+    if (HasNextState())
+    {
+        NoWait();
+    }
+    >>>
+}
+###VARIOUS-CONTENTS-END###
+
+
+------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+sheet=setting.ini
+
+###VARIOUS-CONTENTS-BEGIN###
+
+[setting]
+
+starterkit=@@@
+https://github.com/NNNIC/psgg-starter-kit.git 739079cebe25b5952ab8fbe78f9986bdd853f9ca
+@@@
+
+
+
+psgg=CfPrepareControl.psgg
+xls=CfPrepareControl.xlsx
+sub_src=
+gen_src=CfPrepareControl.cs
+
+manager_src=
+manager_dir=
+
+template_src=
+template_func=template-statefunc.txt
+
+help=help.ini
+helpweb=helpweb.html
+
+src_enc=utf-8
+
+
+[setupinfo]
+
+starterkit=@@@
+https://github.com/NNNIC/psgg-starter-kit.git 739079cebe25b5952ab8fbe78f9986bdd853f9ca
+@@@
+
+
+
+lang=c#
+framework=vs2015
+
+statemachie=CfPrepareControl
+prefix=__PREFIX__
+xlsdir=@@@
+C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\cf_prepare
+@@@
+
+gendir=@@@
+C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\cf_prepare
+@@@
+
+genrdir=.
+incrdir=.
+
+code_output_start=[PSGG OUTPUT START]
+code_output_end=[PSGG OUTPUT END]
+
+[jpn]
+
+title=C# スタートキット  2018/12/12
+
+detail=@@@
+C# 用のステートマシンを作成します。
+
+# 新機能
+- macro埋め込み
+-サブルーチン機能
+
+# ドキュメント用フォルダ
+   ステート図ファイルとエディタ起動用ショートカットを格納
+
+      C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\cf_prepare
+
+  以下のファイルを作成します。
+
+      CfPrepareControl.pssg   --- エディタで次のエクセルファイルを開く。
+      CfPrepareControl.xlsx   --- ステート図格納用Excelファイル。エディタが編集。
+
+# ソース用フォルダ
+　エディタが生成ソースファイル、ユーザ実装ソースファイル、及び管理クラスファイルを格納
+
+      C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\cf_prepare
+
+  以下のファイルが作成されます。
+
+      CfPrepareControl.cs  --- Excelファイルからの変換コードを本ファイルに埋め込む。
+
+注意 : 既に同名のファイルがある場合は生成されません。
+　　　 削除してから生成してください。
+
+@@@
+
+
+
+[en]
+
+title=C# STARTER KIT 2018/12/12
+
+detail=@@@
+This dialog will create files for a state machine.
+
+# New Feature
+- Embed macro in the target source.
+- Calling subroutine feature.
+
+# Document Folder
+　This folder will contain a state chart file and the shortcut of the editor.
+
+      C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\cf_prepare
+
+  File:
+
+      CfPrepareControl.pssg  --- The editor opens the below excel file.
+      CfPrepareControl.xlsx  --- Excel File that has a state chart. The editor edits this file.
+
+# Source Folder
+   This folder will contain a source file generated by the editor, a user implemetation source file, and a manager source file.
+
+      C:\Users\gea01\Documents\psgg\psgg-converter\psggConverter\psggConverterLib\cf_prepare
+
+　File:
+      CfPrepareControl.cs   -- The editor will insert converted source code to this file.
+
+
+NOTE : If the same name files exists, the file will not be created.
+       Please delete the same name files ahead of the creation.
+@@@
+
+
+###VARIOUS-CONTENTS-END###
+
+
+------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+sheet=help
+
+###VARIOUS-CONTENTS-BEGIN###
+; -----
+; 項目説明
+; -----
+
+[embed]
+jpn=@@@
+コード埋め込み用。
+ステート名がE_時に利用可能。
+ステート機能は利用できない。
+@@@
+en=@@@
+For embedding code.
+Enable this section if state name starts with "E_".
+Disabled state features.
+@@@
+
+[members]
+jpn=@@@
+メンバ変数及び関数等を指定する。
+@@@
+en=@@@
+Specify members, variables, classes,  etc.
+@@@
+
+[state]
+jpn=@@@
+ステート名を指定する。
+英文字、数字、アンダーバーで構成される。
+先頭は英文字およびアンダーバー。
+@@@
+en=@@@
+Specify a state name.
+The state name consits of alphabet, number and underbar except that the head characther should be alphabet or a underbar.
+@@@
+
+[basestate]
+jpn=@@@
+継承元を指定する。
+@@@
+en=@@@
+Specify inheritance source.
+@@@
+
+[thumbnail]
+jpn=@@@
+説明用のイメージを指定する。
+@@@
+en=@@@
+Specify a image for explanation of this state.
+@@@
+
+[vars]
+jpn=@@@
+変数宣言を指定する。
+@@@
+en=@@@
+Specify variable definitions.
+@@@
+
+[init]
+jpn=@@@
+初期化用処理を指定する。
+@@@
+en=@@@
+Specify a initial process.
+@@@
+
+[update]
+jpn=@@@
+更新処理を指定する。
+@@@
+en=@@@
+Specify a update process.
+@@@
+
+[wait]
+jpn=@@@
+待ち条件を指定する。
+true時にループを解除する。
+@@@
+en=@@@
+Specify a waiting condition.
+Release the loop if the condition is true.
+@@@
+
+[post_wait]
+jpn=@@@
+'wait'後の処理を指定する。
+@@@
+en=@@@
+Specify the post process after 'wait'.
+@@@
+
+[gosubstate]
+jpn=@@@
+サブルーチンを呼び出す。
+サブルーチンの開始ステート名を指定する。
+@@@
+en=@@@
+Call a subroutine.
+Specify the starting state name of the subroutine.
+@@@
+
+[return]
+jpn=@@@
+サブルーチン処理を終了するときに指定する。"return"等を記述。
+@@@
+en=@@@
+Use for returning from the subroutine. Write "return" etc.
+@@@
+
+[branch]
+jpn=@@@
+分岐処理を指定する。
+１行に一つの分岐命令を書く。
+GUIにより上書きされるため引数は適当に指定する。
+例）
+br_YES(?);
+br_NO(?);
+br_UNKNOWN(?);
+@@@
+en=@@@
+Specify branch functions.
+Each line has a branch function.
+Specify a tentavie parameter for each branch function because GUI overwrites the parameter.
+i.e)
+br_YES(?);
+br_NO(?);
+br_UNKNOWN(?);
+@@@
+
+[nextstate]
+jpn=@@@
+次に実行するステートを指定する。
+@@@
+en=@@@
+Specify the next state to be executed.
+@@@
+
+[nowait]
+jpn=@@@
+次のステートへ同期待ちをせず実行する時に 'nowait'等を指定する。
+同期待ち時には何も指定しない。
+@@@
+en=@@@
+Specify 'nowait' and so on if the next state will be execute without a sync wait.
+Do not specify any word wheh the next state will be execute with a sync wait.
+@@@
+
+[!dir]
+jpn=@@@
+システムがステートのディレクトリ指定に使用。
+@@@
+en=@@@
+System uses this for the directory path of the state.
+@@@
+
+[!uuid]
+jpn=@@@
+システムがステートのuuid指定に使用。
+@@@
+en=@@@
+System uses this for the uuid of the state.
+@@@
+###VARIOUS-CONTENTS-END###
+
+
+------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
+
+sheet=itemsinfo
+
+###VARIOUS-CONTENTS-BEGIN###
+
+###VARIOUS-CONTENTS-END###
+
+
+
+------#======*<Guid(4DC98CBA-6257-4E26-A454-A53F85BC234C)>*======#------
+
+
