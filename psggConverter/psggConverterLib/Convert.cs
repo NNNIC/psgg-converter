@@ -435,6 +435,9 @@ namespace psggConverterLib
                         throw new SystemException("Unpexected! {68DE5327-ECE6-4241-A2E3-CF9F87C9F5F1} " + e.Message + "\n" + line);
                     }
                 }
+                bool? b_loweCamel_or_upper = null;
+                if (tmp_targetvalue.Contains(">>lc")) b_loweCamel_or_upper = true;
+                if (tmp_targetvalue.Contains(">>uc")) b_loweCamel_or_upper = false;
                 macroname = name;
                 if (tmp_targetvalue.Contains("->@"))
                 {
@@ -468,6 +471,12 @@ namespace psggConverterLib
                     var args = StringUtil.SplittComma_And_ApiArges(val);
                     val = argnum < args.Count ? args[argnum] : string.Empty;
                 }
+                if (b_loweCamel_or_upper!=null)
+                {
+                    var upper_or_lower = !((bool)b_loweCamel_or_upper);
+                    val = StringUtil.convert_to_camel_word(val, upper_or_lower);
+                }
+
                 var replacevalue = val;
                 var replacevalue3 = get_line_macro_value(macroname, replacevalue); // @stateマクロがあれば、各行に適用する
 
