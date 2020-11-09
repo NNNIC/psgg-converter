@@ -19,11 +19,13 @@ namespace psggConverterLib
         public readonly string  m_state_machinepattern = @"\$state_machine\$";  //スネーク型に変換
         public readonly string  m_stateMachinePattern  = @"\$stateMachine\$";   // lower camelに変換
         public readonly string  m_StateMachinePattern  = @"\$StateMachine\$";   // Upper camelに変換
+        public readonly string  m_lcOrUcPattern        = @"\$(lc|uc):.+?\$";    // 引数をlower camel または upper camelに変換
 
         public string       m_error;
                             
         bool         m_bValid;
         bool         m_bInclude;
+        bool         m_blcOrUc;
         bool         m_bPrefix;
         bool         m_bStatemachine;
         bool         m_b_state_machine; //スネーク型
@@ -32,6 +34,7 @@ namespace psggConverterLib
 
         string       m_matchstr;   //
         string       m_filename;   // for include
+        string       m_lcuctext;   // for lc uc
         string       m_fileenc;    // file encoding
         string       m_macrovalue; // ie hoge(a,b);
         string       m_api;        // ie hoge
@@ -43,6 +46,7 @@ namespace psggConverterLib
 
             m_bValid     = false;
             m_bInclude   = false;
+            m_blcOrUc    = false;
             m_bPrefix    = false;
             m_matchstr   = null;
             m_filename   = null;
@@ -63,6 +67,18 @@ namespace psggConverterLib
                 m_matchstr = match;
 
                 analyze_include();
+            }
+            if (!m_bValid)
+            {
+                match = RegexUtil.Get1stMatch(m_lcOrUcPattern,buf); // $lc:xxx$ or $uc:xxxx$
+                if (!string.IsNullOrEmpty(match))
+                {
+                    m_bValid  = true;
+                    m_blcOrUc = true;
+                    m_matchstr = match;
+
+                    analyze_lcOrUc();
+                }
             }
             if (!m_bValid)
             {
@@ -148,6 +164,13 @@ namespace psggConverterLib
                 m_filename = str;
             }
         }
+        void analyze_lcOrUc()
+        {
+                                               // 01234
+            //m_filename = m_matchstr.Substring(/*$lc:*/4).TrimEnd('$');
+            var str = m_matchstr.Substring(/*$lc:*/4).TrimEnd('$');
+            m_lcuctext = str;
+        }
         void analyze_macro()
         {                                       //01234567
             m_macrovalue = m_matchstr.Substring(/*$macro:*/7).TrimEnd('$');
@@ -193,6 +216,14 @@ namespace psggConverterLib
         public bool IsInclude()
         {
             return m_bInclude;
+        }
+        public bool IsLcUc()
+        {
+            return m_blcOrUc;
+        }
+        public string GetLcUcText()
+        {
+            return m_lcuctext;
         }
         public string GetIncludFilename()
         {

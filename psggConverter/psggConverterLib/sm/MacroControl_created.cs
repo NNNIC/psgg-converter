@@ -1,4 +1,5 @@
-﻿//  psggConverterLib.dll converted from MacroControl.xlsx. 
+﻿//             psggConverterLib.dll converted from psgg-file:MacroControl.psgg
+
 public partial class MacroControl : StateManager {
 
     public void Start()
@@ -73,6 +74,25 @@ public partial class MacroControl : StateManager {
             do_if_include();
         }
         br_Done(S_ADDRESTLINES);
+        br_NotAbove(S_DO_LCUC);
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_DO_LCUC
+        LoweCamel Upper
+        $lc:,,,$
+        $uc:..$
+    */
+    void S_DO_LCUC(bool bFirst)
+    {
+        if (bFirst)
+        {
+            do_if_lcuc();
+        }
+        br_Done(S_ADDRESTLINES);
         br_NotAbove(S_DO_MACRO);
         if (HasNextState())
         {
@@ -117,7 +137,7 @@ public partial class MacroControl : StateManager {
     }
     /*
         S_DO_STATEMACHINE
-        $statemachine$変換
+        変換
     */
     void S_DO_STATEMACHINE(bool bFirst)
     {
@@ -257,4 +277,3 @@ public partial class MacroControl : StateManager {
     }
 
 }
-

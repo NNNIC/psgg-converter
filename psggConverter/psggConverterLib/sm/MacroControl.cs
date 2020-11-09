@@ -74,6 +74,21 @@ public partial class MacroControl  {
             m_bDone = true;
         }
     }
+    void do_if_lcuc()
+    {
+        m_bDone = false;
+        if (m_mw.IsLcUc())
+        {
+            var matchstr = m_mw.GetMatchStr();
+            var text     = m_mw.GetLcUcText();
+            var ucOrlc = matchstr.StartsWith("$uc");
+
+            var text2 = StringUtil.convert_to_camel_word(text,ucOrlc);
+            var tmplines = StringUtil.ReplaceWordsInLine(m_line,matchstr,text2);
+            m_resultlines.AddRange(tmplines);
+            m_bDone = true;
+        }
+    }
 
     void do_if_prefix()
     {
