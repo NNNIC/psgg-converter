@@ -1,4 +1,5 @@
-﻿//  psggConverterLib.dll converted from SourceControl.xlsx.    psgg-file:SourceControl.psgg
+﻿//             psggConverterLib.dll converted from psgg-file:SourceControl.psgg
+
 public partial class SourceControl : StateManager {
 
     public void Start()
@@ -213,6 +214,24 @@ public partial class SourceControl : StateManager {
         if (!HasNextState())
         {
             SetNextState(S_IS_END_LC);
+        }
+        if (HasNextState())
+        {
+            GoNextState();
+        }
+    }
+    /*
+        S_INS_DONOTEDIT
+    */
+    void S_INS_DONOTEDIT(bool bFirst)
+    {
+        if (bFirst)
+        {
+            insert_donotedit();
+        }
+        if (!HasNextState())
+        {
+            SetNextState(S_OUTPUT_INSERTBUF);
         }
         if (HasNextState())
         {
@@ -459,7 +478,7 @@ public partial class SourceControl : StateManager {
         {
         }
         br_CVT(S_WRITEFILE);
-        br_INSERT(S_OUTPUT_INSERTBUF);
+        br_INSERT(S_INS_DONOTEDIT);
         if (HasNextState())
         {
             GoNextState();

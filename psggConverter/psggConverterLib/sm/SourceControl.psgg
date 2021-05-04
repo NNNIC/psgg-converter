@@ -13,9 +13,9 @@ check_excel_writable=no
 
 sheet=state-chart
 nameid_list=,n001,n002,n003,n004,n005,,n006,n007,n008,n009,,n00a,n00b,,n00c,n00d,,n00e,n00f,,n010,n011,,n012,n013,n014
-stateid_list=,,,,s0001,s0002,s0003,s0004,s0005,s0006,s0007,s0008,s0009,s000a,s000b,s000c,s000d,s000e,s000f,s0010,s0011,s0012,s0013,s0014,s0015,s0016,s0017,s0018,s0019,s001a,s001b,s001c,s001d,s001e,s001f,,s0020,s0021,s0022,s0023,,,,,,,,s0024
+stateid_list=,,,,s0001,s0002,s0003,s0004,s0005,s0006,s0007,s0008,s0009,s000a,s000b,s000c,s000d,s000e,s000f,s0010,s0011,s0012,s0013,s0014,s0015,s0016,s0017,s0018,s0019,s001a,s001b,s001c,s001d,s001e,s001f,,s0020,s0021,s0022,s0023,s0025,,,,,,,s0024
 max_name_id=20
-max_state_id=36
+max_state_id=37
 [id_name_dic]
 n001=thumbnail
 n002=state
@@ -76,6 +76,7 @@ s0021=S_OUTPUT_INSERTBUF
 s0022=E_OPTIONS
 s0023=E_OPTIONS1
 s0024=S_IS_PREFIX
+s0025=S_INS_DONOTEDIT
 
 
 [s0001]
@@ -98,7 +99,7 @@ n012=@@@
 The root
 @@@
 
-n013=1693,494
+n013=1792,493
 n014=100002
 
 [s0003]
@@ -631,7 +632,7 @@ n002=S_OUTPUTCHECK
 n003=モード別に出力を変える
 n010=@@@
 br_CVT(S_WRITEFILE);
-br_INSERT(S_OUTPUT_INSERTBUF);
+br_INSERT(S_INS_DONOTEDIT);
 @@@
 
 n012=@@@
@@ -655,7 +656,7 @@ n012=@@@
 The root
 @@@
 
-n013=1356,910
+n013=1537,945
 n014=100039
 
 [s0022]
@@ -679,7 +680,7 @@ n006=public int m_indent;
 n012=@@@
 /
 (100,100)
-
+The root
 @@@
 
 n013=119,327
@@ -704,6 +705,19 @@ n012=@@@
 n013=1732,1277
 n014=100031
 
+[s0025]
+n002=S_INS_DONOTEDIT
+n005=S_OUTPUT_INSERTBUF
+n007=insert_donotedit();
+n012=@@@
+/
+(100,100)
+The root
+@@@
+
+n013=1326,944
+n014=100045
+
 
 
 ------#======*<Guid(70C5A739-223A-457D-8AEE-1A0E2050D5AE)>*======#------
@@ -711,8 +725,8 @@ n014=100031
 sheet=config
 
 ###VARIOUS-CONTENTS-BEGIN###
-; The setting was created automatically. 2020/05/31 8:25:57
-; * pssgEditor version : 0.64.60298.no hash because of debug
+; The setting was created automatically. 2021/04/29 11:16:39
+; * pssgEditor version : 0.68.171948.b0d313dde882138853516050d1e04d61ce89f54b
 psggfile=@@@
 SourceControl.psgg
 @@@
@@ -729,22 +743,22 @@ c_thumbnail=1
 c_contents=1
 force_display_outpin=0
 last_action=@@@
-init,Saved
+varied,Edited a state.
 @@@
 target_pathdir=@@@
-/
+/CreateSource/LineConvert/
 @@@
 state_location_list=@@@
 
 @@@
 nodegroup_comment_list=@@@
-[{"Key":"\/","Value":"This is the root"},{"Key":"\/CreateSource\/","Value":"ソース生成"},{"Key":"\/CreateSource\/LineConvert\/","Value":"行変換"}]
+[{"Key":"\/","Value":"The root"},{"Key":"\/CreateSource\/","Value":"ソース生成"},{"Key":"\/CreateSource\/LineConvert\/","Value":"行変換"}]
 @@@
 nodegroup_pos_list=@@@
 [{"Key":"\/","Value":{"x":100,"y":100}},{"Key":"\/CreateSource\/","Value":{"x":713,"y":750}},{"Key":"\/CreateSource\/LineConvert\/","Value":{"x":635,"y":382}}]
 @@@
 fillter_state_location_list=@@@
-[{"Key":"\/","Value":[{"Key":"S_START","Value":{"x":38,"y":469}},{"Key":"S_END","Value":{"x":1693,"y":494}},{"Key":"S_LOADSETTING","Value":{"x":623,"y":237}},{"Key":"S_SETLANG","Value":{"x":980,"y":346}},{"Key":"S_WRITEHEDDER","Value":{"x":489,"y":747}},{"Key":"S_CREATESOURCE","Value":{"x":608,"y":185}},{"Key":"S_WRITEFILE","Value":{"x":1357,"y":757}},{"Key":"S_ESCAPE_TO_CHAR","Value":{"x":915,"y":751}},{"Key":"S_CHECKMODE","Value":{"x":246,"y":448}},{"Key":"S_OUTPUTCHECK","Value":{"x":1119,"y":759}},{"Key":"S_OUTPUT_INSERTBUF","Value":{"x":1356,"y":910}},{"Key":"E_OPTIONS","Value":{"x":119,"y":257}},{"Key":"____altnative_state____CreateSource","Value":{"x":713,"y":750}},{"Key":"E_OPTIONS1","Value":{"x":119,"y":327}}]},{"Key":"\/CreateSource\/","Value":[{"Key":"S_WRITEHEDDER","Value":{"x":19,"y":16}},{"Key":"S_CREATESOURCE","Value":{"x":38,"y":202}},{"Key":"S_WRITEFILE","Value":{"x":889.1764,"y":391.117676}},{"Key":"S_CONTENTS_2","Value":{"x":397,"y":376}},{"Key":"S_CONTENTS_1","Value":{"x":186,"y":373}},{"Key":"S_ESCAPE_TO_CHAR","Value":{"x":927.941162,"y":314.352966}},{"Key":"____altnative_state____LineConvert","Value":{"x":635,"y":382}}]},{"Key":"\/CreateSource\/LineConvert\/","Value":[{"Key":"S_CONTENTS_2","Value":{"x":45,"y":27}},{"Key":"S_WRITEFILE","Value":{"x":1068.88232,"y":241.9412}},{"Key":"S_SETUP_LC","Value":{"x":45,"y":182}},{"Key":"S_CHECKCOUNT_LC","Value":{"x":620,"y":32}},{"Key":"S_GETLINE_LC","Value":{"x":160,"y":470}},{"Key":"S_IS_END_LC","Value":{"x":390,"y":511}},{"Key":"S_IS_CONTENTS_1_LC","Value":{"x":832,"y":747}},{"Key":"S_IS_CONTENTS_2_LC","Value":{"x":1069,"y":867}},{"Key":"S_IS_INCLUDE_LC","Value":{"x":1942,"y":1288}},{"Key":"S_IS_MACRO_LC","Value":{"x":2157,"y":1295}},{"Key":"S_ADDLINE_LC","Value":{"x":2129,"y":808}},{"Key":"S_NEXT_LC","Value":{"x":1773,"y":220}},{"Key":"S_CHECK_AGAIN","Value":{"x":1043,"y":42}},{"Key":"S_SETUP2_LC","Value":{"x":449,"y":147}},{"Key":"S_IS_COMMENT","Value":{"x":603,"y":633}},{"Key":"S_ESCAPE_TO_CHAR","Value":{"x":1537.00012,"y":80.41182}},{"Key":"S_LINESTOBUF_LC","Value":{"x":836,"y":44}},{"Key":"S_BIND_SRC","Value":{"x":1279,"y":36}},{"Key":"S_SET_CHECKAGAIN","Value":{"x":1801,"y":586}},{"Key":"S_IS_PREFIX","Value":{"x":1732,"y":1277}},{"Key":"S_IS_REGEX_LC","Value":{"x":1283,"y":1003}},{"Key":"S_IS_REGEX2_LC","Value":{"x":1493,"y":1144}},{"Key":"S_USE_G_TEMPLSRC","Value":{"x":259,"y":79}},{"Key":"S_USE_INSERT_TEMP","Value":{"x":252,"y":228}}]}]
+[{"Key":"\/","Value":[{"Key":"S_START","Value":{"x":38,"y":469}},{"Key":"S_END","Value":{"x":1792,"y":493}},{"Key":"S_LOADSETTING","Value":{"x":623,"y":237}},{"Key":"S_SETLANG","Value":{"x":980,"y":346}},{"Key":"S_WRITEHEDDER","Value":{"x":489,"y":747}},{"Key":"S_CREATESOURCE","Value":{"x":608,"y":185}},{"Key":"S_WRITEFILE","Value":{"x":1357,"y":757}},{"Key":"S_ESCAPE_TO_CHAR","Value":{"x":915,"y":751}},{"Key":"S_CHECKMODE","Value":{"x":246,"y":448}},{"Key":"S_OUTPUTCHECK","Value":{"x":1119,"y":759}},{"Key":"S_OUTPUT_INSERTBUF","Value":{"x":1537,"y":945}},{"Key":"E_OPTIONS","Value":{"x":119,"y":257}},{"Key":"E_OPTIONS1","Value":{"x":119,"y":327}},{"Key":"____altnative_state____CreateSource","Value":{"x":713,"y":750}},{"Key":"S_OUTPUTCHECK1","Value":{"x":1326,"y":944}},{"Key":"S_INS_DONOTEDIT","Value":{"x":1326,"y":944}}]},{"Key":"\/CreateSource\/","Value":[{"Key":"S_WRITEHEDDER","Value":{"x":19,"y":16}},{"Key":"S_CREATESOURCE","Value":{"x":38,"y":202}},{"Key":"S_WRITEFILE","Value":{"x":889.1764,"y":391.117676}},{"Key":"S_CONTENTS_2","Value":{"x":397,"y":376}},{"Key":"S_CONTENTS_1","Value":{"x":186,"y":373}},{"Key":"S_ESCAPE_TO_CHAR","Value":{"x":927.941162,"y":314.352966}},{"Key":"____altnative_state____LineConvert","Value":{"x":635,"y":382}}]},{"Key":"\/CreateSource\/LineConvert\/","Value":[{"Key":"S_CONTENTS_2","Value":{"x":45,"y":27}},{"Key":"S_WRITEFILE","Value":{"x":1068.88232,"y":241.9412}},{"Key":"S_SETUP_LC","Value":{"x":45,"y":182}},{"Key":"S_CHECKCOUNT_LC","Value":{"x":620,"y":32}},{"Key":"S_GETLINE_LC","Value":{"x":160,"y":470}},{"Key":"S_IS_END_LC","Value":{"x":390,"y":511}},{"Key":"S_IS_CONTENTS_1_LC","Value":{"x":832,"y":747}},{"Key":"S_IS_CONTENTS_2_LC","Value":{"x":1069,"y":867}},{"Key":"S_IS_INCLUDE_LC","Value":{"x":1942,"y":1288}},{"Key":"S_IS_MACRO_LC","Value":{"x":2157,"y":1295}},{"Key":"S_ADDLINE_LC","Value":{"x":2129,"y":808}},{"Key":"S_NEXT_LC","Value":{"x":1773,"y":220}},{"Key":"S_CHECK_AGAIN","Value":{"x":1043,"y":42}},{"Key":"S_SETUP2_LC","Value":{"x":449,"y":147}},{"Key":"S_IS_COMMENT","Value":{"x":603,"y":633}},{"Key":"S_ESCAPE_TO_CHAR","Value":{"x":1537.00012,"y":80.41182}},{"Key":"S_LINESTOBUF_LC","Value":{"x":836,"y":44}},{"Key":"S_BIND_SRC","Value":{"x":1279,"y":36}},{"Key":"S_SET_CHECKAGAIN","Value":{"x":1801,"y":586}},{"Key":"S_IS_PREFIX","Value":{"x":1732,"y":1277}},{"Key":"S_IS_REGEX_LC","Value":{"x":1283,"y":1003}},{"Key":"S_IS_REGEX2_LC","Value":{"x":1493,"y":1144}},{"Key":"S_USE_G_TEMPLSRC","Value":{"x":259,"y":79}},{"Key":"S_USE_INSERT_TEMP","Value":{"x":252,"y":228}}]}]
 @@@
 linecolor_data=@@@
 [{"color":{"knownColor":0,"name":null,"state":2,"value":4282417280},"pattern":"br_CONTINUE"}]
@@ -799,6 +813,7 @@ itemeditform_size_list=@@@
 decoimage_typ_name=@@@
 sym
 @@@
+
 ###VARIOUS-CONTENTS-END###
 
 
@@ -877,7 +892,6 @@ void [[state]](bool bFirst)
 sheet=setting.ini
 
 ###VARIOUS-CONTENTS-BEGIN###
-
 [setting]
 
 converter=psggConverterLib.dll
@@ -997,8 +1011,6 @@ NOTE : If the same name files exists, the file will not be created.
 
 Wrote 2018.7.7
 @@@
-
-
 ###VARIOUS-CONTENTS-END###
 
 

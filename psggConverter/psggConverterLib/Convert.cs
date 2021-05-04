@@ -12,7 +12,7 @@ namespace psggConverterLib
     {
         public bool   BRKGS     = false;  //  Breakpoint At Generate Source   
         public bool   BRKGF     = false;  //  Breakpoint At Generate Function
-        public bool   BRKP      = false;  //  Breakpoint At Prepare
+        public bool   BRKP      = true;  //  Breakpoint At Prepare
 
         public void   TEST()      { Console.WriteLine("psggConvertLib TEST");}
 
@@ -81,6 +81,13 @@ namespace psggConverterLib
 
         public List<string> name_list;
         public List<int>    name_row_list;
+
+        //-- インサートコンバート時に利用する編集禁止マーク
+        public bool   USE_DONOTEDIT_MARK;
+        public int[]  DONOTEDIT_MARK_COLMNS = new int[] { 36,74,116 };    //指定カラムに表示。これ以上の場合は、４タブで後表示
+        //                              1234567890123
+        public string DONOTEDIT_MARK = "*DO*NOT*EDIT*";
+        //-- 
 
         #region init
         public void Init(
@@ -210,19 +217,27 @@ namespace psggConverterLib
                     break;
             }
         }
-
-
-        public string CreateFunc(string state,string macrobuf = null)
+        public string CreateFunc(string state, string macrobuf = null)
         {
             if (BRKGF)
             { 
                 System.Diagnostics.Debugger.Break();
             }
+            return CreateFuncWork(state, macrobuf);
+        }
+
+        internal string CreateFuncInternal(string state,string macrobuf = null)
+        {
+            return CreateFuncWork(state, macrobuf);
+        }
+        internal string CreateFuncWork(string state,string macrobuf)
+        {
             var sm = new FunctionControl();
             sm.G = this;
             sm.m_state = state;
             sm.m_macro_buf = macrobuf;
             sm.m_useMacroOrTemplate = !string.IsNullOrEmpty(macrobuf);
+
             sm.Start();
             for(var loop=0;loop<=10000;loop++)
             {

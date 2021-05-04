@@ -238,7 +238,7 @@ public partial class SourceControl  {
         var s = string.Empty;
         foreach(var state in state_list)
         {
-            s += G.CreateFunc(state) + G.NEWLINECHAR;
+            s += G.CreateFuncInternal(state) + G.NEWLINECHAR;
         }
         m_contents2 = s;
     }
@@ -256,7 +256,7 @@ public partial class SourceControl  {
         var s = string.Empty;
         foreach (var state in state_list)
         {
-            var o = G.CreateFunc(state,macrobuf);
+            var o = G.CreateFuncInternal(state,macrobuf);
             if (!string.IsNullOrEmpty(o))
             {
                 s += o + G.NEWLINECHAR;
@@ -528,5 +528,11 @@ public partial class SourceControl  {
     {
         m_resultlist.Add(m_line);
     }
-#endregion
+    #endregion
+    #region DONOTEDIT MARKの挿入
+    void insert_donotedit()
+    {
+        m_src = G.insert_donotedit(m_src);
+    }
+    #endregion
 }

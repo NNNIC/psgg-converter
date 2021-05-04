@@ -58,6 +58,7 @@
     <Compile Include="sm\MacroControl_created.cs" />
     <Compile Include="sm\SourceControl.cs" />
     <Compile Include="sm\SourceControl_created.cs" />
+    <Compile Include="Convert_DoNotEditUtil.cs" />
     <Compile Include="Util\IniUtil.cs" />
     <Compile Include="Util\RegexUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
