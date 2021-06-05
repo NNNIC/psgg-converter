@@ -12,7 +12,7 @@ namespace psggConverterLib
     {
         public bool   BRKGS     = false;  //  Breakpoint At Generate Source   
         public bool   BRKGF     = false;  //  Breakpoint At Generate Function
-        public bool   BRKP      = true;  //  Breakpoint At Prepare
+        public bool   BRKP      = false;  //  Breakpoint At Prepare
 
         public void   TEST()      { Console.WriteLine("psggConvertLib TEST");}
 
@@ -88,6 +88,9 @@ namespace psggConverterLib
         //                              1234567890123
         public string DONOTEDIT_MARK = "*DO*NOT*EDIT*";
         //-- 
+
+        public string BRANCHEDIT_NEWLINECHAR = "￢"; //分岐コンディション内の改行コード
+
 
         #region init
         public void Init(
@@ -490,6 +493,17 @@ namespace psggConverterLib
                 {
                     var upper_or_lower = !((bool)b_loweCamel_or_upper);
                     val = StringUtil.convert_to_camel_word(val, upper_or_lower);
+                }
+
+                if (name == "brcond") //コンディションの改行対応
+                {
+                    if (!string.IsNullOrEmpty(val))
+                    {
+                        if (!string.IsNullOrEmpty(BRANCHEDIT_NEWLINECHAR))
+                        {
+                            val = val.Replace(BRANCHEDIT_NEWLINECHAR, Environment.NewLine);
+                        }
+                    }
                 }
 
                 var replacevalue = val;
