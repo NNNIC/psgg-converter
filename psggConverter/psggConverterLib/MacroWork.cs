@@ -10,7 +10,7 @@ namespace psggConverterLib
     public class MacroWork
     {
         public const string m_includepattern = @"\$include:.+?\$";
-        public const string m_macropattern   = @"\$macro:.+?\$";
+        public const string m_macropattern   = @"\$(macro|m):(.+?)\$";
         public const string m_argpattern     = @"\{%(~{0,1})\d+\}";   //埋め込み側の引数パターン  {%0} または {%~0}  チルダ(~)があると文字列両端のダブルクォートを削除する
         public const string m_numpattern     = @"\{%[Nn]\}";          //埋め込み側の引数パターン  {%N} または {%n} 
 
@@ -172,8 +172,21 @@ namespace psggConverterLib
             m_lcuctext = str;
         }
         void analyze_macro()
-        {                                       //01234567
-            m_macrovalue = m_matchstr.Substring(/*$macro:*/7).TrimEnd('$');
+        {
+            if (m_matchstr.StartsWith("$macro:"))
+            {
+                //01234567
+                m_macrovalue = m_matchstr.Substring(/*$macro:*/7).TrimEnd('$');
+            }
+            else if (m_matchstr.StartsWith("$m:"))
+            {
+                //0123
+                m_macrovalue = m_matchstr.Substring(/*$m:*/3).TrimEnd('$');
+            }
+            else
+            {
+                throw new SystemException("Unexpected! {E29A31CE-06CB-4B0B-A403-858269C1E38E}");
+            }
             string api;
             List<string> args;
             string error;
